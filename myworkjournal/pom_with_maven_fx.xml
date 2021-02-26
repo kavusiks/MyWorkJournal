@@ -63,6 +63,14 @@
 		    <mainClass>project/project.fxui.App</mainClass><!--Endre denne til å peke på din App-klasse om du vil bruke javafx-maven-plugin -->
                 </configuration>
 	</plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>14</source>
+                    <target>14</target>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 </project>
