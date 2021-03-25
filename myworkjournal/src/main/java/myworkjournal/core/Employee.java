@@ -21,6 +21,7 @@ public class Employee {
     public void setName(String name) throws IllegalArgumentException{
         if (!name.matches("^[a-zA-ZæøåÆØÅ\\p{L}]+$")) {
             throw new IllegalArgumentException("Profile name can only contain letters");
+            // Legg til try catch...
         }
         this.name = name;
     }
