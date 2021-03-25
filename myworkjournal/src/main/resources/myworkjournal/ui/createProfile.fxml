@@ -8,11 +8,24 @@
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: lightblue;" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="myworkjournal.ui.CreateProfileController">
    <children>
+      <Pane prefHeight="83.0" prefWidth="600.0" style="-fx-background-color: lightgray;" />
       <Text layoutX="154.0" layoutY="54.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Min Arbeids Journal" textAlignment="CENTER" wrappingWidth="292.5077972412108">
          <font>
             <Font size="25.0" />
          </font></Text>
-      <Button fx:id="createProfileBtn" layoutX="251.0" layoutY="330.0" mnemonicParsing="false" onAction="#createProfile" text="Lag Bruker" />
-      <TextField fx:id="profileNameInputField" layoutX="219.0" layoutY="110.0" promptText="Brukernavn" />
+      <Button fx:id="createProfileBtn" layoutX="117.0" layoutY="200.0" mnemonicParsing="false" onAction="#createProfile" text="Lag bruker" />
+      <TextField fx:id="profileNameInputField" layoutX="79.0" layoutY="136.0" promptText="Brukernavn" />
+      <Button fx:id="createProfileBtn1" layoutX="410.0" layoutY="200.0" mnemonicParsing="false" onAction="#createProfile" text="Logg inn" />
+      <Text layoutX="7.0" layoutY="117.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Lag ny bruker" textAlignment="CENTER" wrappingWidth="292.5077972412108">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Text>
+      <Text layoutX="300.0" layoutY="116.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Forsett fra tidligere" textAlignment="CENTER" wrappingWidth="292.5077972412108">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Text>
+      <TextField alignment="CENTER" editable="false" layoutX="372.0" layoutY="136.0" text="Brukernavn..." />
    </children>
 </Pane>
