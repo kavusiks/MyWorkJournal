@@ -14,6 +14,12 @@ public class CreateProfileController extends AbstractController{
     
     @FXML
     Button createProfileBtn;
+    
+    @FXML
+    TextField savedUser;
+    
+    @FXML
+    Button savedUserLogin;
 
     /*protected CreateProfileController(Employee employee) {
         super(employee);
@@ -30,6 +36,16 @@ public class CreateProfileController extends AbstractController{
         setEmployee(employee);
         //setEmployee(employee);
         changeScreen("addWorkPeriod.fxml", createProfileBtn);
+    }
+    
+    @FXML
+    private void getProfile() {
+    	// Hent profil fra 
+    }
+    
+    @FXML
+    private void userLogin() {
+    	// Logg inn til saved profile
     }
 
     @Override void sceneSwitchedUpdate() {
