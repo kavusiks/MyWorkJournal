@@ -13,13 +13,20 @@ import javafx.fxml.FXML;
 
 public class DataInputController extends AbstractController {
   @FXML
-  DatePicker workDatePicker;
+  DatePicker workStartDatePicker;
+
+  @FXML
+  DatePicker workEndDatePicker;
 
   @FXML
   TextField workHoursInputField;
 
   @FXML
-  TextField shiftStartInput;
+  TextField shiftStartTimeInput;
+
+  @FXML
+  TextField shiftEndTimeInput;
+
   @FXML
   Button addDataBtn;
 
@@ -65,11 +72,14 @@ public class DataInputController extends AbstractController {
     //this.initialize();
     System.out.println("Den clearer");
     myDataListView.getItems().clear();
-    int startHour = Integer.parseInt(shiftStartInput.getText(0, 2));
-    int startMinute = Integer.parseInt(shiftStartInput.getText(3, 5));
+    int startHour = Integer.parseInt(shiftStartTimeInput.getText(0, 2));
+    int startMinute = Integer.parseInt(shiftStartTimeInput.getText(3, 5));
+    int endHour = Integer.parseInt(shiftEndTimeInput.getText(0, 2));
+    int endMinute = Integer.parseInt(shiftEndTimeInput.getText(3, 5));
     System.out.println("starthour:"+startHour+"startminute"+startMinute);
 
-    Work newData=new Work(workDatePicker.getValue().atTime(startHour, startMinute),Integer.parseInt(workHoursInputField.getText()));
+    Work newData=new Work(workStartDatePicker.getValue().atTime(startHour, startMinute),workEndDatePicker.getValue().atTime(endHour, endMinute));
+    System.out.println(newData.getHours());
     workPeriod.addWork(newData);
     for (Work work:workPeriod.getWorkHistory()){
       myDataListView.getItems().add(String.valueOf(work));
@@ -101,6 +111,6 @@ public class DataInputController extends AbstractController {
     }
     updateChoiceBox();
 
-    shiftStartInput.setText(getEmployee().getName());
+    //.setText(getEmployee().getName());
   }
 }

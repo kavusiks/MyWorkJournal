@@ -15,6 +15,7 @@ public class AddWorkPeriodController extends AbstractController {
   @FXML Button goToDataInputBtn;
   @FXML TextField wageInputField;
   @FXML DatePicker addMonthDatePicker;
+  @FXML Label errorMessage;
 
   @Override void sceneSwitchedUpdate() {
     existingMonthListView.getItems().clear();
@@ -24,6 +25,7 @@ public class AddWorkPeriodController extends AbstractController {
   }
 
   @FXML private void addMonth() throws IllegalArgumentException {
+    errorMessage.setText("");
     Employee employee = getEmployee();
     LocalDate startDate = addMonthDatePicker.getValue(); //må throwe her
     int wage = Integer.parseInt(wageInputField.getText());// må throwe her
@@ -32,7 +34,9 @@ public class AddWorkPeriodController extends AbstractController {
       employee.addWorkPeriod(newPeriod);
     }
     else {
-      throw new IllegalArgumentException("Work month already exists");
+      String error = "Work month already exists";
+      errorMessage.setText(error);
+      throw new IllegalArgumentException(error);
     }
     setEmployee(employee);
     sceneSwitchedUpdate();

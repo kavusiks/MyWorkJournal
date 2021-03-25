@@ -7,10 +7,10 @@ public class Work {
   private LocalDateTime endTime;
   private int hours;
 
-  public Work(LocalDateTime startDate, int hours) {
-    this.startTime = startDate;
-    this.hours = hours;
-    this.endTime = startTime.plusHours(hours);
+  public Work(LocalDateTime startTime, LocalDateTime endTime) {
+    this.startTime = startTime;
+    this.endTime = endTime;
+    this.hours = endTime.getHour() - startTime.getHour();
   }
 
   public LocalDateTime getStartTime() {
