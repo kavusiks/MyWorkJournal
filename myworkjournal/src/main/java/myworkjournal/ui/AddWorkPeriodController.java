@@ -25,19 +25,28 @@ public class AddWorkPeriodController extends AbstractController {
   }
 
   @FXML private void addMonth() throws IllegalArgumentException {
-    errorMessage.setText("");
+    String error = "";
+    errorMessage.setText(error);
     Employee employee = getEmployee();
-    LocalDate startDate = addMonthDatePicker.getValue(); //må throwe her
-    int wage = Integer.parseInt(wageInputField.getText());// må throwe her
-    WorkPeriod newPeriod = new WorkPeriod(startDate, wage);
-    if (!employee.getWorkPeriods().containsKey(newPeriod.getIdentifier())) {
-      employee.addWorkPeriod(newPeriod);
-    }
-    else {
-      String error = "Work month already exists";
+    if (addMonthDatePicker.getValue() == null){
+      error = "Måned for periode er ikke valgt";
       errorMessage.setText(error);
       throw new IllegalArgumentException(error);
     }
+    LocalDate startDate = addMonthDatePicker.getValue();
+    if(!wageInputField.getText().matches(("^[0-9]+$"))) {
+      error = "Timeslønn må være et tall";
+      errorMessage.setText(error);
+      throw new IllegalArgumentException(error);
+    }
+    int wage = Integer.parseInt(wageInputField.getText());
+    WorkPeriod newPeriod = new WorkPeriod(startDate, wage);
+    if (employee.getWorkPeriods().containsKey(newPeriod.getIdentifier())) {
+      error = "Work month already exists";
+      errorMessage.setText(error);
+      throw new IllegalArgumentException(error);
+    }
+    employee.addWorkPeriod(newPeriod);
     setEmployee(employee);
     sceneSwitchedUpdate();
 

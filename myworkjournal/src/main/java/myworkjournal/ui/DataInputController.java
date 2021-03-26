@@ -18,8 +18,6 @@ public class DataInputController extends AbstractController {
   @FXML
   DatePicker workEndDatePicker;
 
-  @FXML
-  TextField workHoursInputField;
 
   @FXML
   TextField shiftStartTimeInput;
@@ -32,6 +30,7 @@ public class DataInputController extends AbstractController {
 
   @FXML
   Button viewStatsBtn;
+  @FXML Label errorMessage;
 
   @FXML Button goToAddMonthBtn;
 
@@ -70,7 +69,26 @@ public class DataInputController extends AbstractController {
   private void addToWorkPeriod(){
     //an=new Day(datoFrist.getValue());
     //this.initialize();
-    System.out.println("Den clearer");
+    String error = "";
+    errorMessage.setText(error);
+    if (monthChoiceBox.getValue()==null){
+      error = "Arbeidsmåned er ikke valgt";
+      errorMessage.setText(error);
+      throw new IllegalArgumentException((error));
+    }
+
+    if ((workStartDatePicker.getValue() == null) || (workEndDatePicker.getValue() == null)) {
+      error = "Både start- og sluttdato må være valgt.";
+      errorMessage.setText(error);
+      throw new IllegalArgumentException(error);
+    }
+
+    if ((!shiftStartTimeInput.getText().matches("^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$")) || (!shiftEndTimeInput.getText().matches("^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$"))) {
+      error = "Både start- og sluttidspunkt må være i riktig format: (15:00)";
+      errorMessage.setText((error));
+      throw new IllegalArgumentException(error);
+    }
+
     myDataListView.getItems().clear();
     int startHour = Integer.parseInt(shiftStartTimeInput.getText(0, 2));
     int startMinute = Integer.parseInt(shiftStartTimeInput.getText(3, 5));
@@ -78,16 +96,21 @@ public class DataInputController extends AbstractController {
     int endMinute = Integer.parseInt(shiftEndTimeInput.getText(3, 5));
     System.out.println("starthour:"+startHour+"startminute"+startMinute);
 
+    try{
     Work newData=new Work(workStartDatePicker.getValue().atTime(startHour, startMinute),workEndDatePicker.getValue().atTime(endHour, endMinute));
     System.out.println(newData.getHours());
     workPeriod.addWork(newData);
+    } catch (IllegalArgumentException e){
+      errorMessage.setText(e.getMessage());
+    }
     for (Work work:workPeriod.getWorkHistory()){
       myDataListView.getItems().add(String.valueOf(work));
       System.out.println(work.toString());
     }
 
-
   }
+
+
   @FXML
   private void goToStats() throws IOException {
     Employee employee = getEmployee();

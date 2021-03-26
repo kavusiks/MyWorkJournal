@@ -7,9 +7,11 @@ public class Work {
   private LocalDateTime endTime;
   private int hours;
 
-  public Work(LocalDateTime startTime, LocalDateTime endTime) {
+  public Work(LocalDateTime startTime, LocalDateTime endTime) throws IllegalArgumentException{
     this.startTime = startTime;
     this.endTime = endTime;
+    if(!endTime.isAfter(startTime))
+      throw new IllegalArgumentException("End time must be after start time!");
     this.hours = endTime.getHour() - startTime.getHour();
   }
 

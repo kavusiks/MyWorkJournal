@@ -21,7 +21,7 @@ public class Employee {
     public void setName(String name) throws IllegalArgumentException{
         if (!name.matches("^[a-zA-ZæøåÆØÅ\\p{L}]+$")) {
             throw new IllegalArgumentException("Brukernavn kan bare inneholde bokstaver");
-            // Legg til try catch...
+            // Legg til try catch...?
         }
         this.name = name;
     }
