@@ -40,9 +40,8 @@ public class DataInputController extends AbstractController {
   @FXML ChoiceBox<String> monthChoiceBox;
 
   //Fjerne dette og lag observable choicebox som må vøre valgt før man kan enable de andre.
-  String today = String.valueOf(LocalDate.now().getMonth());
   int year = LocalDate.now().getYear();
-  WorkPeriod workPeriod = new WorkPeriod(today, year, 150);
+  WorkPeriod workPeriod = new WorkPeriod("mars", year, 150);
 
   /*
   protected DataInputController(Employee employee) {
@@ -52,11 +51,22 @@ public class DataInputController extends AbstractController {
 
   @FXML
   private void initialize(){
+
     //AllPlans allPlans=new AllPlans();
     myDataListView.getItems().clear();
     for (Work work: workPeriod.getWorkHistory()){
       myDataListView.getItems().add(String.valueOf(work));
     }
+  }
+  @Override void sceneSwitchedUpdate() {
+    monthChoiceBox.getItems().clear();
+    for (WorkPeriod workPeriod : getEmployee().getWorkPeriods().values()) {
+      monthChoiceBox.getItems().add(workPeriod.getIdentifier());
+    }
+    updateChoiceBox();
+
+    //.setText(getEmployee().getName());
+
   }
   
   private void updateChoiceBox() {
@@ -128,13 +138,5 @@ public class DataInputController extends AbstractController {
 
 
 
-  @Override void sceneSwitchedUpdate() {
-    monthChoiceBox.getItems().clear();
-    for (WorkPeriod workPeriod : getEmployee().getWorkPeriods().values()) {
-      monthChoiceBox.getItems().add(workPeriod.getIdentifier());
-    }
-    updateChoiceBox();
 
-    //.setText(getEmployee().getName());
-  }
 }
