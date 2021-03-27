@@ -5,48 +5,55 @@ package myworkjournal.core;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.YearMonth;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 public class WorkPeriod {
-  private LocalDate monthStartDate;
+  public static final List<String> months = new ArrayList<String>(
+      Arrays.asList("januar", "februar", "mars", "april", "mai", "juni", "juli", "august", "september", "oktober", "november", "desember"));
 
+  private LocalDate periodStartDate;
 
-  private LocalDate monthEndDate;
+  private LocalDate periodEndDate;
   private int hourlyWage;
+
+  private String identifier;
 
 
   private Collection<Work> periodWorkHistory = new ArrayList<Work>();
 
-  public WorkPeriod(LocalDate startDate, int hourlyWage) {
-    String month = Integer.toString(startDate.getMonthValue());
-    String year = Integer.toString(startDate.getYear());
-    if (month.length() == 1)
-      month = "0" + month;
-    this.monthStartDate = LocalDate.parse(year + "-" + month + "-01");
-    this.monthEndDate = startDate.withDayOfMonth(startDate.getMonth().length(startDate.isLeapYear()));
+  public WorkPeriod(String month, int year, int hourlyWage) {
+    identifier = month + "-" + year;
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/MM/yyyy");
+    String monthValue = String.valueOf(months.indexOf(month) + 1);
+    if (monthValue.length() == 1)
+      monthValue = "0" + monthValue;
+    String startDate = "01/" + monthValue + "/" + year;
+    this.periodStartDate = LocalDate.parse(startDate, formatter);
+    this.periodEndDate = periodStartDate.withDayOfMonth(periodStartDate.getMonth().length(periodStartDate.isLeapYear()));
     //YearMonth startMonth = YearMonth.of(startDate.getYear(), startDate.getMonthValue());
     //this.monthEndDate = startMonth.atDay(4);
     //this.monthEndDate = LocalDate.now();
     this.hourlyWage = hourlyWage;
     //this.monthEndDate = monthStartDate;// skal være last date of the month, søk opp på nett
-    System.out.println(monthStartDate);
-    System.out.println("jj" + monthEndDate);
+    System.out.println(periodStartDate);
+    System.out.println("jj" + periodEndDate);
   }
 
 
   public String getIdentifier() {
-    String month = Integer.toString(monthStartDate.getMonthValue());
-    String year = Integer.toString(monthStartDate.getYear());
-    return month + "-" + year;
+    return identifier;
   }
 
   public LocalDate getMonthStartDate() {
-    return monthStartDate;
+    return periodStartDate;
   }
 
   public LocalDate getMonthEndDate() {
-    return monthEndDate;
+    return periodEndDate;
   }
 
   public Collection<Work> getPeriodWorkHistory() {
@@ -122,7 +129,7 @@ public class WorkPeriod {
     Work work2 = new Work(LocalDateTime.now().minusHours(2), LocalDateTime.now().plusHours(1));
     Work work3 = new Work(LocalDateTime.now().minusHours(3), LocalDateTime.now());
     Work work4 = new Work(LocalDateTime.now().minusHours(3), LocalDateTime.now().plusHours(2));
-    WorkPeriod wp = new WorkPeriod(LocalDate.now(), 200);
+    WorkPeriod wp = new WorkPeriod("mars", 2021, 200);
     wp.addWork(work11);
     //wp.addWork(work12);
     wp.addWork(work2);

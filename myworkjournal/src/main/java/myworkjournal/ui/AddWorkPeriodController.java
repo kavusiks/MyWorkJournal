@@ -8,13 +8,17 @@ import myworkjournal.core.WorkPeriod;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 
 public class AddWorkPeriodController extends AbstractController {
 
   @FXML ListView<String> existingMonthListView;
   @FXML Button goToDataInputBtn;
   @FXML TextField wageInputField;
-  @FXML DatePicker addMonthDatePicker;
+  @FXML ChoiceBox<String> monthChoiceBox;
+  @FXML ChoiceBox<Integer> yearChoiceBox;
   @FXML Label errorMessage;
 
   @Override void sceneSwitchedUpdate() {
@@ -22,25 +26,31 @@ public class AddWorkPeriodController extends AbstractController {
     for (String monthIdentifier: getEmployee().getWorkPeriods().keySet()){
       existingMonthListView.getItems().add(String.valueOf(monthIdentifier));
     }
+    monthChoiceBox.getItems().setAll(WorkPeriod.months);
+    Collection<Integer> yearsToAdd = Arrays.asList((LocalDate.now().getYear() - 1), (LocalDate.now().getYear()), (LocalDate.now()
+        .getYear() + 1));
+    yearChoiceBox.getItems().setAll(yearsToAdd);
   }
 
   @FXML private void addMonth() throws IllegalArgumentException {
     String error = "";
     errorMessage.setText(error);
     Employee employee = getEmployee();
-    if (addMonthDatePicker.getValue() == null){
-      error = "Måned for periode er ikke valgt";
+    if (monthChoiceBox.getValue() == null || yearChoiceBox.getValue() ==null){
+      error = "Måned og år for periode må være valgt";
       errorMessage.setText(error);
       throw new IllegalArgumentException(error);
     }
-    LocalDate startDate = addMonthDatePicker.getValue();
+    String startMonth = monthChoiceBox.getValue();
+    int startYear = yearChoiceBox.getValue();
+
     if(!wageInputField.getText().matches(("^[0-9]+$"))) {
       error = "Timeslønn må være et tall";
       errorMessage.setText(error);
       throw new IllegalArgumentException(error);
     }
     int wage = Integer.parseInt(wageInputField.getText());
-    WorkPeriod newPeriod = new WorkPeriod(startDate, wage);
+    WorkPeriod newPeriod = new WorkPeriod(startMonth, startYear, wage);
     if (employee.getWorkPeriods().containsKey(newPeriod.getIdentifier())) {
       error = "Work month already exists";
       errorMessage.setText(error);

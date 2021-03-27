@@ -1,23 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Text?>
 
-<Pane style="-fx-background-color: lightblue;" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="myworkjournal.ui.AddWorkPeriodController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: lightblue;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="myworkjournal.ui.AddWorkPeriodController">
    <children>
-      <DatePicker fx:id="addMonthDatePicker" layoutX="390.0" layoutY="47.0" />
+      <ChoiceBox fx:id="monthChoiceBox" layoutX="332.0" layoutY="54.0" prefHeight="27.0" prefWidth="114.0" />
+      <ChoiceBox fx:id="yearChoiceBox" layoutX="492.0" layoutY="54.0" prefHeight="27.0" prefWidth="91.0" />
       <TextField fx:id="wageInputField" layoutX="415.0" layoutY="98.0" />
       <Button fx:id="addMonth" layoutX="498.0" layoutY="148.0" mnemonicParsing="false" onAction="#addMonth" text="Add month" />
       <Button fx:id="goToDataInputBtn" layoutX="455.0" layoutY="346.0" mnemonicParsing="false" onAction="#goToDataInput" text="Legg til jobbhistorikk" />
       <Text layoutX="42.0" layoutY="65.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Eksisterende måneder:" />
-      <Text layoutX="317.0" layoutY="65.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Måned:" />
+      <Text layoutX="280.0" layoutY="72.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Måned:" />
       <ListView fx:id="existingMonthListView" layoutX="36.0" layoutY="89.0" prefHeight="200.0" prefWidth="200.0" />
       <Text layoutX="275.0" layoutY="116.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Timeslønn for måned" />
       <Label fx:id="errorMessage" layoutX="293.0" layoutY="281.0" />
+      <Text layoutX="467.0" layoutY="72.0" strokeType="OUTSIDE" strokeWidth="0.0" text="År:" />
    </children>
 </Pane>

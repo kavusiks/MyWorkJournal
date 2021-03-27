@@ -40,8 +40,9 @@ public class DataInputController extends AbstractController {
   @FXML ChoiceBox<String> monthChoiceBox;
 
   //Fjerne dette og lag observable choicebox som må vøre valgt før man kan enable de andre.
-  LocalDate today = LocalDate.now();
-  WorkPeriod workPeriod = new WorkPeriod(today, 150);
+  String today = String.valueOf(LocalDate.now().getMonth());
+  int year = LocalDate.now().getYear();
+  WorkPeriod workPeriod = new WorkPeriod(today, year, 150);
 
   /*
   protected DataInputController(Employee employee) {
