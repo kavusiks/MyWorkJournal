@@ -1,6 +1,7 @@
 package myworkjournal.core;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 
 public class Work {
   private LocalDateTime startTime;
@@ -8,8 +9,9 @@ public class Work {
   //private int hours;
 
   public Work(LocalDateTime startTime, LocalDateTime endTime) throws IllegalArgumentException{
-    this.startTime = startTime;
-    this.endTime = endTime;
+    //Er kun interessert i timer og minutter
+    this.startTime = startTime.truncatedTo(ChronoUnit.MINUTES);
+    this.endTime = endTime.truncatedTo(ChronoUnit.MINUTES);
     if(!endTime.isAfter(startTime))
       throw new IllegalArgumentException("End time must be after start time!");
     //this.hours = endTime.getHour() - startTime.getHour();

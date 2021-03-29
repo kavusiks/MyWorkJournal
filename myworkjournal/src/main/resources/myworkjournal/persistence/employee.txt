@@ -7,13 +7,18 @@ WorkPeriod {
   hourlyWage: 200
   periodWorkHistory: [
   Work {
-    startTime: 2021-04-29T12:25:31.893012
-      endTime: 2021-04-29T18:25:31.893087
+    startTime: 2021-04-29T12:25
+      endTime: 2021-04-29T18:25
   } /Work
   ,
   Work {
-    startTime: 2021-04-27T15:25:31.893119
-      endTime: 2021-04-29T19:25:31.893183
+    startTime: 2021-04-27T15:25
+      endTime: 2021-04-29T19:25
+  } /Work
+  ,
+  Work {
+    startTime: 2021-04-01T10:00
+      endTime: 2021-04-01T13:00
   } /Work
     ]
 } /WorkPeriod
@@ -24,18 +29,40 @@ WorkPeriod {
   hourlyWage: 200
   periodWorkHistory: [
   Work {
-    startTime: 2021-03-29T12:25:31.887572
-      endTime: 2021-03-29T18:25:31.890163
+    startTime: 2021-03-29T12:25
+      endTime: 2021-03-29T18:25
   } /Work
   ,
   Work {
-    startTime: 2021-03-27T15:25:31.890223
-      endTime: 2021-03-29T19:25:31.890249
+    startTime: 2021-03-27T15:25
+      endTime: 2021-03-29T19:25
   } /Work
   ,
   Work {
-    startTime: 2021-03-29T14:25:31.890270
-      endTime: 2021-03-29T20:25:31.890288
+    startTime: 2021-03-29T14:25
+      endTime: 2021-03-29T20:25
+  } /Work
+  ,
+  Work {
+    startTime: 2021-03-30T12:00
+      endTime: 2021-03-30T13:00
+  } /Work
+    ]
+} /WorkPeriod
+,
+WorkPeriod {
+  month: mai
+  year: 2021
+  hourlyWage: 200
+  periodWorkHistory: [
+  Work {
+    startTime: 2021-05-30T12:00
+      endTime: 2021-05-30T13:00
+  } /Work
+  ,
+  Work {
+    startTime: 2021-05-19T10:00
+      endTime: 2021-05-19T13:00
   } /Work
     ]
 } /WorkPeriod

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+import javafx.event.ActionEvent;
 import javafx.scene.control.*;
 import myworkjournal.core.Work;
 import myworkjournal.core.WorkPeriod;
@@ -11,7 +12,7 @@ import myworkjournal.core.Employee;
 import javafx.fxml.FXML;
 
 
-public class DataInputController extends AbstractController {
+public class DataInputController<event> extends AbstractController {
   @FXML
   DatePicker workStartDatePicker;
 
@@ -39,9 +40,11 @@ public class DataInputController extends AbstractController {
 
   @FXML ChoiceBox<String> monthChoiceBox;
 
+  //@FXML Button saveBtn;
+
   //Fjerne dette og lag observable choicebox som må vøre valgt før man kan enable de andre.
-  int year = LocalDate.now().getYear();
-  WorkPeriod workPeriod = new WorkPeriod("mars", year, 150);
+  //  int year = LocalDate.now().getYear();
+  WorkPeriod workPeriod;
 
   /*
   protected DataInputController(Employee employee) {
@@ -49,14 +52,21 @@ public class DataInputController extends AbstractController {
   }*/
 
 
+
   @FXML
   private void initialize(){
 
     //AllPlans allPlans=new AllPlans();
+    //myDataListView.getItems().clear();
+
+  monthChoiceBox.setOnAction((event) -> {
+    String selectedPeriod = monthChoiceBox.getSelectionModel().getSelectedItem();
+    workPeriod = getEmployee().getWorkPeriods().get(selectedPeriod);
     myDataListView.getItems().clear();
-    for (Work work: workPeriod.getPeriodWorkHistory()){
+    for (Work work : workPeriod) {
       myDataListView.getItems().add(String.valueOf(work));
     }
+  });
   }
   @Override void sceneSwitchedUpdate() {
     monthChoiceBox.getItems().clear();
@@ -65,10 +75,11 @@ public class DataInputController extends AbstractController {
     }
     updateChoiceBox();
 
-    //.setText(getEmployee().getName());
+    //setText(getEmployee().getName());
 
   }
-  
+
+  @FXML
   private void updateChoiceBox() {
     monthChoiceBox.getItems().clear();
     for (WorkPeriod workPeriod : getEmployee().getWorkPeriods().values()){
@@ -109,6 +120,8 @@ public class DataInputController extends AbstractController {
 
     try{
     Work newData=new Work(workStartDatePicker.getValue().atTime(startHour, startMinute),workEndDatePicker.getValue().atTime(endHour, endMinute));
+    System.out.println("valgte workperiod" +workPeriod.getIdentifier());
+    System.out.println("work som skal legges til" +newData.toString());
     System.out.println(newData.getHours());
     workPeriod.addWork(newData);
     } catch (IllegalArgumentException e){
@@ -116,7 +129,6 @@ public class DataInputController extends AbstractController {
     }
     for (Work work:workPeriod.getPeriodWorkHistory()){
       myDataListView.getItems().add(String.valueOf(work));
-      System.out.println(work.toString());
     }
 
   }
@@ -125,7 +137,9 @@ public class DataInputController extends AbstractController {
   @FXML
   private void goToStats() throws IOException {
     Employee employee = getEmployee();
-    employee.addWorkPeriod(workPeriod);
+    if (workPeriod != null) {
+      employee.addWorkPeriod(workPeriod);
+    }
     setEmployee(employee);
 
     changeScreen("myStats.fxml", viewStatsBtn);
@@ -135,8 +149,6 @@ public class DataInputController extends AbstractController {
   private void goToAddMonth() throws IOException {
     changeScreen("addWorkPeriod.fxml", goToAddMonthBtn);
   }
-
-
 
 
 }

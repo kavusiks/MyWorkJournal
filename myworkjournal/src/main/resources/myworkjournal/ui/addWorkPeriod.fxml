@@ -21,5 +21,6 @@
       <Text layoutX="275.0" layoutY="116.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Timeslønn for måned" />
       <Label fx:id="errorMessage" layoutX="293.0" layoutY="281.0" />
       <Text layoutX="467.0" layoutY="72.0" strokeType="OUTSIDE" strokeWidth="0.0" text="År:" />
+      <Button fx:id="saveBtn" layoutX="18.0" layoutY="23.0" mnemonicParsing="false" onAction="#saveData" text="Lagre og avslutt" />
    </children>
 </Pane>

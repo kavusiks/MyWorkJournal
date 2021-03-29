@@ -1,16 +1,21 @@
 package myworkjournal.ui;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
+import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import myworkjournal.core.Employee;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import myworkjournal.persistence.EmployeePersistence;
 
 
 public abstract class AbstractController {
+	@FXML Button saveBtn;
 
 	private Employee employee;
 
@@ -35,6 +40,16 @@ public abstract class AbstractController {
 		stage.show();
 		controller.sceneSwitchedUpdate();
 		System.out.println(getEmployee().toString());
+	}
+
+	@FXML
+	protected void saveData() throws FileNotFoundException  {
+		if (employee== null) {
+			throw new IllegalArgumentException("Employee to save is not defined");
+		}
+		EmployeePersistence employeeSaver = new EmployeePersistence("src/main/resources/myworkjournal/persistence/employee.txt", employee);
+		employeeSaver.writeFile();
+		System.exit(0);
 	}
 	
 	

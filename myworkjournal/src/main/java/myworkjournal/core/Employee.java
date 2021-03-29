@@ -46,7 +46,9 @@ public class Employee implements Iterable<WorkPeriod> {
         Collection<Work> workHistory1 = workPeriod1.getPeriodWorkHistory();
         Collection<Work> workHistory2 = workPeriod2.getPeriodWorkHistory();
         for (Work work : workHistory2) {
-            workHistory1.add(work);
+            if (!workHistory1.contains(work)) {
+                workHistory1.add(work);
+            }
         }
         result.setPeriodWorkHistory(workHistory1);
         return result;

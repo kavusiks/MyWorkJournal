@@ -12,5 +12,6 @@
       <Label fx:id="lonnLabel" layoutX="84.0" layoutY="99.0" />
       <Label fx:id="timerLabel" layoutX="386.0" layoutY="91.0" />
       <Text layoutX="358.0" layoutY="58.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Totalt timer" />
+      <Button fx:id="saveBtn" layoutX="18.0" layoutY="23.0" mnemonicParsing="false" onAction="#saveData" text="Lagre og avslutt" />
    </children>
 </Pane>
