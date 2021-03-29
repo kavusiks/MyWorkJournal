@@ -1,0 +1,21 @@
+WorkPeriod {
+  month: mars
+  year: 2021
+  hourlyWage: 200
+  periodWorkHistory: [
+  Work {
+    startTime: 2021-03-29T11:34:11.012578
+      endTime: 2021-03-29T17:34:11.015011
+  } /Work
+  ,
+  Work {
+    startTime: 2021-03-27T14:34:11.015072
+      endTime: 2021-03-29T18:34:11.015094
+  } /Work
+  ,
+  Work {
+    startTime: 2021-03-29T13:34:11.015113
+      endTime: 2021-03-29T19:34:11.015128
+  } /Work
+    ]
+} /WorkPeriod

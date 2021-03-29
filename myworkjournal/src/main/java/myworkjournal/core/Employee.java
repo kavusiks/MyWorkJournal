@@ -2,8 +2,9 @@ package myworkjournal.core;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 
-public class Employee {
+public class Employee implements Iterable<WorkPeriod> {
 
     private String name;
     private HashMap<String, WorkPeriod> workPeriods; //Collection eller array?
@@ -57,6 +58,10 @@ public class Employee {
 
     @Override public String toString() {
         return "Employee{" + "name='" + name + '\'' + ", workPeriods=" + workPeriods + '}';
+    }
+
+    @Override public Iterator<WorkPeriod> iterator() {
+        return workPeriods.values().iterator();
     }
 }
 

@@ -1,0 +1,42 @@
+Employee {
+  name: ole
+  workPeriods: {
+WorkPeriod {
+  month: april
+  year: 2021
+  hourlyWage: 200
+  periodWorkHistory: [
+  Work {
+    startTime: 2021-04-29T11:40:58.983402
+      endTime: 2021-04-29T17:40:58.983464
+  } /Work
+  ,
+  Work {
+    startTime: 2021-04-27T14:40:58.983489
+      endTime: 2021-04-29T18:40:58.983507
+  } /Work
+    ]
+} /WorkPeriod
+,
+WorkPeriod {
+  month: mars
+  year: 2021
+  hourlyWage: 200
+  periodWorkHistory: [
+  Work {
+    startTime: 2021-03-29T11:40:58.975232
+      endTime: 2021-03-29T17:40:58.979222
+  } /Work
+  ,
+  Work {
+    startTime: 2021-03-27T14:40:58.979281
+      endTime: 2021-03-29T18:40:58.979305
+  } /Work
+  ,
+  Work {
+    startTime: 2021-03-29T13:40:58.979326
+      endTime: 2021-03-29T19:40:58.979342
+  } /Work
+    ]
+} /WorkPeriod
+} /Employee

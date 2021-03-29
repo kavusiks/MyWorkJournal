@@ -4,23 +4,18 @@ package myworkjournal.core;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
-public class WorkPeriod {
+public class WorkPeriod implements Iterable<Work> {
   public static final List<String> months = new ArrayList<String>(
       Arrays.asList("januar", "februar", "mars", "april", "mai", "juni", "juli", "august", "september", "oktober", "november", "desember"));
 
+  private String identifier;
   private LocalDate periodStartDate;
-
   private LocalDate periodEndDate;
   private int hourlyWage;
 
-  private String identifier;
 
 
   private Collection<Work> periodWorkHistory = new ArrayList<Work>();
@@ -39,8 +34,6 @@ public class WorkPeriod {
     //this.monthEndDate = LocalDate.now();
     this.hourlyWage = hourlyWage;
     //this.monthEndDate = monthStartDate;// skal være last date of the month, søk opp på nett
-    System.out.println(periodStartDate);
-    System.out.println("jj" + periodEndDate);
   }
 
 
@@ -48,11 +41,11 @@ public class WorkPeriod {
     return identifier;
   }
 
-  public LocalDate getMonthStartDate() {
+  public LocalDate getPeriodStartDate() {
     return periodStartDate;
   }
 
-  public LocalDate getMonthEndDate() {
+  public LocalDate getPeriodEndDate() {
     return periodEndDate;
   }
 
@@ -86,13 +79,11 @@ public class WorkPeriod {
 
 
   public void addWork(Work work) throws IllegalArgumentException {
+
     if (checkWorkAlreadyAdded(work))
       throw new IllegalArgumentException("This work data already exists");
-    if (work.getEndTime().toLocalDate().isBefore(getMonthEndDate()) && work.getStartTime().toLocalDate().isAfter(getMonthStartDate())) {
-      System.out.println(work.getEndTime());
-      System.out.println(work.getEndTime().toLocalDate().isBefore(getMonthEndDate()));
-      System.out.println(work.getStartTime());
-      System.out.println(work.getStartTime().toLocalDate().isAfter(getMonthStartDate()));
+    if (work.getEndTime().toLocalDate().isBefore(getPeriodEndDate()) && work.getStartTime().toLocalDate().isAfter(
+        getPeriodStartDate())) {
       periodWorkHistory.add(work);
     } else {
       throw new IllegalArgumentException("This shift is not in the month for this period. Create a new period");
@@ -135,7 +126,11 @@ public class WorkPeriod {
     wp.addWork(work2);
     wp.addWork(work3);
     wp.addWork(work4);
-    System.out.println(wp.checkIfSameWork(work11, work12));
+    //System.out.println(wp.checkIfSameWork(work11, work12));
 }
+
+  @Override public Iterator<Work> iterator() {
+    return periodWorkHistory.iterator();
+  }
 }
 

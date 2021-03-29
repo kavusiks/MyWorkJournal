@@ -11,8 +11,8 @@ import java.util.Scanner;
 public class WorkPersistence implements DataSaver {
 
 
-  String filepath;
-  Work work;
+  private String filepath;
+  private Work work;
 
   public WorkPersistence (String filepath) {
     this.filepath = filepath;
@@ -28,39 +28,68 @@ public class WorkPersistence implements DataSaver {
     return this.work;
   }
 
+  public Work deserialize(Scanner inFile) {
+/*
+    while (inFile.hasNext()){
 
+      System.out.println(inFile.nextLine());
+    }
 
-  @Override public void readFile() throws FileNotFoundException {
-    Scanner inFile = new Scanner((new FileReader(filepath)));
+ */
+    this.work = null;
     LocalDateTime startTime = null;
     LocalDateTime endTime = null;
     //int hours = 0;
     while (inFile.hasNext()) {
-      if(inFile.nextLine().equals("{")) {
-        startTime = LocalDateTime.parse(inFile.nextLine().replace("startTime:", "").strip());
-        endTime = LocalDateTime.parse(inFile.nextLine().replace("endTime:", "").strip());
+      String nextLine = inFile.nextLine();
+      if(nextLine.strip().equals("Work {")) {
+          startTime = LocalDateTime.parse(inFile.nextLine().replace("startTime:", "").strip());
+          endTime = LocalDateTime.parse(inFile.nextLine().replace("endTime:", "").strip());
+        }
+      if (nextLine.strip().equals("} /Work")){
+        if(startTime != null && endTime != null) {
+          Work work = new Work(startTime, endTime);
+          this.work = work;
+          System.out.println("serialize utført med retur av work");
+          System.out.println("work" + "starttif: " + work.getStartTime() + "slutttid: " + work.getEndTime());
+          return work;
+        }
       }
     }
-    if(startTime != null && endTime != null) {
-      Work work = new Work(startTime, endTime);
-      this.work = work;
-      getWork();
+    System.out.println("serialize utført uten retur av work");
+    System.out.println(work.getEndTime());
+    return null;
+  }
+
+
+  @Override public void readFile() throws FileNotFoundException {
+    Scanner inFile = new Scanner((new FileReader(filepath)));
+    deserialize(inFile);
+    inFile.close();
     }
 
+
+    public void serialize(PrintWriter outFile, int indentation) {
+      String valueIndentationString = "";
+      String objectIndentationString = "";
+      for (int i = 0; i< indentation; i++){
+        valueIndentationString+=" ";
+      }
+      for (int i = 0; i< indentation/2; i++){
+        objectIndentationString+=" ";
+      }
+      outFile.println(objectIndentationString+"Work {");
+      outFile.println(valueIndentationString + "startTime: " + work.getStartTime());
+      outFile.println(valueIndentationString + "  endTime: " + work.getEndTime());
+      //outFile.println("    hours: " + work.getHours());
+      outFile.println(objectIndentationString + "} /Work");
+
     }
-
-
-
 
   @Override public void writeFile() throws FileNotFoundException {
     PrintWriter outFile = new PrintWriter(filepath);
-    outFile.println("{");
-    outFile.println("   startTime: " + work.getStartTime());
-    outFile.println("   endTime: " + work.getEndTime());
-    //outFile.println("   hours: " + work.getHours());
-    outFile.println("}");
+    serialize(outFile, 8);
     outFile.close();
-
   }
 
   public static void main(String[] args) throws FileNotFoundException {
