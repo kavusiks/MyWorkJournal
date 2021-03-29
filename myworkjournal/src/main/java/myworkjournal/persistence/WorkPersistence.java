@@ -24,7 +24,7 @@ public class WorkPersistence implements DataSaver {
   }
 
   public Work getWork(){
-    System.out.println("returnerer work" + work.getHours());
+    //System.out.println("returnerer work med timer" + work.getHours());
     return this.work;
   }
 
@@ -50,14 +50,14 @@ public class WorkPersistence implements DataSaver {
         if(startTime != null && endTime != null) {
           Work work = new Work(startTime, endTime);
           this.work = work;
-          System.out.println("serialize utført med retur av work");
-          System.out.println("work" + "starttif: " + work.getStartTime() + "slutttid: " + work.getEndTime());
+          //System.out.println("serialize utført med retur av work");
+          //System.out.println("work" + "starttif: " + work.getStartTime() + "slutttid: " + work.getEndTime());
           return work;
         }
       }
     }
-    System.out.println("serialize utført uten retur av work");
-    System.out.println(work.getEndTime());
+    //System.out.println("serialize utført uten retur av work");
+    //System.out.println(work.getEndTime());
     return null;
   }
 
@@ -95,8 +95,10 @@ public class WorkPersistence implements DataSaver {
   public static void main(String[] args) throws FileNotFoundException {
     Work work = new Work(LocalDateTime.now().minusHours(3), LocalDateTime.now().plusHours(3));
     WorkPersistence wp = new WorkPersistence("src/main/resources/myworkjournal/persistence/work.txt", work);
+    WorkPersistence wp1 = new WorkPersistence("src/main/resources/myworkjournal/persistence/work.txt");
     wp.writeFile();
-    wp.readFile();
+    wp1.readFile();
+    System.out.println(wp1.getWork());
 
   }
 }

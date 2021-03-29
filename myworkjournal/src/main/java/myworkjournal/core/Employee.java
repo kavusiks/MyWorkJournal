@@ -43,8 +43,8 @@ public class Employee implements Iterable<WorkPeriod> {
 
     public WorkPeriod mergeTwoWorkPeriods(WorkPeriod workPeriod1, WorkPeriod workPeriod2) {
         WorkPeriod result = workPeriod1;
-        Collection<Work> workHistory1 = workPeriod1.getWorkHistory();
-        Collection<Work> workHistory2 = workPeriod2.getWorkHistory();
+        Collection<Work> workHistory1 = workPeriod1.getPeriodWorkHistory();
+        Collection<Work> workHistory2 = workPeriod2.getPeriodWorkHistory();
         for (Work work : workHistory2) {
             workHistory1.add(work);
         }

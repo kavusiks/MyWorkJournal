@@ -14,10 +14,13 @@ import java.util.Scanner;
 public class EmployeePersistence implements DataSaver {
 
   private String filepath;
+
+
   private Employee employee;
 
   public EmployeePersistence (String filepath) {
     this.filepath = filepath;
+    this.employee = new Employee("ds");
   }
 
   public EmployeePersistence (String filepath, Employee employee) {
@@ -25,35 +28,47 @@ public class EmployeePersistence implements DataSaver {
     this.employee = employee;
   }
 
+  public Employee getEmployee() {
+    return employee;
+  }
   @Override public void readFile() throws FileNotFoundException {
     Scanner inFile = new Scanner((new FileReader(filepath)));
     String name = "";
     while (inFile.hasNext()) {
-      if (inFile.nextLine().equals("{")) {
+      if (inFile.nextLine().equals("Employee {")) {
 
 
         name = inFile.nextLine().replace("name:", "").strip();
-        System.out.println("Name: " + name);
+        //System.out.println("Name: " + name);
         Employee employee = new Employee(name);
         if (inFile.nextLine().contains("workPeriods:")) {
           WorkPeriod workPeriodToAdd = null;
           WorkPeriodPersistence workPeriodPersistence = new WorkPeriodPersistence(filepath);
           String nextLine = "";
-          while (!nextLine.strip().equals("}")) {
+          while (!nextLine.strip().equals("} /Employee")) {
+            System.out.println("INNE I WHILE SIDEN NEXTLINE ER IKKE } WORKPERIOD, MEN DEN ER" + nextLine);
             workPeriodToAdd = workPeriodPersistence.deserialize(inFile);
+            System.out.println("WORKPERIODTOADD ER NÅ: " + workPeriodToAdd.getPeriodWorkHistory());
             if (workPeriodToAdd != null) {
+          //    System.out.println("wp to add"+workPeriodToAdd.toString());
               employee.addWorkPeriod(workPeriodToAdd);
+              System.out.println("EMPLOYE HAR DETTE I WORKPERIOD NÅ: " + employee.getWorkPeriods());
             }
-            nextLine = inFile.nextLine();
-            System.out.println("ep gjorde om nextLine til: " + nextLine);
+            //System.out.println("Nest" + nextLine);
+            if(inFile.hasNext()){
+              System.out.println("FØR NEXTLINE ER DET NÅVÆRE LINE" + nextLine);
+              nextLine = inFile.nextLine();
+            }
+            //System.out.println("ep gjorde om nextLine til: " + nextLine);
 
           }
         }
+        this.employee = employee;
       }
-      this.employee = employee;
     }
 
     System.out.println(employee.toString());
+    System.out.println(employee.getName());
     inFile.close();
   }
 
@@ -93,9 +108,10 @@ public class EmployeePersistence implements DataSaver {
     e.addWorkPeriod(workPeriod1);
     e.addWorkPeriod(workPeriod11);
     EmployeePersistence ep = new EmployeePersistence("src/main/resources/myworkjournal/persistence/employee.txt", e);
-    ep.writeFile();
-    ep.readFile();
+    EmployeePersistence ep2 = new EmployeePersistence("src/main/resources/myworkjournal/persistence/employee.txt");
+    //ep.writeFile();
+    ep2.readFile();
     System.out.println(e.getWorkPeriods().toString());
-
+    System.out.println("EMPLOYEE" + ep2.getEmployee());
   }
 }

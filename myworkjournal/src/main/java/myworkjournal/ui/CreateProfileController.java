@@ -1,5 +1,6 @@
 package myworkjournal.ui;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import myworkjournal.core.Employee;
@@ -7,6 +8,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import myworkjournal.persistence.EmployeePersistence;
 
 
 public class CreateProfileController extends AbstractController{
@@ -15,12 +17,15 @@ public class CreateProfileController extends AbstractController{
     
     @FXML
     Button createProfileBtn;
+
+    @FXML
+    Button getProfileBtn;
     
     @FXML
-    TextField savedUser;
+    TextField savedUserDisplayField;
     
     @FXML
-    Button savedUserLogin;
+    Button savedUserLoginBtn;
     
     @FXML
     Label errorMessage1;
@@ -28,6 +33,7 @@ public class CreateProfileController extends AbstractController{
 
     @FXML
     private void initialize(){
+      sceneSwitchedUpdate();
     }
     
     @FXML
@@ -35,24 +41,53 @@ public class CreateProfileController extends AbstractController{
     	try {
     		Employee employee = new Employee(profileNameInputField.getText());
     		setEmployee(employee);
-    		changeScreen("addWorkPeriod.fxml", createProfileBtn);    		
+    		goToAddWorkPeriod();
     	} catch (IllegalArgumentException e) {
     		errorMessage1.setText(e.getMessage());   		
     	}
        
     }
-    
+
+    @FXML
+    private void goToAddWorkPeriod() throws IOException {
+      changeScreen("addWorkPeriod.fxml", createProfileBtn);
+    }
+
+/*
     @FXML
     private void getProfile() {
-    	// Hent profil fra 
+    	// Hent profil fra
+      System.out.println("Kjører sceneswirched");
+      try {
+        EmployeePersistence employeePersistence = new EmployeePersistence("src/main/resources/myworkjournal/persistence/employee.txt");
+        employeePersistence.readFile();
+        Employee employee = employeePersistence.getEmployee();
+        setEmployee(employee);
+        //System.out.println(employee.getName());
+        savedUserDisplayField.setText(employee.getName());
+      } catch (FileNotFoundException e) {
+        savedUserDisplayField.setText("No saved user");
+      }
     }
-    
+
+
     @FXML
     private void userLogin() {
     	// Logg inn til saved profile
     }
+    */
 
     @Override void sceneSwitchedUpdate() {
-
+      System.out.println("Kjører sceneswirched");
+      try {
+        EmployeePersistence employeePersistence = new EmployeePersistence("src/main/resources/myworkjournal/persistence/employee.txt");
+        employeePersistence.readFile();
+        Employee employee = employeePersistence.getEmployee();
+        setEmployee(employee);
+        System.out.println(employee.getName());
+        savedUserDisplayField.setText(employee.getName());
+      } catch (FileNotFoundException e) {
+        savedUserDisplayField.setText("No saved user");
+      }
     }
 }

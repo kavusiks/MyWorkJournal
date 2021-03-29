@@ -94,9 +94,6 @@ public class WorkPeriod implements Iterable<Work> {
     this.periodWorkHistory = periodWorkHistory;
   }
 
-  public Collection<Work> getWorkHistory() {
-    return this.periodWorkHistory;
-  }
 
   public int getHourlyWage() {
     return this.hourlyWage;
@@ -104,7 +101,7 @@ public class WorkPeriod implements Iterable<Work> {
 
   public int getTotalHours() {
     int hours = 0;
-    for (Work work : getWorkHistory()) {
+    for (Work work : getPeriodWorkHistory()) {
       hours += work.getHours();
     }
     return hours;

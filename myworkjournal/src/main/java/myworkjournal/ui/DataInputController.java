@@ -54,7 +54,7 @@ public class DataInputController extends AbstractController {
 
     //AllPlans allPlans=new AllPlans();
     myDataListView.getItems().clear();
-    for (Work work: workPeriod.getWorkHistory()){
+    for (Work work: workPeriod.getPeriodWorkHistory()){
       myDataListView.getItems().add(String.valueOf(work));
     }
   }
@@ -114,7 +114,7 @@ public class DataInputController extends AbstractController {
     } catch (IllegalArgumentException e){
       errorMessage.setText(e.getMessage());
     }
-    for (Work work:workPeriod.getWorkHistory()){
+    for (Work work:workPeriod.getPeriodWorkHistory()){
       myDataListView.getItems().add(String.valueOf(work));
       System.out.println(work.toString());
     }
