@@ -74,7 +74,9 @@ public class WorkPeriodPersistence implements DataSaver {
         }
         //for å lese ferdig siste "}" av objektet
         //For å nå bunnen av filen
+        if(inFile.hasNext()){
         inFile.nextLine();
+        }
         this.workPeriod = workPeriod;
         return workPeriod;
       }

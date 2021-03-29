@@ -86,6 +86,7 @@ public class WorkPeriod implements Iterable<Work> {
         getPeriodStartDate().minusDays(1))) {
       periodWorkHistory.add(work);
     } else {
+      System.out.println("prøver  adde work"+ work.toString());
       System.out.println("Kanskje fordi periodstartdate er: " + getPeriodStartDate());
       System.out.println("og sluttdate er: " + getPeriodEndDate());
       throw new IllegalArgumentException("This shift is not in the month for this period. Create a new period mathing the shift's enddate");
