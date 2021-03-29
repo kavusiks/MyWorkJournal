@@ -24,6 +24,30 @@ WorkPeriod {
 } /WorkPeriod
 ,
 WorkPeriod {
+  month: februar
+  year: 2021
+  hourlyWage: 100
+  periodWorkHistory: [
+  Work {
+    startTime: 2021-02-22T12:25
+      endTime: 2021-02-22T18:25
+  } /Work
+    ]
+} /WorkPeriod
+,
+WorkPeriod {
+  month: august
+  year: 2021
+  hourlyWage: 150
+  periodWorkHistory: [
+  Work {
+    startTime: 2021-08-27T15:25
+      endTime: 2021-08-29T19:25
+  } /Work
+    ]
+} /WorkPeriod
+,
+WorkPeriod {
   month: mars
   year: 2021
   hourlyWage: 200
