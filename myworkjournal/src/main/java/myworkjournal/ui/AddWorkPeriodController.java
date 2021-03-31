@@ -16,12 +16,29 @@ public class AddWorkPeriodController extends AbstractController {
 
   @FXML ListView<String> existingMonthListView;
   @FXML Button goToDataInputBtn;
+  @FXML Button addMonthBtn;
   @FXML TextField wageInputField;
   @FXML ChoiceBox<String> monthChoiceBox;
   @FXML ChoiceBox<Integer> yearChoiceBox;
   @FXML Label errorMessage;
 
-  @Override void sceneSwitchedUpdate() {
+  @FXML
+  private void initialize() {
+    monthChoiceBox.setValue("Velg måned");
+    yearChoiceBox.setValue(2021);
+
+
+    monthChoiceBox.setOnAction((event) -> {
+      yearChoiceBox.setDisable(false);
+      wageInputField.setDisable(false);
+      addMonthBtn.setDisable(false);
+    });
+
+  }
+
+
+
+    @Override void sceneSwitchedUpdate() {
     existingMonthListView.getItems().clear();
     for (String monthIdentifier: getEmployee().getWorkPeriods().keySet()){
       existingMonthListView.getItems().add(String.valueOf(monthIdentifier));

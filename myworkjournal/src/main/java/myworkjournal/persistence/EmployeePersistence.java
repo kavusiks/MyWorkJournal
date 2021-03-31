@@ -20,7 +20,6 @@ public class EmployeePersistence implements DataSaver {
 
   public EmployeePersistence (String filepath) {
     this.filepath = filepath;
-    this.employee = new Employee("ds");
   }
 
   public EmployeePersistence (String filepath, Employee employee) {
@@ -31,36 +30,33 @@ public class EmployeePersistence implements DataSaver {
   public Employee getEmployee() {
     return employee;
   }
-  @Override public void readFile() throws FileNotFoundException {
-    Scanner inFile = new Scanner((new FileReader(filepath)));
-    String name = "";
+  @Override public Employee deserialize(Scanner inFile) {
     while (inFile.hasNext()) {
-      if (inFile.nextLine().equals("Employee {")) {
-
-
-        name = inFile.nextLine().replace("name:", "").strip();
-        //System.out.println("Name: " + name);
-        Employee employee = new Employee(name);
-        if (inFile.nextLine().contains("workPeriods:")) {
+      String name = "";
+      Employee employee;
+      //KANSKJE JEG BURDE TA HAS NEXT HER, MULIG SOM EN STATISK METODE INTERFACEN
+      String nextLine = DataSaver.nextLineIfItHas(inFile);
+      if (nextLine.strip().equals("Employee {")) {
+        nextLine = DataSaver.nextLineIfItHas(inFile);
+        if (nextLine.contains("name")) {
+          name = nextLine.replace("name:", "").strip();
+          employee = new Employee(name);
+        }
+        else {
+          throw new IllegalStateException("Save file doesn't contain proper employee info");
+        }
+        nextLine = DataSaver.nextLineIfItHas(inFile);
+        if (nextLine.contains("workPeriods:")) {
           WorkPeriod workPeriodToAdd = null;
           WorkPeriodPersistence workPeriodPersistence = new WorkPeriodPersistence(filepath);
-          String nextLine = "";
-          while (!nextLine.strip().equals("} /Employee")) {
-            System.out.println("INNE I WHILE SIDEN NEXTLINE ER IKKE } WORKPERIOD, MEN DEN ER" + nextLine);
+          while (!nextLine.equals("} /Employee")) {
             workPeriodToAdd = workPeriodPersistence.deserialize(inFile);
-            System.out.println("WORKPERIODTOADD ER NÅ: " + workPeriodToAdd.getPeriodWorkHistory());
             if (workPeriodToAdd != null) {
-          //    System.out.println("wp to add"+workPeriodToAdd.toString());
               employee.addWorkPeriod(workPeriodToAdd);
-              System.out.println("EMPLOYE HAR DETTE I WORKPERIOD NÅ: " + employee.getWorkPeriods());
             }
-            //System.out.println("Nest" + nextLine);
             if(inFile.hasNext()){
-              System.out.println("FØR NEXTLINE ER DET NÅVÆRE LINE" + nextLine);
-              nextLine = inFile.nextLine();
+              nextLine = DataSaver.nextLineIfItHas(inFile);
             }
-            //System.out.println("ep gjorde om nextLine til: " + nextLine);
-
           }
         }
         this.employee = employee;
@@ -69,11 +65,16 @@ public class EmployeePersistence implements DataSaver {
 
     System.out.println(employee.toString());
     System.out.println(employee.getName());
+    return null;
+  }
+  @Override public void readFile() throws FileNotFoundException {
+    Scanner inFile = new Scanner((new FileReader(filepath)));
+    deserialize(inFile);
     inFile.close();
   }
 
-  @Override public void writeFile() throws FileNotFoundException {
-    PrintWriter outFile = new PrintWriter(filepath);
+
+  @Override public void serialize(PrintWriter outFile, int indentation) {
     outFile.println("Employee {");
     outFile.println("  name: " + employee.getName());
     outFile.println("  workPeriods: {");
@@ -87,6 +88,11 @@ public class EmployeePersistence implements DataSaver {
       }
     }
     outFile.println("} /Employee");
+  }
+
+  @Override public void writeFile() throws FileNotFoundException {
+    PrintWriter outFile = new PrintWriter(filepath);
+    serialize(outFile, 0);
     outFile.close();
   }
 
@@ -95,11 +101,10 @@ public class EmployeePersistence implements DataSaver {
     Work work2 = new Work(LocalDateTime.now().minusDays(2), LocalDateTime.now().plusHours(4));
     Work work3 = new Work(LocalDateTime.now().minusHours(1), LocalDateTime.now().plusHours(5));
     Employee e = new Employee("ole");
-    Work work11 = new Work(LocalDateTime.now().minusHours(3).plusMonths(1), LocalDateTime.now().plusHours(3).plusMonths(1));
+    Work work11 = new Work(LocalDateTime.now().minusHours(1).plusMonths(1), LocalDateTime.now().plusHours(4).plusMonths(1));
     Work work22 = new Work(LocalDateTime.now().minusDays(2).plusMonths(1), LocalDateTime.now().plusHours(4).plusMonths(1));
     WorkPeriod workPeriod1 = new WorkPeriod("mars", 2021, 200);
     workPeriod1.addWork(work1);
-    //Fiks adde flere i serializer i workpersistence
     workPeriod1.addWork(work2);
     workPeriod1.addWork(work3);
     WorkPeriod workPeriod11 = new WorkPeriod("april", 2021, 200);
@@ -109,7 +114,7 @@ public class EmployeePersistence implements DataSaver {
     e.addWorkPeriod(workPeriod11);
     EmployeePersistence ep = new EmployeePersistence("src/main/resources/myworkjournal/persistence/employee.txt", e);
     EmployeePersistence ep2 = new EmployeePersistence("src/main/resources/myworkjournal/persistence/employee.txt");
-    //ep.writeFile();
+    ep.writeFile();
     ep2.readFile();
     System.out.println(e.getWorkPeriods().toString());
     System.out.println("EMPLOYEE" + ep2.getEmployee());

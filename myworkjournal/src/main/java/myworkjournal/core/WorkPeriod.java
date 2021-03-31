@@ -82,14 +82,13 @@ public class WorkPeriod implements Iterable<Work> {
 
     if (checkWorkAlreadyAdded(work))
       throw new IllegalArgumentException("This work data already exists");
-    if (work.getEndTime().toLocalDate().isBefore(getPeriodEndDate().plusDays(1)) && work.getStartTime().toLocalDate().isAfter(
-        getPeriodStartDate().minusDays(1))) {
+    if (work.getEndTime().toLocalDate().isBefore(getPeriodEndDate().plusDays(1))) {
       periodWorkHistory.add(work);
     } else {
       System.out.println("prøver  adde work"+ work.toString());
       System.out.println("Kanskje fordi periodstartdate er: " + getPeriodStartDate());
       System.out.println("og sluttdate er: " + getPeriodEndDate());
-      throw new IllegalArgumentException("This shift is not in the month for this period. Create a new period mathing the shift's enddate");
+      throw new IllegalArgumentException("This shift is not in the month for this period. Choose a new period that matches the shift's endDate");
     }
   }
 

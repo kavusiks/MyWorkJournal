@@ -16,71 +16,71 @@ public class WorkPeriodPersistence implements DataSaver {
 
 
   private String filepath;
-  private WorkPeriod workPeriod;
+  private WorkPeriod workPeriodToSerialize;
 
   public WorkPeriodPersistence(String filepath) {
     this.filepath = filepath;
   }
 
-  public WorkPeriodPersistence(String filepath, WorkPeriod workPeriod) {
+  public WorkPeriodPersistence(String filepath, WorkPeriod workPeriodToSerialize) {
     this(filepath);
-    this.workPeriod = workPeriod;
+    this.workPeriodToSerialize = workPeriodToSerialize;
   }
 
   public WorkPeriod getWorkPeriod() {
-    return this.workPeriod;
+    return this.workPeriodToSerialize;
   }
 
-  public WorkPeriod deserialize(Scanner inFile) throws FileNotFoundException {
-    String month = "";
-    int year = 0;
-    int hourlyWage = 0;
+  public WorkPeriod deserialize(Scanner inFile) {
 
     while (inFile.hasNext()) {
-      if (inFile.nextLine().equals("WorkPeriod {")) {
-        System.out.println("HAR FUNNET STARTPUNKT TIL WORKPERIOD");
-        month = inFile.nextLine().replace("month:", "").strip();
-        //int year = inFile.nextLine().replace("year:", "").strip());
-        System.out.println("Måned i wp pers: " + month);
-        year = Integer.parseInt(inFile.nextLine().replace("year:", "").strip());
-        System.out.println("år i wp pers: " +year);
-        //hourlyWage strip??
-        hourlyWage = Integer.parseInt(inFile.nextLine().replace("hourlyWage:", "").strip());
-        System.out.println("timeslønn i wp pers: " + hourlyWage);
-        WorkPeriod workPeriod = new WorkPeriod(month, year, hourlyWage);
-        if (inFile.nextLine().contains("periodWorkHistory:")) {
-          System.out.println("Inne i if som sjekker at neste linje har periodWorkHistory");
-          Work workToAdd = null;
+      String month = "";
+      WorkPeriod workPeriod;
+      int year = 0;
+      int hourlyWage = 0;
+      String nextLine = DataSaver.nextLineIfItHas(inFile);
+      if (nextLine.strip().equals("WorkPeriod {")) {
+        nextLine = DataSaver.nextLineIfItHas(inFile);
+        if (nextLine.contains("month")) month = nextLine.replace("month:", "").strip();
+        nextLine = DataSaver.nextLineIfItHas(inFile);
+        if (nextLine.contains("year")) year = Integer.parseInt(nextLine.replace("year:", "").strip());
+        nextLine = DataSaver.nextLineIfItHas(inFile);
+        if (nextLine.contains("hourlyWage")) hourlyWage = Integer.parseInt(nextLine.replace("hourlyWage:", "").strip());
+
+        if(!month.equals("") && year != 0 && hourlyWage != 0) {
+          workPeriod = new WorkPeriod(month, year, hourlyWage);
+        }
+        else {
+          throw new IllegalStateException("Savefile doesn't contain proper workPeriod info");
+        }
+        nextLine = DataSaver.nextLineIfItHas(inFile);
+        if (nextLine.contains("periodWorkHistory") && !nextLine.replace("periodWorkHistory: [ amount=", "").strip().equals("0")) {
+          Work workToAdd;
           WorkPersistence workPersistence = new WorkPersistence(filepath);
-          //sjekk om denne under kan fjernet pga det er sånt oppe
-          String nextLine = "";
+          //nextLine = DataSaver.nextLineIfItHas(inFile);
           while (!nextLine.strip().equals("]")) {
-            System.out.println("Inne i løkka siden nextline ikke er ], nextlinje er: " + nextLine);
-            //String nextLine = inFile.nextLine();
-            //while (!nextLine.strip().equals("}"))
-            //System.out.println("debug");
-            //System.out.println(inFile.nextLine());
-            //System.out.println(workPersistence.deserialize(inFile));
+            //System.out.println("Inne i løkka siden nextline ikke er ], nextlinje er: " + nextLine);
             workToAdd = workPersistence.deserialize(inFile);
-            if (workToAdd != null) {
-              workPeriod.addWork(workToAdd);
-              //      System.out.println("HEEEER: " + workPeriod.getPeriodWorkHistory());
-            }
-            if (inFile.hasNext()){
-              nextLine = inFile.nextLine();
-            }
-            //System.out.println("wp gjorde om til" + nextLine);
+            if (workToAdd != null) workPeriod.addWork(workToAdd);
+            //Brukes for å nå "," eller "]"
+            nextLine = DataSaver.nextLineIfItHas(inFile);
           }
         }
-        //for å lese ferdig siste "}" av objektet
-        //For å nå bunnen av filen
-        if(inFile.hasNext()){
-        inFile.nextLine();
+        else {
+          //Dette er for å lese av "]" dersom lista er tom
+          DataSaver.nextLineIfItHas(inFile);
         }
-        this.workPeriod = workPeriod;
-        return workPeriod;
+        //For å lese ferdig siste "}" av objektet og nå bunnen av filen
+        nextLine = DataSaver.nextLineIfItHas(inFile);
+        if (nextLine.contains("} /WorkPeriod")) {
+          //TODO vurder behovet fo rå ha en this.worp... framfor å returnere workperiod direkte
+          this.workPeriodToSerialize = workPeriod;
+          return workPeriodToSerialize;
+        }
+        else {
+          throw new IllegalStateException("Save file doesn't contain proper workPeriod info");
+        }
       }
-
     }
     return null;
   }
@@ -104,13 +104,13 @@ public class WorkPeriodPersistence implements DataSaver {
     }
 
     outFile.println("WorkPeriod {");
-    outFile.println("  month: " + WorkPeriod.months.get(workPeriod.getPeriodStartDate().getMonthValue() - 1));
-    outFile.println("  year: " + workPeriod.getPeriodStartDate().getYear());
-    outFile.println("  hourlyWage: " + workPeriod.getHourlyWage());
-    outFile.println("  periodWorkHistory: [");
+    outFile.println("  month: " + WorkPeriod.months.get(workPeriodToSerialize.getPeriodStartDate().getMonthValue() - 1));
+    outFile.println("  year: " + workPeriodToSerialize.getPeriodStartDate().getYear());
+    outFile.println("  hourlyWage: " + workPeriodToSerialize.getHourlyWage());
+    outFile.println("  periodWorkHistory: [ amount=" + workPeriodToSerialize.getPeriodWorkHistory().size());
     WorkPersistence workPersistence;
 
-    for (Iterator<Work> it = workPeriod.iterator(); it.hasNext(); ) {
+    for (Iterator<Work> it = workPeriodToSerialize.iterator(); it.hasNext(); ) {
       Work work = it.next();
       workPersistence = new WorkPersistence(filepath, work);
       workPersistence.serialize(outFile, 4);

@@ -40,33 +40,35 @@ public class DataInputController<event> extends AbstractController {
 
   @FXML ChoiceBox<String> monthChoiceBox;
 
-  //@FXML Button saveBtn;
+  private WorkPeriod workPeriod;
 
-  //Fjerne dette og lag observable choicebox som må vøre valgt før man kan enable de andre.
-  //  int year = LocalDate.now().getYear();
-  WorkPeriod workPeriod;
-
-  /*
-  protected DataInputController(Employee employee) {
-    //super(employee);
-  }*/
 
 
 
   @FXML
   private void initialize(){
+    monthChoiceBox.setValue("Velg arbeidsmåned");
 
-    //AllPlans allPlans=new AllPlans();
-    //myDataListView.getItems().clear();
+  workStartDatePicker.setOnAction((event) -> {
+    LocalDate selectedDate = workStartDatePicker.getValue();
+    workEndDatePicker.setValue(selectedDate);
 
-  monthChoiceBox.setOnAction((event) -> {
-    String selectedPeriod = monthChoiceBox.getSelectionModel().getSelectedItem();
-    workPeriod = getEmployee().getWorkPeriods().get(selectedPeriod);
-    myDataListView.getItems().clear();
-    for (Work work : workPeriod) {
-      myDataListView.getItems().add(String.valueOf(work));
-    }
   });
+
+    monthChoiceBox.setOnAction((event) -> {
+      String selectedPeriod = monthChoiceBox.getSelectionModel().getSelectedItem();
+      workPeriod = getEmployee().getWorkPeriods().get(selectedPeriod);
+      myDataListView.getItems().clear();
+      for (Work work : workPeriod) {
+        myDataListView.getItems().add(String.valueOf(work));
+      }
+      workStartDatePicker.setDisable(false);
+      workEndDatePicker.setDisable(false);
+      shiftStartTimeInput.setDisable(false);
+      shiftEndTimeInput.setDisable(false);
+      addDataBtn.setDisable(false);
+    });
+
   }
   @Override void sceneSwitchedUpdate() {
     monthChoiceBox.getItems().clear();
@@ -74,8 +76,6 @@ public class DataInputController<event> extends AbstractController {
       monthChoiceBox.getItems().add(workPeriod.getIdentifier());
     }
     updateChoiceBox();
-
-    //setText(getEmployee().getName());
 
   }
 
@@ -89,8 +89,6 @@ public class DataInputController<event> extends AbstractController {
 
   @FXML
   private void addToWorkPeriod(){
-    //an=new Day(datoFrist.getValue());
-    //this.initialize();
     String error = "";
     errorMessage.setText(error);
     if (monthChoiceBox.getValue()==null){

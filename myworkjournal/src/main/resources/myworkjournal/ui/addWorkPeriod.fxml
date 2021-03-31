@@ -11,9 +11,9 @@
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: lightblue;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="myworkjournal.ui.AddWorkPeriodController">
    <children>
       <ChoiceBox fx:id="monthChoiceBox" layoutX="332.0" layoutY="54.0" prefHeight="27.0" prefWidth="114.0" />
-      <ChoiceBox fx:id="yearChoiceBox" layoutX="492.0" layoutY="54.0" prefHeight="27.0" prefWidth="91.0" />
-      <TextField fx:id="wageInputField" layoutX="415.0" layoutY="98.0" />
-      <Button fx:id="addMonth" layoutX="498.0" layoutY="148.0" mnemonicParsing="false" onAction="#addMonth" text="Add month" />
+      <ChoiceBox fx:id="yearChoiceBox" disable="true" layoutX="492.0" layoutY="54.0" prefHeight="27.0" prefWidth="91.0" />
+      <TextField fx:id="wageInputField" disable="true" layoutX="415.0" layoutY="98.0" />
+      <Button fx:id="addMonthBtn" disable="true" layoutX="498.0" layoutY="148.0" mnemonicParsing="false" onAction="#addMonth" text="Add month" />
       <Button fx:id="goToDataInputBtn" layoutX="455.0" layoutY="346.0" mnemonicParsing="false" onAction="#goToDataInput" text="Legg til jobbhistorikk" />
       <Text layoutX="42.0" layoutY="65.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Eksisterende måneder:" />
       <Text layoutX="280.0" layoutY="72.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Måned:" />

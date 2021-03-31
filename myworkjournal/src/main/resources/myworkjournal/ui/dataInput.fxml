@@ -13,11 +13,11 @@
    <children>
       <ChoiceBox fx:id="monthChoiceBox" layoutX="244.0" layoutY="23.0" prefWidth="150.0" />
       <Button fx:id="goToAddMonthBtn" layoutX="403.0" layoutY="23.0" mnemonicParsing="false" onAction="#goToAddMonth" text="Legg til ny måned" />
-      <DatePicker fx:id="workStartDatePicker" layoutX="91.0" layoutY="67.0" />
-      <DatePicker fx:id="workEndDatePicker" layoutX="91.0" layoutY="127.0" />
-      <TextField fx:id="shiftStartTimeInput" layoutX="411.0" layoutY="67.0" />
-      <TextField fx:id="shiftEndTimeInput" layoutX="411.0" layoutY="127.0" />
-      <Button fx:id="addDataBtn" layoutX="486.0" layoutY="187.0" mnemonicParsing="false" onAction="#addToWorkPeriod" text="Legg til data" />
+      <DatePicker fx:id="workStartDatePicker" disable="true" layoutX="91.0" layoutY="67.0" />
+      <DatePicker fx:id="workEndDatePicker" disable="true" layoutX="91.0" layoutY="127.0" />
+      <TextField fx:id="shiftStartTimeInput" disable="true" layoutX="411.0" layoutY="67.0" />
+      <TextField fx:id="shiftEndTimeInput" disable="true" layoutX="411.0" layoutY="127.0" />
+      <Button fx:id="addDataBtn" disable="true" layoutX="486.0" layoutY="187.0" mnemonicParsing="false" onAction="#addToWorkPeriod" text="Legg til data" />
       <Button fx:id="viewStatsBtn" layoutX="498.0" layoutY="325.0" mnemonicParsing="false" onAction="#goToStats" text="Mine stats" />
       <Text layoutX="14.0" layoutY="85.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Startdato" />
       <Text layoutX="319.0" layoutY="145.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Sluttid" />

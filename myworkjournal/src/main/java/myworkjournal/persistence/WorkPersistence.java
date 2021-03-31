@@ -12,52 +12,49 @@ public class WorkPersistence implements DataSaver {
 
 
   private String filepath;
-  private Work work;
+  private Work workToSerialize;
 
   public WorkPersistence (String filepath) {
     this.filepath = filepath;
   }
 
-  public WorkPersistence (String filepath, Work work) {
+  public WorkPersistence (String filepath, Work workToSerialize) {
     this(filepath);
-    this.work = work;
+    this.workToSerialize = workToSerialize;
   }
 
+  //TODO: metode brukt for debug, fjerne tilslutt?
   public Work getWork(){
-    //System.out.println("returnerer work med timer" + work.getHours());
-    return this.work;
+    return this.workToSerialize;
   }
-
+  @Override
   public Work deserialize(Scanner inFile) {
-/*
-    while (inFile.hasNext()){
-
-      System.out.println(inFile.nextLine());
-    }
-
- */
-    this.work = null;
-    LocalDateTime startTime = null;
-    LocalDateTime endTime = null;
-    //int hours = 0;
     while (inFile.hasNext()) {
-      String nextLine = inFile.nextLine();
+      LocalDateTime startTime = null;
+      LocalDateTime endTime = null;
+      Boolean properFile = false;
+      Boolean workLineDetected = false;
+      String nextLine = DataSaver.nextLineIfItHas(inFile);
       if(nextLine.strip().equals("Work {")) {
-          startTime = LocalDateTime.parse(inFile.nextLine().replace("startTime:", "").strip());
-          endTime = LocalDateTime.parse(inFile.nextLine().replace("endTime:", "").strip());
+        workLineDetected = true;
+        nextLine = DataSaver.nextLineIfItHas(inFile);
+        if (nextLine.contains("startTime")) startTime = LocalDateTime.parse(nextLine.replace("startTime:", "").strip());
+        nextLine = DataSaver.nextLineIfItHas(inFile);
+        if (nextLine.contains("endTime")) endTime = LocalDateTime.parse(nextLine.replace("endTime:", "").strip());
+        nextLine = DataSaver.nextLineIfItHas(inFile);
+        if(startTime!=null && endTime!= null && nextLine.contains("} /Work")) properFile=true;
+      }
+      if(properFile) {
+        System.out.println(startTime.toString() + endTime.toString());
+        //TODO: vurder å fjerne dette
+        this.workToSerialize = new Work(startTime, endTime);
+        return workToSerialize;
         }
-      if (nextLine.strip().equals("} /Work")){
-        if(startTime != null && endTime != null) {
-          Work work = new Work(startTime, endTime);
-          this.work = work;
-          //System.out.println("serialize utført med retur av work");
-          //System.out.println("work" + "starttif: " + work.getStartTime() + "slutttid: " + work.getEndTime());
-          return work;
-        }
+      else if (workLineDetected) {
+        //hvis den når hit så er properFile = false;
+        throw new IllegalStateException("Save file doesn't contain proper work info");
       }
     }
-    //System.out.println("serialize utført uten retur av work");
-    //System.out.println(work.getEndTime());
     return null;
   }
 
@@ -68,7 +65,7 @@ public class WorkPersistence implements DataSaver {
     inFile.close();
     }
 
-
+    @Override
     public void serialize(PrintWriter outFile, int indentation) {
       String valueIndentationString = "";
       String objectIndentationString = "";
@@ -79,9 +76,8 @@ public class WorkPersistence implements DataSaver {
         objectIndentationString+=" ";
       }
       outFile.println(objectIndentationString+"Work {");
-      outFile.println(valueIndentationString + "startTime: " + work.getStartTime());
-      outFile.println(valueIndentationString + "  endTime: " + work.getEndTime());
-      //outFile.println("    hours: " + work.getHours());
+      outFile.println(valueIndentationString + "startTime: " + workToSerialize.getStartTime());
+      outFile.println(valueIndentationString + "  endTime: " + workToSerialize.getEndTime());
       outFile.println(objectIndentationString + "} /Work");
 
     }
@@ -96,7 +92,7 @@ public class WorkPersistence implements DataSaver {
     Work work = new Work(LocalDateTime.now().minusHours(3), LocalDateTime.now().plusHours(3));
     WorkPersistence wp = new WorkPersistence("src/main/resources/myworkjournal/persistence/work.txt", work);
     WorkPersistence wp1 = new WorkPersistence("src/main/resources/myworkjournal/persistence/work.txt");
-    wp.writeFile();
+    //wp.writeFile();
     wp1.readFile();
     System.out.println(wp1.getWork());
 
