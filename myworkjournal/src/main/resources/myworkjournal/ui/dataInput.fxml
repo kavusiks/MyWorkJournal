@@ -15,8 +15,8 @@
       <Button fx:id="goToAddMonthBtn" layoutX="403.0" layoutY="23.0" mnemonicParsing="false" onAction="#goToAddMonth" text="Legg til ny måned" />
       <DatePicker fx:id="workStartDatePicker" disable="true" layoutX="91.0" layoutY="67.0" />
       <DatePicker fx:id="workEndDatePicker" disable="true" layoutX="91.0" layoutY="127.0" />
-      <TextField fx:id="shiftStartTimeInput" disable="true" layoutX="411.0" layoutY="67.0" />
-      <TextField fx:id="shiftEndTimeInput" disable="true" layoutX="411.0" layoutY="127.0" />
+      <TextField fx:id="shiftStartTimeInput" disable="true" layoutX="411.0" layoutY="67.0" promptText="00:00" />
+      <TextField fx:id="shiftEndTimeInput" disable="true" layoutX="411.0" layoutY="127.0" promptText="00:00" />
       <Button fx:id="addDataBtn" disable="true" layoutX="486.0" layoutY="187.0" mnemonicParsing="false" onAction="#addToWorkPeriod" text="Legg til data" />
       <Button fx:id="viewStatsBtn" layoutX="486.0" layoutY="325.0" mnemonicParsing="false" onAction="#goToStats" text="Min statistikk" />
       <Text layoutX="14.0" layoutY="85.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Startdato" />
@@ -24,7 +24,7 @@
       <ListView fx:id="myDataListView" layoutX="12.0" layoutY="192.0" prefHeight="200.0" prefWidth="447.0" />
       <Text layoutX="319.0" layoutY="85.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Starttid" />
       <Text layoutX="14.0" layoutY="145.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Sluttdato" />
-      <Label fx:id="errorMessage" layoutX="18.0" layoutY="154.0" prefHeight="27.0" prefWidth="565.0" />
+      <Label fx:id="errorMessage" layoutX="18.0" layoutY="154.0" prefHeight="27.0" prefWidth="565.0" textFill="RED" />
       <Button fx:id="saveBtn" layoutX="18.0" layoutY="23.0" mnemonicParsing="false" onAction="#saveData" text="Lagre og avslutt" />
    </children>
 </Pane>
