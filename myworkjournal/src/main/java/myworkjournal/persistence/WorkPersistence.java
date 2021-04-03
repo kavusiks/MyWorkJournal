@@ -32,8 +32,8 @@ public class WorkPersistence implements DataSaver {
     while (inFile.hasNext()) {
       LocalDateTime startTime = null;
       LocalDateTime endTime = null;
-      Boolean properFile = false;
-      Boolean workLineDetected = false;
+      boolean properFile = false;
+      boolean workLineDetected = false;
       String nextLine = DataSaver.nextLineIfItHas(inFile);
       if(nextLine.strip().equals("Work {")) {
         workLineDetected = true;
@@ -94,7 +94,7 @@ public class WorkPersistence implements DataSaver {
     WorkPersistence wp1 = new WorkPersistence("src/main/resources/myworkjournal/persistence/work.txt");
     //wp.writeFile();
     wp1.readFile();
-    System.out.println(wp1.getWork());
+    //System.out.println(wp1.getWork());
 
   }
 }

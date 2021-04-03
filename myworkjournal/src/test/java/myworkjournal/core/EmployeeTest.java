@@ -1,7 +1,6 @@
-package myworkjournal.core.tests;
+package myworkjournal.core;
 
-import myworkjournal.core.Employee;
-
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -12,7 +11,7 @@ public class EmployeeTest {
 	public void testConstructor() {
 		// Check if name corresponds
 		Employee employee = new Employee("Ola");
-		Assertions.assertEquals("Ola", employee.getName());
+		assertEquals("Ola", employee.getName());
 		
 		// Check if it throws exception when number is in name
 		Exception exception = assertThrows(IllegalArgumentException.class, () -> {
@@ -31,9 +30,9 @@ public class EmployeeTest {
 	public void testSetName() {
 		Employee employee = new Employee("Ola");
 		employee.setName("OlaNordmann");
-		Assertions.assertEquals("OlaNordmann", employee.getName());
+		assertEquals("OlaNordmann", employee.getName());
 		employee.setName("Ola");
-		Assertions.assertEquals("Ola", employee.getName());
+		assertEquals("Ola", employee.getName());
 		Exception exception = assertThrows(IllegalArgumentException.class, () -> {
 	        employee.setName("1234");
 	    });

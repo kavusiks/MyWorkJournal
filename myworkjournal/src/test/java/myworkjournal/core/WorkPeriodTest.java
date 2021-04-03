@@ -1,4 +1,4 @@
-package myworkjournal.core.tests;
+package myworkjournal.core;
 
 import myworkjournal.core.WorkPeriod;
 

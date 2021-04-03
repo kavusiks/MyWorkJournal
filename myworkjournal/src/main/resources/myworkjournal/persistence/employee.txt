@@ -19,23 +19,40 @@ WorkPeriod {
 } /WorkPeriod
 ,
 WorkPeriod {
+  month: april
+  year: 2020
+  hourlyWage: 300
+  periodWorkHistory: [ amount=1
+  Work {
+    startTime: 2020-04-15T12:00
+      endTime: 2020-04-16T13:00
+  } /Work
+    ]
+} /WorkPeriod
+,
+WorkPeriod {
   month: mars
   year: 2021
   hourlyWage: 200
-  periodWorkHistory: [ amount=3
+  periodWorkHistory: [ amount=4
   Work {
     startTime: 2021-03-30T23:46
       endTime: 2021-03-31T05:46
   } /Work
   ,
   Work {
-    startTime: 2021-03-29T02:46
+    startTime: 2021-03-30T02:46
       endTime: 2021-03-31T06:46
   } /Work
   ,
   Work {
     startTime: 2021-03-31T01:46
       endTime: 2021-03-31T07:46
+  } /Work
+  ,
+  Work {
+    startTime: 2021-03-17T10:00
+      endTime: 2021-03-17T13:00
   } /Work
     ]
 } /WorkPeriod

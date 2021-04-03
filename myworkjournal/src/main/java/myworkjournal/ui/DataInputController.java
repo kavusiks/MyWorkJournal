@@ -114,13 +114,13 @@ public class DataInputController<event> extends AbstractController {
     int startMinute = Integer.parseInt(shiftStartTimeInput.getText(3, 5));
     int endHour = Integer.parseInt(shiftEndTimeInput.getText(0, 2));
     int endMinute = Integer.parseInt(shiftEndTimeInput.getText(3, 5));
-    System.out.println("starthour:"+startHour+"startminute"+startMinute);
+    //System.out.println("starthour:"+startHour+"startminute"+startMinute);
 
     try{
     Work newData=new Work(workStartDatePicker.getValue().atTime(startHour, startMinute),workEndDatePicker.getValue().atTime(endHour, endMinute));
-    System.out.println("valgte workperiod" +workPeriod.getIdentifier());
-    System.out.println("work som skal legges til" +newData.toString());
-    System.out.println(newData.getHours());
+    //System.out.println("valgte workperiod" +workPeriod.getIdentifier());
+    //System.out.println("work som skal legges til" +newData.toString());
+    //System.out.println(newData.getHours());
     workPeriod.addWork(newData);
     } catch (IllegalArgumentException e){
       errorMessage.setText(e.getMessage());

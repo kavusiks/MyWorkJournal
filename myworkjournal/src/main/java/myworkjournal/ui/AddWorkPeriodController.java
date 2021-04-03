@@ -59,7 +59,7 @@ public class AddWorkPeriodController extends AbstractController {
       throw new IllegalArgumentException(error);
     }
     String startMonth = monthChoiceBox.getValue();
-    System.out.println(startMonth);
+    //System.out.println(startMonth);
     int startYear = yearChoiceBox.getValue();
 
     if(!wageInputField.getText().matches(("^[0-9]+$"))) {

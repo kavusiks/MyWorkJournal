@@ -39,7 +39,6 @@ public abstract class AbstractController {
 		controller.setEmployee(getEmployee());
 		stage.show();
 		controller.sceneSwitchedUpdate();
-		System.out.println(getEmployee().toString());
 	}
 
 	@FXML

@@ -1,12 +1,12 @@
-package myworkjournal.persistence.tests;
+package myworkjournal.persistence;
 
-import myworkjournal.persistence.WorkPersistence;
+import myworkjournal.persistence.WorkPeriodPersistence;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-public class WorkPersistenceTest {
+public class WorkPeriodPersistenceTest {
 	
 	@Test
 	public void testConstructor() {

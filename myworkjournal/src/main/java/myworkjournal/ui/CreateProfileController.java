@@ -78,13 +78,11 @@ public class CreateProfileController extends AbstractController{
     */
 
     @Override void sceneSwitchedUpdate() {
-      System.out.println("Kjører sceneswirched");
       try {
         EmployeePersistence employeePersistence = new EmployeePersistence("src/main/resources/myworkjournal/persistence/employee.txt");
         employeePersistence.readFile();
         Employee employee = employeePersistence.getEmployee();
         setEmployee(employee);
-        System.out.println(employee.getName());
         savedUserDisplayField.setText(employee.getName());
       } catch (FileNotFoundException e) {
         savedUserDisplayField.setText("No saved user");

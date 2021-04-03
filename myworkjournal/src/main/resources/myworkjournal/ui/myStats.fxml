@@ -5,13 +5,25 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Text?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: lightblue;" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="myworkjournal.ui.ViewStatsController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: lightblue;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="myworkjournal.ui.ViewStatsController">
    <children>
       <Button fx:id="goToDataInputBtn" layoutX="42.0" layoutY="344.0" mnemonicParsing="false" onAction="#goToDataInput" text="Gå tilbake" />
-      <Text layoutX="84.0" layoutY="58.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Totalt lønn" />
-      <Label fx:id="lonnLabel" layoutX="84.0" layoutY="99.0" />
-      <Label fx:id="timerLabel" layoutX="386.0" layoutY="91.0" />
-      <Text layoutX="358.0" layoutY="58.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Totalt timer" />
+      <Text layoutX="36.0" layoutY="80.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Totalt lønn:" />
+      <Label fx:id="lonnLabel" layoutX="103.0" layoutY="67.0" prefHeight="17.0" prefWidth="57.0" />
+      <Label fx:id="timerLabel" layoutX="149.0" layoutY="111.0" prefHeight="17.0" prefWidth="38.0" />
+      <Text layoutX="34.0" layoutY="124.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Totalt arbeidstimer:" />
       <Button fx:id="saveBtn" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#saveData" text="Lagre og avslutt" />
+      <Text layoutX="260.0" layoutY="80.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Måned med høyest inntjening:" />
+      <Label fx:id="bestWorkPeriodLabel" layoutX="434.0" layoutY="67.0" prefHeight="17.0" prefWidth="83.0" />
+      <Label fx:id="bestWorkPeriodSalaryLabel" layoutX="524.0" layoutY="67.0" prefHeight="17.0" prefWidth="57.0" />
+      <Text layoutX="40.0" layoutY="263.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Gjennomsnitt:" />
+      <Text layoutX="151.0" layoutY="246.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Vakter" />
+      <Text layoutX="225.0" layoutY="246.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Arbeidstimer" />
+      <Text layoutX="334.0" layoutY="246.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Lønn" />
+      <Text layoutX="395.0" layoutY="246.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Timeslønn" />
+      <Label fx:id="avgHourlyWageLabel" layoutX="395.0" layoutY="250.0" prefHeight="17.0" prefWidth="57.0" />
+      <Label fx:id="avgSalaryLabel" layoutX="333.0" layoutY="250.0" prefHeight="17.0" prefWidth="57.0" />
+      <Label fx:id="avgWorkHoursLabel" layoutX="225.0" layoutY="250.0" prefHeight="17.0" prefWidth="57.0" />
+      <Label fx:id="avgShiftsLabel" layoutX="151.0" layoutY="250.0" prefHeight="17.0" prefWidth="57.0" />
    </children>
 </Pane>

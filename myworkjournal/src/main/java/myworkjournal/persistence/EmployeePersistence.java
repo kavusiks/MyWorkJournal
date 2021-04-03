@@ -32,10 +32,12 @@ public class EmployeePersistence implements DataSaver {
   }
   @Override public Employee deserialize(Scanner inFile) {
     while (inFile.hasNext()) {
-      String name = "";
+      String name;
       Employee employee;
       //KANSKJE JEG BURDE TA HAS NEXT HER, MULIG SOM EN STATISK METODE INTERFACEN
       String nextLine = DataSaver.nextLineIfItHas(inFile);
+      //Sjekkes i metoden over
+      //assert nextLine != null;
       if (nextLine.strip().equals("Employee {")) {
         nextLine = DataSaver.nextLineIfItHas(inFile);
         if (nextLine.contains("name")) {
@@ -63,8 +65,8 @@ public class EmployeePersistence implements DataSaver {
       }
     }
 
-    System.out.println(employee.toString());
-    System.out.println(employee.getName());
+    //System.out.println(employee.toString());
+    //System.out.println(employee.getName());
     return null;
   }
   @Override public void readFile() throws FileNotFoundException {
@@ -116,7 +118,7 @@ public class EmployeePersistence implements DataSaver {
     EmployeePersistence ep2 = new EmployeePersistence("src/main/resources/myworkjournal/persistence/employee.txt");
     ep.writeFile();
     ep2.readFile();
-    System.out.println(e.getWorkPeriods().toString());
-    System.out.println("EMPLOYEE" + ep2.getEmployee());
+    //System.out.println(e.getWorkPeriods().toString());
+    //System.out.println("EMPLOYEE" + ep2.getEmployee());
   }
 }

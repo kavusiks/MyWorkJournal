@@ -1,4 +1,4 @@
-package myworkjournal.persistence.tests;
+package myworkjournal.persistence;
 
 import myworkjournal.persistence.EmployeePersistence;
 
