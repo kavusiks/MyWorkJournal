@@ -8,7 +8,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class WorkPeriod implements Iterable<Work> {
-  public static final List<String> months = new ArrayList<String>(
+  public static final List<String> months = new ArrayList<>(
       Arrays.asList("januar", "februar", "mars", "april", "mai", "juni", "juli", "august", "september", "oktober", "november", "desember"));
 
   private String identifier;
@@ -18,22 +18,26 @@ public class WorkPeriod implements Iterable<Work> {
 
 
 
-  private Collection<Work> periodWorkHistory = new ArrayList<Work>();
+  private Collection<Work> periodWorkHistory = new ArrayList<>();
 
   public WorkPeriod(String month, int year, int hourlyWage) {
+    String monthValue;
+    if(months.contains(month.toLowerCase())) {
+      monthValue = String.valueOf(months.indexOf(month.toLowerCase()) + 1);
+    }
+    else {
+      throw new IllegalArgumentException(month + " is not written correctly or is not a valid month.");
+    }
+    if (year < (LocalDateTime.now().getYear() - 1) || year > (LocalDateTime.now().getYear() + 1)) throw new IllegalArgumentException("Year can only be last, this or next year");
+    if (hourlyWage<=0) throw new IllegalArgumentException("HourlySalary cannot be in minus");
     identifier = month + "-" + year;
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/MM/yyyy");
-    String monthValue = String.valueOf(months.indexOf(month) + 1);
     if (monthValue.length() == 1)
       monthValue = "0" + monthValue;
     String startDate = "01/" + monthValue + "/" + year;
     this.periodStartDate = LocalDate.parse(startDate, formatter);
     this.periodEndDate = periodStartDate.withDayOfMonth(periodStartDate.getMonth().length(periodStartDate.isLeapYear()));
-    //YearMonth startMonth = YearMonth.of(startDate.getYear(), startDate.getMonthValue());
-    //this.monthEndDate = startMonth.atDay(4);
-    //this.monthEndDate = LocalDate.now();
     this.hourlyWage = hourlyWage;
-    //this.monthEndDate = monthStartDate;// skal være last date of the month, søk opp på nett
   }
 
 
@@ -66,8 +70,8 @@ public class WorkPeriod implements Iterable<Work> {
     if (work1.getStartTime().toLocalDate().equals(work2.getStartTime().toLocalDate())) {
       if((work1.getStartTime().getHour() == work2.getStartTime().getHour()) && (work1.getStartTime().getMinute() == work2.getStartTime().getMinute()))
         if ((work1.getEndTime().toLocalDate().equals(work2.getEndTime().toLocalDate()))){
-          if((work1.getEndTime().getHour() == work2.getEndTime().getHour()) && (work1.getEndTime().getMinute() == work2.getEndTime().getMinute()))
-          return true;
+          return work1.getEndTime().getHour() == work2.getEndTime().getHour() && work1.getEndTime().getMinute() == work2
+              .getEndTime().getMinute();
         }
     }
     return false;
@@ -85,9 +89,6 @@ public class WorkPeriod implements Iterable<Work> {
     if (work.getEndTime().toLocalDate().isBefore(getPeriodEndDate().plusDays(1))) {
       periodWorkHistory.add(work);
     } else {
-      System.out.println("prøver  adde work"+ work.toString());
-      System.out.println("Kanskje fordi periodstartdate er: " + getPeriodStartDate());
-      System.out.println("og sluttdate er: " + getPeriodEndDate());
       throw new IllegalArgumentException("This shift is not in the month for this period. Choose a new period that matches the shift's endDate");
     }
   }

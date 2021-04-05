@@ -9,7 +9,6 @@ import static java.time.temporal.ChronoUnit.MINUTES;
 public class Work {
   private LocalDateTime startTime;
   private LocalDateTime endTime;
-  //private int hours;
 
   public Work(LocalDateTime startTime, LocalDateTime endTime) throws IllegalArgumentException{
     //Er kun interessert i timer og minutter
@@ -19,7 +18,6 @@ public class Work {
     if(DAYS.between(startTime, endTime) > 1) throw new IllegalArgumentException("A shift has to start and end during 0-1 day(s)!");
     this.startTime = startTime.truncatedTo(MINUTES);
     this.endTime = endTime.truncatedTo(MINUTES);
-    //this.hours = endTime.getHour() - startTime.getHour();
   }
 
   public LocalDateTime getStartTime() {
@@ -35,7 +33,6 @@ public class Work {
     int endHour = endTime.getHour();
     if(startHour > endHour) endHour += 24;
     return endHour - startHour;
-    //return hours;
   }
 
   @Override public String toString() {
