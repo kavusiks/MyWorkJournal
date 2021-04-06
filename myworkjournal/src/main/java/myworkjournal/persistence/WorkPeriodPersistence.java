@@ -6,12 +6,11 @@ import myworkjournal.core.WorkPeriod;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.PrintWriter;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Iterator;
 import java.util.Scanner;
 
-public class WorkPeriodPersistence implements DataSaver {
+public class WorkPeriodPersistence implements DataSaverInterface<WorkPeriod> {
 
 
 
@@ -38,13 +37,13 @@ public class WorkPeriodPersistence implements DataSaver {
       WorkPeriod workPeriod;
       int year = 0;
       int hourlyWage = 0;
-      String nextLine = DataSaver.nextLineIfItHas(inFile);
+      String nextLine = DataSaverInterface.nextLineIfItHas(inFile);
       if (nextLine.strip().equals("WorkPeriod {")) {
-        nextLine = DataSaver.nextLineIfItHas(inFile);
+        nextLine = DataSaverInterface.nextLineIfItHas(inFile);
         if (nextLine.contains("month")) month = nextLine.replace("month:", "").strip();
-        nextLine = DataSaver.nextLineIfItHas(inFile);
+        nextLine = DataSaverInterface.nextLineIfItHas(inFile);
         if (nextLine.contains("year")) year = Integer.parseInt(nextLine.replace("year:", "").strip());
-        nextLine = DataSaver.nextLineIfItHas(inFile);
+        nextLine = DataSaverInterface.nextLineIfItHas(inFile);
         if (nextLine.contains("hourlyWage")) hourlyWage = Integer.parseInt(nextLine.replace("hourlyWage:", "").strip());
 
         if(!month.equals("") && year != 0 && hourlyWage != 0) {
@@ -53,25 +52,25 @@ public class WorkPeriodPersistence implements DataSaver {
         else {
           throw new IllegalStateException("Savefile doesn't contain proper workPeriod info");
         }
-        nextLine = DataSaver.nextLineIfItHas(inFile);
+        nextLine = DataSaverInterface.nextLineIfItHas(inFile);
         if (nextLine.contains("periodWorkHistory") && !nextLine.replace("periodWorkHistory: [ amount=", "").strip().equals("0")) {
           Work workToAdd;
           WorkPersistence workPersistence = new WorkPersistence(filepath);
-          //nextLine = DataSaver.nextLineIfItHas(inFile);
+          //nextLine = DataSaverInterface.nextLineIfItHas(inFile);
           while (!nextLine.strip().equals("]")) {
             //System.out.println("Inne i løkka siden nextline ikke er ], nextlinje er: " + nextLine);
             workToAdd = workPersistence.deserialize(inFile);
             if (workToAdd != null) workPeriod.addWork(workToAdd);
             //Brukes for å nå "," eller "]"
-            nextLine = DataSaver.nextLineIfItHas(inFile);
+            nextLine = DataSaverInterface.nextLineIfItHas(inFile);
           }
         }
         else {
           //Dette er for å lese av "]" dersom lista er tom
-          DataSaver.nextLineIfItHas(inFile);
+          DataSaverInterface.nextLineIfItHas(inFile);
         }
         //For å lese ferdig siste "}" av objektet og nå bunnen av filen
-        nextLine = DataSaver.nextLineIfItHas(inFile);
+        nextLine = DataSaverInterface.nextLineIfItHas(inFile);
         if (nextLine.contains("} /WorkPeriod")) {
           //TODO vurder behovet fo rå ha en this.worp... framfor å returnere workperiod direkte
           this.workPeriodToSerialize = workPeriod;

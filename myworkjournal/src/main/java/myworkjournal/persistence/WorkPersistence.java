@@ -8,7 +8,7 @@ import java.io.PrintWriter;
 import java.time.LocalDateTime;
 import java.util.Scanner;
 
-public class WorkPersistence implements DataSaver {
+public class WorkPersistence implements DataSaverInterface<Work> {
 
 
   private String filepath;
@@ -34,14 +34,14 @@ public class WorkPersistence implements DataSaver {
       LocalDateTime endTime = null;
       boolean properFile = false;
       boolean workLineDetected = false;
-      String nextLine = DataSaver.nextLineIfItHas(inFile);
+      String nextLine = DataSaverInterface.nextLineIfItHas(inFile);
       if(nextLine.strip().equals("Work {")) {
         workLineDetected = true;
-        nextLine = DataSaver.nextLineIfItHas(inFile);
+        nextLine = DataSaverInterface.nextLineIfItHas(inFile);
         if (nextLine.contains("startTime")) startTime = LocalDateTime.parse(nextLine.replace("startTime:", "").strip());
-        nextLine = DataSaver.nextLineIfItHas(inFile);
+        nextLine = DataSaverInterface.nextLineIfItHas(inFile);
         if (nextLine.contains("endTime")) endTime = LocalDateTime.parse(nextLine.replace("endTime:", "").strip());
-        nextLine = DataSaver.nextLineIfItHas(inFile);
+        nextLine = DataSaverInterface.nextLineIfItHas(inFile);
         if(startTime!=null && endTime!= null && nextLine.contains("} /Work")) properFile=true;
       }
       if(properFile) {
@@ -92,7 +92,7 @@ public class WorkPersistence implements DataSaver {
     Work work = new Work(LocalDateTime.now().minusHours(3), LocalDateTime.now().plusHours(3));
     WorkPersistence wp = new WorkPersistence("src/main/resources/myworkjournal/persistence/work.txt", work);
     WorkPersistence wp1 = new WorkPersistence("src/main/resources/myworkjournal/persistence/work.txt");
-    //wp.writeFile();
+    wp.writeFile();
     wp1.readFile();
     //System.out.println(wp1.getWork());
 

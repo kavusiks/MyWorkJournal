@@ -57,7 +57,7 @@ public class WorkPeriod implements Iterable<Work> {
     return periodWorkHistory;
   }
 
-
+//TODO: hvorfor ikke bare ta og sammenlige localdatetime direkte?
   /**
    * Method used to check if the two given instances for Work are the same.
    * This is done by comparing the start time and end time of each work.

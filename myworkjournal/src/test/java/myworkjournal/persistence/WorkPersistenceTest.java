@@ -2,35 +2,93 @@ package myworkjournal.persistence;
 
 import myworkjournal.persistence.WorkPersistence;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class WorkPersistenceTest {
-	
-	@Test
-	public void testConstructor() {
-		
+import java.io.File;
+import java.io.FileNotFoundException;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+public class WorkPersistenceTest extends PersistenceTestData implements PersistenceTestInterface {
+
+	WorkPersistence workPersistence;
+
+	@AfterEach
+	public void cleanUp() {
+		File fileToErase = new File(filepath);
+		fileToErase.delete();
 	}
-	
-	@Test
-	public void TestDeserialize() {
-		
+
+	@BeforeEach
+	@Override public void setUp() {
+		filepath = "src/test/resources/myworkjournal/persistence/work.txt";
 	}
-	
+
 	@Test
-	public void testReadFile() {
-		
+	@Override public void testConstructor() {
+		workPersistence = null;
+		workPersistence = new WorkPersistence(filepath);
+		assertNotNull(workPersistence, "The workpersistence without work was not created properly.");
+		workPersistence = new WorkPersistence(filepath, workThisMonth);
+		assertNotNull(workPersistence, "The workpersistence with work was not created properly.");
+		assertEquals(workThisMonth, workPersistence.getWork(), "The workpersistence with work was created, but doesn't contain the correct work.");
+
 	}
-	
+
+	/**
+	 * Common method used to test reading and writing from/to the savefile in the persistence class.
+	 * serialize() and deserialize() are tested within the readFile() and writeFile()
+	 */
 	@Test
-	public void testSerialize() {
-		
-	}
-	
-	@Test
-	public void testWriteFile() {
-		
+	@Override public void testWriteAndReadFile() {
+		//Testing writeFile() with invalid filepath
+		/*
+		workPersistence = new WorkPersistence(invalidPath, workThisMonth);
+		try {
+			workPersistence.writeFile();
+			fail("Work should not be saved when the savepath is invalid. FileNotFoundExceptions was not thrown.");
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		*/
+
+
+		//Testing writeFile() with valid filepath
+		workPersistence = new WorkPersistence(filepath, workThisMonth);
+		assertFileIsEmpty(filepath);
+		try {
+			workPersistence.writeFile();
+			assertFileIsNotEmpty(filepath);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+			fail("WorkPersistence was not able to write to the correct path");
+		}
+
+		//Testing readFile() by reading the data saved from the sub-test above
+		workPersistence = new WorkPersistence(filepath);
+		try {
+			workPersistence.readFile();
+			assertSameWork(workThisMonth, workPersistence.getWork(), "The read work was not the written work.");
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+			fail("WorkPersistence was not able to read from correct path");
+		}
+
+		//Testing readFile() froom invalid filepath
+		workPersistence = new WorkPersistence(invalidPath);
+		try {
+			workPersistence.readFile();
+			fail("FileNotFoundExceptions was not thrown");
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+			assertNull(workPersistence.getWork(), "No work should be read, when there are no valid files.");
+		}
+
+
+
 	}
 
 }

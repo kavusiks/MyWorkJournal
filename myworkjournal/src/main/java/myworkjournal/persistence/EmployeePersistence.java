@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 import java.util.Iterator;
 import java.util.Scanner;
 
-public class EmployeePersistence implements DataSaver {
+public class EmployeePersistence implements DataSaverInterface<Employee> {
 
   private String filepath;
 
@@ -35,11 +35,11 @@ public class EmployeePersistence implements DataSaver {
       String name;
       Employee employee;
       //KANSKJE JEG BURDE TA HAS NEXT HER, MULIG SOM EN STATISK METODE INTERFACEN
-      String nextLine = DataSaver.nextLineIfItHas(inFile);
+      String nextLine = DataSaverInterface.nextLineIfItHas(inFile);
       //Sjekkes i metoden over
       //assert nextLine != null;
       if (nextLine.strip().equals("Employee {")) {
-        nextLine = DataSaver.nextLineIfItHas(inFile);
+        nextLine = DataSaverInterface.nextLineIfItHas(inFile);
         if (nextLine.contains("name")) {
           name = nextLine.replace("name:", "").strip();
           employee = new Employee(name);
@@ -47,9 +47,9 @@ public class EmployeePersistence implements DataSaver {
         else {
           throw new IllegalStateException("Save file doesn't contain proper employee info");
         }
-        nextLine = DataSaver.nextLineIfItHas(inFile);
+        nextLine = DataSaverInterface.nextLineIfItHas(inFile);
         if (nextLine.contains("workPeriods:")) {
-          WorkPeriod workPeriodToAdd = null;
+          WorkPeriod workPeriodToAdd;
           WorkPeriodPersistence workPeriodPersistence = new WorkPeriodPersistence(filepath);
           while (!nextLine.equals("} /Employee")) {
             workPeriodToAdd = workPeriodPersistence.deserialize(inFile);
@@ -57,7 +57,7 @@ public class EmployeePersistence implements DataSaver {
               employee.addWorkPeriod(workPeriodToAdd);
             }
             if(inFile.hasNext()){
-              nextLine = DataSaver.nextLineIfItHas(inFile);
+              nextLine = DataSaverInterface.nextLineIfItHas(inFile);
             }
           }
         }
