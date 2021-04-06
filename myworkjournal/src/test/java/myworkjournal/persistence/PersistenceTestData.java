@@ -1,6 +1,7 @@
 package myworkjournal.persistence;
 
 import myworkjournal.core.CoreTestData;
+import myworkjournal.core.Employee;
 import myworkjournal.core.Work;
 import myworkjournal.core.WorkPeriod;
 
@@ -41,6 +42,12 @@ public class PersistenceTestData extends CoreTestData {
     assertEquals(expected.getMonthSalary(),actual.getMonthSalary(), errorText);
     assertEquals(expected.getHourlyWage(),actual.getHourlyWage(), errorText);
     assertEquals(expected.getPeriodWorkHistory().size(), actual.getPeriodWorkHistory().size());
+    //TODO: også sjekk inneholdet i lista
+  }
+
+  public void assertSameEmployee(Employee expected, Employee actual, String errorText) {
+    assertEquals(expected.getName(),actual.getName(), errorText);
+    assertEquals(expected.getWorkPeriods(),actual.getWorkPeriods(), errorText);
     //TODO: også sjekk inneholdet i lista
   }
 

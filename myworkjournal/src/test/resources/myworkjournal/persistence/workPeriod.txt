@@ -1,0 +1,7 @@
+WorkPeriod {
+  month: april
+  year: 2021
+  hourlyWage: 150
+  periodWorkHistory: [ amount=0
+    ]
+} /WorkPeriod

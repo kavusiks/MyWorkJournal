@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class WorkPeriodPersistenceTest extends PersistenceTestData implements PersistenceTestInterface {
 
-	WorkPeriodPersistence workPeriodPersistence;
+	private WorkPeriodPersistence workPeriodPersistence;
 
 
 	/**

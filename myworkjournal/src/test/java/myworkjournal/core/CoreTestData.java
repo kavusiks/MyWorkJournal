@@ -18,7 +18,7 @@ public class CoreTestData {
   String validThisMonth = WorkPeriod.months.get(LocalDateTime.now().getMonth().getValue() - 1);
   String validNextMonth = WorkPeriod.months.get(LocalDateTime.now().getMonth().getValue());
   public WorkPeriod thisMonthWorkPeriod = new WorkPeriod(validThisMonth, validYear, validHourlyWage);
-  Employee employee = new Employee("Ola");
+  public Employee employee = new Employee("Ola");
 
 
 

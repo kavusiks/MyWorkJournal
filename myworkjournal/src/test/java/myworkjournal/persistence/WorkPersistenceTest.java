@@ -87,7 +87,7 @@ public class WorkPersistenceTest extends PersistenceTestData implements Persiste
 			fail("FileNotFoundExceptions was not thrown");
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
-			assertNull(workPersistence.getWork(), "No work should be read, when there are no valid files.");
+			assertNull(workPersistence.getWork(), "No workPeriod should be read, when there are no valid files.");
 		}
 
 
