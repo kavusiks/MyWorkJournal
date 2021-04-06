@@ -16,6 +16,9 @@ public class WorkPersistenceTest extends PersistenceTestData implements Persiste
 
 	WorkPersistence workPersistence;
 
+	/**
+	 * Method used to delete the savefile created while testing persistence.
+	 */
 	@AfterEach
 	public void cleanUp() {
 		File fileToErase = new File(filepath);
