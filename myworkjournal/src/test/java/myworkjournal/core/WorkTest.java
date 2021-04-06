@@ -9,10 +9,7 @@ import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class WorkTest {
-		private LocalDateTime validStartTime = LocalDateTime.now();
-		private int shiftDurationHours = 5;
-		private LocalDateTime validEndTime = LocalDateTime.now().plusHours(shiftDurationHours);
+public class WorkTest extends CoreTestData{
 		private Work work;
 
 	@BeforeEach

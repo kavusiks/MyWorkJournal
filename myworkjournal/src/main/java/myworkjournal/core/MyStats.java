@@ -14,6 +14,7 @@ public class MyStats {
   public MyStats(Employee employee) {
     this.employee = employee;
   }
+
   public int getTotalSalary() {
     return employee.getWorkPeriods().values().stream().mapToInt(WorkPeriod::getMonthSalary).sum();
   }
