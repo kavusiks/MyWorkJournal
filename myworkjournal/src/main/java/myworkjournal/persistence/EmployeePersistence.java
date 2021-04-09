@@ -7,6 +7,7 @@ import myworkjournal.core.WorkPeriod;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.PrintWriter;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Iterator;
 import java.util.Scanner;
@@ -49,20 +50,33 @@ public class EmployeePersistence implements DataSaverInterface<Employee> {
         }
         nextLine = DataSaverInterface.nextLineIfItHas(inFile);
         if (nextLine.contains("workPeriods:")) {
-          WorkPeriod workPeriodToAdd;
-          WorkPeriodPersistence workPeriodPersistence = new WorkPeriodPersistence(filepath);
-          while (!nextLine.equals("} /Employee")) {
-            workPeriodToAdd = workPeriodPersistence.deserialize(inFile);
-            if (workPeriodToAdd != null) {
-              employee.addWorkPeriod(workPeriodToAdd);
+          if (!nextLine.replace("workPeriods: [ amount= ", "").strip().equals("0")) {
+            WorkPeriod workPeriodToAdd;
+            WorkPeriodPersistence workPeriodPersistence = new WorkPeriodPersistence(filepath);
+            while (!nextLine.strip().equals("]")) {
+              workPeriodToAdd = workPeriodPersistence.deserialize(inFile);
+              if (workPeriodToAdd != null) {
+                employee.addWorkPeriod(workPeriodToAdd);
+              }
+              if (inFile.hasNext()) {
+                nextLine = DataSaverInterface.nextLineIfItHas(inFile);
+              }
             }
-            if(inFile.hasNext()){
-              nextLine = DataSaverInterface.nextLineIfItHas(inFile);
-            }
+          } else {
+            //Dette er for å lese av "]" dersom lista er tom
+            DataSaverInterface.nextLineIfItHas(inFile);
           }
         }
-        this.employee = employee;
-      }
+          //For å lese ferdig siste "}" av objektet og nå bunnen av filen
+          nextLine = DataSaverInterface.nextLineIfItHas(inFile);
+        if (nextLine.contains("} /Employee")) {
+          //TODO vurder behovet fo rå ha en this.worp... framfor å returnere workperiod direkte
+          this.employee = employee;
+            return employee;
+          } else {
+            throw new IllegalStateException("Save file doesn't contain proper workPeriod info");
+          }
+        }
     }
 
     //System.out.println(employee.toString());
@@ -79,7 +93,7 @@ public class EmployeePersistence implements DataSaverInterface<Employee> {
   @Override public void serialize(PrintWriter outFile, int indentation) {
     outFile.println("Employee {");
     outFile.println("  name: " + employee.getName());
-    outFile.println("  workPeriods: {");
+    outFile.println("  workPeriods: [ amount= " + employee.getWorkPeriods().values().size());
     WorkPeriodPersistence workPeriodPersistence;
     for (Iterator<WorkPeriod> it = employee.iterator(); it.hasNext(); ) {
       WorkPeriod workPeriod = it.next();
@@ -89,6 +103,7 @@ public class EmployeePersistence implements DataSaverInterface<Employee> {
         outFile.println(",");
       }
     }
+    outFile.println("   ]");
     outFile.println("} /Employee");
   }
 
@@ -100,16 +115,18 @@ public class EmployeePersistence implements DataSaverInterface<Employee> {
 
   public static void main(String[] args) throws FileNotFoundException {
     Work work1 = new Work(LocalDateTime.now().minusHours(3), LocalDateTime.now().plusHours(3));
-    Work work2 = new Work(LocalDateTime.now().minusDays(2), LocalDateTime.now().plusHours(4));
+    Work work2 = new Work(LocalDateTime.now().minusDays(2), LocalDateTime.now().minusDays(2).plusHours(4));
     Work work3 = new Work(LocalDateTime.now().minusHours(1), LocalDateTime.now().plusHours(5));
     Employee e = new Employee("ole");
     Work work11 = new Work(LocalDateTime.now().minusHours(1).plusMonths(1), LocalDateTime.now().plusHours(4).plusMonths(1));
-    Work work22 = new Work(LocalDateTime.now().minusDays(2).plusMonths(1), LocalDateTime.now().plusHours(4).plusMonths(1));
-    WorkPeriod workPeriod1 = new WorkPeriod("mars", 2021, 200);
+    Work work22 = new Work(LocalDateTime.now().minusDays(2).plusMonths(1), LocalDateTime.now().minusDays(2).plusHours(4).plusMonths(1));
+    WorkPeriod workPeriod1 = new WorkPeriod(WorkPeriod.months.get(LocalDate.now().getMonthValue()+1), LocalDate.now()
+        .getYear(), 200);
     workPeriod1.addWork(work1);
     workPeriod1.addWork(work2);
     workPeriod1.addWork(work3);
-    WorkPeriod workPeriod11 = new WorkPeriod("april", 2021, 200);
+    WorkPeriod workPeriod11 = new WorkPeriod(WorkPeriod.months.get(LocalDate.now().getMonthValue()+2), LocalDate.now()
+        .getYear(), 200);
     workPeriod11.addWork(work11);
     workPeriod11.addWork(work22);
     e.addWorkPeriod(workPeriod1);

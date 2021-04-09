@@ -1,4 +1,0 @@
-Employee {
-  name: Ola
-  workPeriods: {
-} /Employee

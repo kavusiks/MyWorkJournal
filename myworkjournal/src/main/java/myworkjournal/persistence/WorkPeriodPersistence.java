@@ -6,6 +6,7 @@ import myworkjournal.core.WorkPeriod;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.PrintWriter;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Iterator;
 import java.util.Scanner;
@@ -40,34 +41,38 @@ public class WorkPeriodPersistence implements DataSaverInterface<WorkPeriod> {
       String nextLine = DataSaverInterface.nextLineIfItHas(inFile);
       if (nextLine.strip().equals("WorkPeriod {")) {
         nextLine = DataSaverInterface.nextLineIfItHas(inFile);
-        if (nextLine.contains("month")) month = nextLine.replace("month:", "").strip();
+        if (nextLine.contains("month"))
+          month = nextLine.replace("month:", "").strip();
         nextLine = DataSaverInterface.nextLineIfItHas(inFile);
-        if (nextLine.contains("year")) year = Integer.parseInt(nextLine.replace("year:", "").strip());
+        if (nextLine.contains("year"))
+          year = Integer.parseInt(nextLine.replace("year:", "").strip());
         nextLine = DataSaverInterface.nextLineIfItHas(inFile);
-        if (nextLine.contains("hourlyWage")) hourlyWage = Integer.parseInt(nextLine.replace("hourlyWage:", "").strip());
+        if (nextLine.contains("hourlyWage"))
+          hourlyWage = Integer.parseInt(nextLine.replace("hourlyWage:", "").strip());
 
-        if(!month.equals("") && year != 0 && hourlyWage != 0) {
+        if (!month.equals("") && year != 0 && hourlyWage != 0) {
           workPeriod = new WorkPeriod(month, year, hourlyWage);
-        }
-        else {
+        } else {
           throw new IllegalStateException("Savefile doesn't contain proper workPeriod info");
         }
         nextLine = DataSaverInterface.nextLineIfItHas(inFile);
-        if (nextLine.contains("periodWorkHistory") && !nextLine.replace("periodWorkHistory: [ amount=", "").strip().equals("0")) {
-          Work workToAdd;
-          WorkPersistence workPersistence = new WorkPersistence(filepath);
-          //nextLine = DataSaverInterface.nextLineIfItHas(inFile);
-          while (!nextLine.strip().equals("]")) {
-            //System.out.println("Inne i løkka siden nextline ikke er ], nextlinje er: " + nextLine);
-            workToAdd = workPersistence.deserialize(inFile);
-            if (workToAdd != null) workPeriod.addWork(workToAdd);
-            //Brukes for å nå "," eller "]"
-            nextLine = DataSaverInterface.nextLineIfItHas(inFile);
+        if (nextLine.contains("periodWorkHistory")) {
+          if (!nextLine.replace("periodWorkHistory: [ amount=", "").strip().equals("0")) {
+            Work workToAdd;
+            WorkPersistence workPersistence = new WorkPersistence(filepath);
+            //nextLine = DataSaverInterface.nextLineIfItHas(inFile);
+            while (!nextLine.strip().equals("]")) {
+              //System.out.println("Inne i løkka siden nextline ikke er ], nextlinje er: " + nextLine);
+              workToAdd = workPersistence.deserialize(inFile);
+              if (workToAdd != null)
+                workPeriod.addWork(workToAdd);
+              //Brukes for å nå "," eller "]"
+              nextLine = DataSaverInterface.nextLineIfItHas(inFile);
+            }
+          } else {
+            //Dette er for å lese av "]" dersom lista er tom
+            DataSaverInterface.nextLineIfItHas(inFile);
           }
-        }
-        else {
-          //Dette er for å lese av "]" dersom lista er tom
-          DataSaverInterface.nextLineIfItHas(inFile);
         }
         //For å lese ferdig siste "}" av objektet og nå bunnen av filen
         nextLine = DataSaverInterface.nextLineIfItHas(inFile);
@@ -75,8 +80,7 @@ public class WorkPeriodPersistence implements DataSaverInterface<WorkPeriod> {
           //TODO vurder behovet fo rå ha en this.worp... framfor å returnere workperiod direkte
           this.workPeriodToSerialize = workPeriod;
           return workPeriodToSerialize;
-        }
-        else {
+        } else {
           throw new IllegalStateException("Save file doesn't contain proper workPeriod info");
         }
       }
@@ -103,7 +107,8 @@ public class WorkPeriodPersistence implements DataSaverInterface<WorkPeriod> {
     }
 
     outFile.println("WorkPeriod {");
-    outFile.println("  month: " + WorkPeriod.months.get(workPeriodToSerialize.getPeriodStartDate().getMonthValue() - 1));
+    outFile
+        .println("  month: " + WorkPeriod.months.get(workPeriodToSerialize.getPeriodStartDate().getMonthValue() - 1));
     outFile.println("  year: " + workPeriodToSerialize.getPeriodStartDate().getYear());
     outFile.println("  hourlyWage: " + workPeriodToSerialize.getHourlyWage());
     outFile.println("  periodWorkHistory: [ amount=" + workPeriodToSerialize.getPeriodWorkHistory().size());
@@ -131,9 +136,10 @@ public class WorkPeriodPersistence implements DataSaverInterface<WorkPeriod> {
 
   public static void main(String[] args) throws FileNotFoundException {
     Work work1 = new Work(LocalDateTime.now().minusHours(3), LocalDateTime.now().plusHours(3));
-    Work work2 = new Work(LocalDateTime.now().minusDays(2), LocalDateTime.now().plusHours(4));
+    Work work2 = new Work(LocalDateTime.now().minusDays(2), LocalDateTime.now().minusDays(2).plusHours(4));
     Work work3 = new Work(LocalDateTime.now().minusHours(1), LocalDateTime.now().plusHours(5));
-    WorkPeriod workPeriod = new WorkPeriod("mars", 2021, 200);
+    WorkPeriod workPeriod = new WorkPeriod(WorkPeriod.months.get(LocalDate.now().getMonthValue()+1), LocalDate.now()
+        .getYear(), 200);
     workPeriod.addWork(work1);
     //Fiks adde flere i serializer i workpersistence
     workPeriod.addWork(work2);
