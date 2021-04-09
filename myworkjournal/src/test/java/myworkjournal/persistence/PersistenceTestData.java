@@ -43,12 +43,36 @@ public class PersistenceTestData extends CoreTestData {
     assertEquals(expected.getHourlyWage(),actual.getHourlyWage(), errorText);
     assertEquals(expected.getPeriodWorkHistory().size(), actual.getPeriodWorkHistory().size());
     //TODO: også sjekk inneholdet i lista
+    /*
+    if(actual.getPeriodWorkHistory().size() > 0) {
+      actual.getPeriodWorkHistory().stream()
+          .map(workActual -> assertSameWork(workActual, expected.getPeriodWorkHistory().stream().
+              anyMatch(workExpected -> ((workExpected.getStartTime().equals(workActual.getStartTime())) && workExpected.getStartTime().equals(workActual.getEndTime()))), errorText + "Because the workPeriods didn't contain the same works"));
+    }*/
+    if(actual.getPeriodWorkHistory().size() > 0) {
+      for (Work workActual : actual.getPeriodWorkHistory()) {
+        for (Work workExpected: expected.getPeriodWorkHistory()) {
+          if (workExpected.getStartTime().equals(workActual.getStartTime()) && workExpected.getEndTime().equals(workActual.getEndTime())) {
+            assertSameWork(workExpected, workActual, errorText + "Because the workPeriods didn't contain the same works.");
+          }
+        }
+      }
+    }
   }
 
   public void assertSameEmployee(Employee expected, Employee actual, String errorText) {
     assertEquals(expected.getName(),actual.getName(), errorText);
-    assertEquals(expected.getWorkPeriods(),actual.getWorkPeriods(), errorText);
+    assertEquals(expected.getWorkPeriods().size(),actual.getWorkPeriods().size(), errorText);
     //TODO: også sjekk inneholdet i lista
+    if(actual.getWorkPeriods().size() > 0) {
+      for (WorkPeriod workPeriodActual : actual.getWorkPeriods().values()) {
+        for (WorkPeriod workPeriodExpected: expected.getWorkPeriods().values()) {
+          if (workPeriodExpected.getIdentifier().equals(workPeriodActual.getIdentifier())) {
+            assertSameWorkPeriod(workPeriodExpected, workPeriodActual, errorText + "Because the Employees didn't contain the same workPeriods.");
+          }
+        }
+      }
+    }
   }
 
 }

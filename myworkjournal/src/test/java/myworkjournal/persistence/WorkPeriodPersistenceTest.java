@@ -60,10 +60,19 @@ public class WorkPeriodPersistenceTest extends PersistenceTestData implements Pe
 		}
 		*/
 
-		//TODO: Også vurder å teste med innhold
 
+		//Testing readFile() froom invalid filepath
+		workPeriodPersistence = new WorkPeriodPersistence(invalidPath);
+		try {
+			workPeriodPersistence.readFile();
+			fail("FileNotFoundExceptions was not thrown");
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+			assertNull(workPeriodPersistence.getWorkPeriod(), "No work should be read, when there are no valid files.");
+		}
 
 		//Testing writeFile() with valid filepath
+		//Testing with no work in periodWorkHistory()
 		workPeriodPersistence = new WorkPeriodPersistence(filepath, thisMonthWorkPeriod);
 		assertFileIsEmpty(filepath);
 		try {
@@ -84,18 +93,57 @@ public class WorkPeriodPersistenceTest extends PersistenceTestData implements Pe
 			fail("WorkPeriodPersistence was not able to read from correct path");
 		}
 
-		//Testing readFile() froom invalid filepath
-		workPeriodPersistence = new WorkPeriodPersistence(invalidPath);
+	}
+
+	@Test
+	public void testWriteAndReadFileWithSingleWork() {
+		//Testing with one work in periodWorkHistory()
+		thisMonthWorkPeriod.addWork(workThisMonth);
+		workPeriodPersistence = new WorkPeriodPersistence(filepath, thisMonthWorkPeriod);
+		assertFileIsEmpty(filepath);
 		try {
-			workPeriodPersistence.readFile();
-			fail("FileNotFoundExceptions was not thrown");
+			workPeriodPersistence.writeFile();
+			assertFileIsNotEmpty(filepath);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
-			assertNull(workPeriodPersistence.getWorkPeriod(), "No work should be read, when there are no valid files.");
+			fail("WorkPeriodPersistence was not able to write to the correct path");
 		}
 
+		//Testing readFile() by reading the data saved from the sub-test above
+		workPeriodPersistence = new WorkPeriodPersistence(filepath);
+		try {
+			workPeriodPersistence.readFile();
+			assertSameWorkPeriod(thisMonthWorkPeriod, workPeriodPersistence.getWorkPeriod(), "The read workPeriod was not the written workPeriod.");
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+			fail("WorkPeriodPersistence was not able to read from correct path");
+		}
+	}
 
+	@Test
+	public void testWriteAndReadFileWithMultipleWork() {
+		//Testing with two work in periodWorkHistory()
+		thisMonthWorkPeriod.addWork(workThisMonth);
+		thisMonthWorkPeriod.addWork(workThisMonth2);
+		workPeriodPersistence = new WorkPeriodPersistence(filepath, thisMonthWorkPeriod);
+		assertFileIsEmpty(filepath);
+		try {
+			workPeriodPersistence.writeFile();
+			assertFileIsNotEmpty(filepath);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+			fail("WorkPeriodPersistence was not able to write to the correct path");
+		}
 
+		//Testing readFile() by reading the data saved from the sub-test above
+		workPeriodPersistence = new WorkPeriodPersistence(filepath);
+		try {
+			workPeriodPersistence.readFile();
+			assertSameWorkPeriod(thisMonthWorkPeriod, workPeriodPersistence.getWorkPeriod(), "The read workPeriod was not the written workPeriod.");
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+			fail("WorkPeriodPersistence was not able to read from correct path");
+		}
 	}
 
 }

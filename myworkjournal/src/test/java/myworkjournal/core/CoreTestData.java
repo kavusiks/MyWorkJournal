@@ -12,11 +12,11 @@ public class CoreTestData {
   public Work workThisMonth3 = new Work(validStartTime.minusDays(2), validEndTime.minusDays(2));
   LocalDateTime validStartTimeNextMonth = validStartTime.plusMonths(1);
   LocalDateTime validEndTimeNextMonth = validStartTimeNextMonth.plusHours(shiftDurationHours);
-  Work workNextMonth = new Work(validStartTimeNextMonth,validEndTimeNextMonth);
-  int validYear = validStartTime.getYear();
-  int validHourlyWage = 150;
+  public Work workNextMonth = new Work(validStartTimeNextMonth,validEndTimeNextMonth);
+  public int validYear = validStartTime.getYear();
+  public int validHourlyWage = 150;
   String validThisMonth = WorkPeriod.months.get(LocalDateTime.now().getMonth().getValue() - 1);
-  String validNextMonth = WorkPeriod.months.get(LocalDateTime.now().getMonth().getValue());
+  public String validNextMonth = WorkPeriod.months.get(LocalDateTime.now().getMonth().getValue());
   public WorkPeriod thisMonthWorkPeriod = new WorkPeriod(validThisMonth, validYear, validHourlyWage);
   public Employee employee = new Employee("Ola");
 

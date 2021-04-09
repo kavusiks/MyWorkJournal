@@ -1,5 +1,6 @@
 package myworkjournal.persistence;
 
+import myworkjournal.core.WorkPeriod;
 import myworkjournal.persistence.EmployeePersistence;
 
 import org.junit.jupiter.api.AfterEach;
@@ -63,10 +64,19 @@ public class EmployeePersistenceTest extends PersistenceTestData implements Pers
 		}
 		*/
 
-		//TODO: Også vurder å teste med innhold
+		//Testing readFile() from invalid filepath
+		employeePersistence = new EmployeePersistence(invalidPath);
+		try {
+			employeePersistence.readFile();
+			fail("FileNotFoundExceptions was not thrown");
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+			assertNull(employeePersistence.getEmployee(), "No employee should be read, when there are no valid files.");
+		}
 
 
 		//Testing writeFile() with valid filepath
+		//Testing with no workPeriods in workPeriods-hashmap
 		employeePersistence = new EmployeePersistence(filepath, employee);
 		assertFileIsEmpty(filepath);
 		try {
@@ -87,18 +97,61 @@ public class EmployeePersistenceTest extends PersistenceTestData implements Pers
 			fail("employeePersistence was not able to read from correct path");
 		}
 
-		//Testing readFile() froom invalid filepath
-		employeePersistence = new EmployeePersistence(invalidPath);
+
+	}
+
+	@Test
+	public void testWriteAndReadWithSingleWorkPeriod() {
+		//Testing with single workPeriod in workPeriods-hashmap
+		//Testing writeFile() with valid filepath
+		employee.addWorkPeriod(thisMonthWorkPeriod);
+		employeePersistence = new EmployeePersistence(filepath, employee);
+		assertFileIsEmpty(filepath);
 		try {
-			employeePersistence.readFile();
-			fail("FileNotFoundExceptions was not thrown");
+			employeePersistence.writeFile();
+			assertFileIsNotEmpty(filepath);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
-			assertNull(employeePersistence.getEmployee(), "No employee should be read, when there are no valid files.");
+			fail("employeePersistence was not able to write to the correct path");
 		}
 
+		//Testing readFile() by reading the data saved from the sub-test above
+		employeePersistence = new EmployeePersistence(filepath);
+		try {
+			employeePersistence.readFile();
+			assertSameEmployee(employee, employeePersistence.getEmployee(), "The read employee was not the written employee.");
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+			fail("employeePersistence was not able to read from correct path");
+		}
+	}
 
+	@Test
+	public void testWriteAndReadWithMultipleWorkPeriods() {
+		//Testing with multiple workPeriods in workPeriods-hashmap
+		employee.addWorkPeriod(thisMonthWorkPeriod);
+		WorkPeriod nextMonthWorkPeriod = new WorkPeriod(validNextMonth, validYear, validHourlyWage);
+		nextMonthWorkPeriod.addWork(workNextMonth);
+		employee.addWorkPeriod(nextMonthWorkPeriod);
+		employeePersistence = new EmployeePersistence(filepath, employee);
+		assertFileIsEmpty(filepath);
+		try {
+			employeePersistence.writeFile();
+			assertFileIsNotEmpty(filepath);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+			fail("employeePersistence was not able to write to the correct path");
+		}
 
+		//Testing readFile() by reading the data saved from the sub-test above
+		employeePersistence = new EmployeePersistence(filepath);
+		try {
+			employeePersistence.readFile();
+			assertSameEmployee(employee, employeePersistence.getEmployee(), "The read employee was not the written employee.");
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+			fail("employeePersistence was not able to read from correct path");
+		}
 	}
 
 }
