@@ -150,8 +150,6 @@ public class WorkPeriodPersistence implements DataSaverInterface<WorkPeriod> {
         new WorkPeriodPersistence("src/main/resources/myworkjournal/persistence/workPeriod.txt");
     wp.writeFile();
     wp1.readFile();
-    //System.out.println(wp1.getWorkPeriod().getIdentifier());
-    //System.out.println(wp1.getWorkPeriod().getPeriodWorkHistory());
 
   }
 }

@@ -120,12 +120,12 @@ public class EmployeePersistence implements DataSaverInterface<Employee> {
     Employee e = new Employee("ole");
     Work work11 = new Work(LocalDateTime.now().minusHours(1).plusMonths(1), LocalDateTime.now().plusHours(4).plusMonths(1));
     Work work22 = new Work(LocalDateTime.now().minusDays(2).plusMonths(1), LocalDateTime.now().minusDays(2).plusHours(4).plusMonths(1));
-    WorkPeriod workPeriod1 = new WorkPeriod(WorkPeriod.months.get(LocalDate.now().getMonthValue()+1), LocalDate.now()
+    WorkPeriod workPeriod1 = new WorkPeriod(WorkPeriod.months.get(LocalDate.now().getMonthValue()-1), LocalDate.now()
         .getYear(), 200);
     workPeriod1.addWork(work1);
     workPeriod1.addWork(work2);
     workPeriod1.addWork(work3);
-    WorkPeriod workPeriod11 = new WorkPeriod(WorkPeriod.months.get(LocalDate.now().getMonthValue()+2), LocalDate.now()
+    WorkPeriod workPeriod11 = new WorkPeriod(WorkPeriod.months.get(LocalDate.now().getMonthValue()), LocalDate.now()
         .getYear(), 200);
     workPeriod11.addWork(work11);
     workPeriod11.addWork(work22);

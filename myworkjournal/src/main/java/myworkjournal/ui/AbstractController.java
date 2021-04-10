@@ -5,6 +5,7 @@ import java.io.IOException;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.layout.AnchorPane;
 import myworkjournal.core.Employee;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -16,6 +17,10 @@ import myworkjournal.persistence.EmployeePersistence;
 
 public abstract class AbstractController {
 	@FXML Button saveBtn;
+	@FXML Button closePopupBtn;
+	@FXML Button closeAppBtn;
+	@FXML Button saveAndCloseAppBtn;
+	@FXML AnchorPane popupPane;
 
 	private Employee employee;
 
@@ -42,7 +47,7 @@ public abstract class AbstractController {
 	}
 
 	@FXML
-	protected void saveData() throws FileNotFoundException  {
+	protected void saveDataAndClose() throws FileNotFoundException  {
 		if (employee== null) {
 			throw new IllegalArgumentException("Employee to save is not defined");
 		}
@@ -50,6 +55,22 @@ public abstract class AbstractController {
 		employeeSaver.writeFile();
 		System.exit(0);
 	}
+
+	@FXML
+	protected void closeApp() {
+		System.exit(0);
+	}
+
+	@FXML
+	protected void showPopup() {
+		popupPane.setVisible(true);
+	}
+
+	@FXML
+	protected void closePopup() {
+		popupPane.setVisible(false);
+	}
+
 	
 	
 }
