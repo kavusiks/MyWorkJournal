@@ -94,15 +94,18 @@ public class EmployeePersistence implements DataSaverInterface<Employee> {
     outFile.println("Employee {");
     outFile.println("  name: " + employee.getName());
     outFile.println("  workPeriods: [ amount= " + employee.getWorkPeriods().values().size());
-    WorkPeriodPersistence workPeriodPersistence;
-    for (Iterator<WorkPeriod> it = employee.iterator(); it.hasNext(); ) {
-      WorkPeriod workPeriod = it.next();
-      workPeriodPersistence = new WorkPeriodPersistence(filepath, workPeriod);
-      workPeriodPersistence.serialize(outFile, 4);
-      if(it.hasNext()){
-        outFile.println(",");
+    boolean firstWorkPeriodSerialized= false;
+    for (WorkPeriod workPeriod : employee) {
+      if (firstWorkPeriodSerialized) {
+        outFile.println("  ,");
       }
+      else {
+        firstWorkPeriodSerialized = true;
+      }
+      WorkPeriodPersistence workPeriodPersistence = new WorkPeriodPersistence(filepath, workPeriod);
+      workPeriodPersistence.serialize(outFile, 4);
     }
+
     outFile.println("   ]");
     outFile.println("} /Employee");
   }

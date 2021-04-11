@@ -112,15 +112,16 @@ public class WorkPeriodPersistence implements DataSaverInterface<WorkPeriod> {
     outFile.println("  year: " + workPeriodToSerialize.getPeriodStartDate().getYear());
     outFile.println("  hourlyWage: " + workPeriodToSerialize.getHourlyWage());
     outFile.println("  periodWorkHistory: [ amount=" + workPeriodToSerialize.getPeriodWorkHistory().size());
-    WorkPersistence workPersistence;
-
-    for (Iterator<Work> it = workPeriodToSerialize.iterator(); it.hasNext(); ) {
-      Work work = it.next();
-      workPersistence = new WorkPersistence(filepath, work);
-      workPersistence.serialize(outFile, 4);
-      if (it.hasNext()) {
+    boolean firstWorkSerialized= false;
+    for (Work work : workPeriodToSerialize) {
+      if (firstWorkSerialized) {
         outFile.println("  ,");
       }
+      else {
+      firstWorkSerialized = true;
+      }
+      WorkPersistence workPersistence = new WorkPersistence(filepath, work);
+      workPersistence.serialize(outFile, 4);
     }
 
     outFile.println("    ]");
@@ -142,8 +143,8 @@ public class WorkPeriodPersistence implements DataSaverInterface<WorkPeriod> {
         .getYear(), 200);
     workPeriod.addWork(work1);
     //Fiks adde flere i serializer i workpersistence
-    workPeriod.addWork(work2);
-    workPeriod.addWork(work3);
+    //workPeriod.addWork(work2);
+    //workPeriod.addWork(work3);
     WorkPeriodPersistence wp =
         new WorkPeriodPersistence("src/main/resources/myworkjournal/persistence/workPeriod.txt", workPeriod);
     WorkPeriodPersistence wp1 =
