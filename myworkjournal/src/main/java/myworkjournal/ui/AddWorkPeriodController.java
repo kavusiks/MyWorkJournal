@@ -14,13 +14,16 @@ import java.util.Collection;
 
 public class AddWorkPeriodController extends AbstractController {
 
-  @FXML ListView<String> existingMonthListView;
+  @FXML ListView<WorkPeriod> existingMonthListView;
   @FXML Button goToDataInputBtn;
   @FXML Button addMonthBtn;
+  @FXML Button removeMonthBtn;
   @FXML TextField wageInputField;
   @FXML ChoiceBox<String> monthChoiceBox;
   @FXML ChoiceBox<Integer> yearChoiceBox;
   @FXML Label errorMessage;
+
+  private Employee employee;
 
   @FXML
   private void initialize() {
@@ -34,14 +37,20 @@ public class AddWorkPeriodController extends AbstractController {
       addMonthBtn.setDisable(false);
     });
 
+    existingMonthListView.setOnMouseClicked((event) -> {
+      if(existingMonthListView.getSelectionModel().getSelectedItem() != null)
+        removeMonthBtn.setDisable(false);
+    });
+
   }
 
 
 
     @Override void sceneSwitchedUpdate() {
+    employee = getEmployee();
     existingMonthListView.getItems().clear();
-    for (String monthIdentifier: getEmployee().getWorkPeriods().keySet()){
-      existingMonthListView.getItems().add(String.valueOf(monthIdentifier));
+    for (WorkPeriod month: getEmployee().getWorkPeriods().values()){
+      existingMonthListView.getItems().add(month);
     }
     monthChoiceBox.getItems().setAll(WorkPeriod.months);
     Collection<Integer> yearsToAdd = Arrays.asList((LocalDate.now().getYear() - 1), (LocalDate.now().getYear()), (LocalDate.now()
@@ -52,7 +61,6 @@ public class AddWorkPeriodController extends AbstractController {
   @FXML private void addMonth() throws IllegalArgumentException {
     String error = "";
     errorMessage.setText(error);
-    Employee employee = getEmployee();
     if (monthChoiceBox.getValue() == null || yearChoiceBox.getValue() ==null){
       error = "Måned og år for periode må være valgt";
       errorMessage.setText(error);
@@ -77,6 +85,19 @@ public class AddWorkPeriodController extends AbstractController {
     employee.addWorkPeriod(newPeriod);
     setEmployee(employee);
     sceneSwitchedUpdate();
+  }
+
+  @FXML
+  private void removeMonth() {
+    try {
+      employee.removeWorkPeriod(existingMonthListView.getSelectionModel().getSelectedItem());
+    }
+    catch (IllegalArgumentException e) {
+      errorMessage.setText(e.getMessage());
+    }
+    setEmployee(employee);
+    sceneSwitchedUpdate();
+    removeMonthBtn.setDisable(true);
 
   }
 

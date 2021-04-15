@@ -45,7 +45,6 @@ public class DataInputController extends AbstractController {
   @FXML ChoiceBox<String> monthChoiceBox;
 
   private WorkPeriod workPeriod;
-  private Work selectedWork;
 
 
 

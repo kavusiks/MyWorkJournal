@@ -41,8 +41,13 @@ public class Employee implements Iterable<WorkPeriod> {
         }
     }
 
+    public void removeWorkPeriod(WorkPeriod workPeriod) throws IllegalArgumentException {
+        if(workPeriod== null) throw new IllegalArgumentException("The employee's workPeriods doesn't contain the given workPeriod. Choose on of the existing workPeriods");
+        if(!workPeriods.containsKey(workPeriod.getIdentifier())) throw new IllegalArgumentException("The employee's workPeriods doesn't contain the given workPeriod. Choose on of the existing workPeriods");
+        workPeriods.remove(workPeriod.getIdentifier());
+    }
+
     public WorkPeriod mergeTwoWorkPeriods(WorkPeriod workPeriod1, WorkPeriod workPeriod2) {
-        WorkPeriod result = workPeriod1;
         Collection<Work> workHistory1 = workPeriod1.getPeriodWorkHistory();
         Collection<Work> workHistory2 = workPeriod2.getPeriodWorkHistory();
         for (Work work : workHistory2) {
@@ -50,8 +55,8 @@ public class Employee implements Iterable<WorkPeriod> {
                 workHistory1.add(work);
             }
         }
-        result.setPeriodWorkHistory(workHistory1);
-        return result;
+        workPeriod1.setPeriodWorkHistory(workHistory1);
+        return workPeriod1;
     }
 
     public String getName(){
