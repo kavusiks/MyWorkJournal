@@ -86,6 +86,11 @@ public class WorkPeriod implements Iterable<Work> {
     }
   }
 
+  public void removeWork(Work work) throws IllegalArgumentException{
+    if (!periodWorkHistory.contains(work)) throw new IllegalArgumentException("Workperiod does not contain the given work. Choose one of the existing works.");
+    periodWorkHistory.remove(work);
+  }
+
   public void setPeriodWorkHistory(Collection<Work> periodWorkHistory) {
     this.periodWorkHistory = periodWorkHistory;
   }
@@ -113,13 +118,16 @@ public class WorkPeriod implements Iterable<Work> {
     Work work2 = new Work(LocalDateTime.now().minusHours(2), LocalDateTime.now().plusHours(1));
     Work work3 = new Work(LocalDateTime.now().minusHours(3), LocalDateTime.now());
     Work work4 = new Work(LocalDateTime.now().minusHours(3), LocalDateTime.now().plusHours(2));
-    WorkPeriod wp = new WorkPeriod("mars", 2021, 200);
-    //wp.addWork(work11);
+    WorkPeriod wp = new WorkPeriod(months.get(LocalDate.now().getMonthValue()-1), LocalDate.now().getYear(), 200);
+    wp.addWork(work11);
     //wp.addWork(work12);
     //wp.addWork(work2);
     //wp.addWork(work3);
     //wp.addWork(work4);
     //System.out.println(wp.checkIfSameWork(work11, work12));
+    System.out.println(wp.getPeriodWorkHistory().size());
+    wp.removeWork(work11);
+    System.out.println(wp.getPeriodWorkHistory().size());
     System.out.println(wp.checkIfSameWork(work11, work12));
 }
 

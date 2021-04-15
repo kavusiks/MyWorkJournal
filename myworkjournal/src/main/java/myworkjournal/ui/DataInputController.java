@@ -12,7 +12,7 @@ import myworkjournal.core.Employee;
 import javafx.fxml.FXML;
 
 
-public class DataInputController<event> extends AbstractController {
+public class DataInputController extends AbstractController {
   @FXML
   DatePicker workStartDatePicker;
 
@@ -29,6 +29,10 @@ public class DataInputController<event> extends AbstractController {
   @FXML
   Button addDataBtn;
 
+
+  @FXML
+  Button removeDataBtn;
+
   @FXML
   Button viewStatsBtn;
   @FXML Label errorMessage;
@@ -36,11 +40,12 @@ public class DataInputController<event> extends AbstractController {
   @FXML Button goToAddMonthBtn;
 
   @FXML
-  ListView<String> myDataListView;
+  ListView<Work> myDataListView;
 
   @FXML ChoiceBox<String> monthChoiceBox;
 
   private WorkPeriod workPeriod;
+  private Work selectedWork;
 
 
 
@@ -58,15 +63,18 @@ public class DataInputController<event> extends AbstractController {
     monthChoiceBox.setOnAction((event) -> {
       String selectedPeriod = monthChoiceBox.getSelectionModel().getSelectedItem();
       workPeriod = getEmployee().getWorkPeriods().get(selectedPeriod);
-      myDataListView.getItems().clear();
-      for (Work work : workPeriod) {
-        myDataListView.getItems().add(String.valueOf(work));
-      }
       workStartDatePicker.setDisable(false);
       workEndDatePicker.setDisable(false);
       shiftStartTimeInput.setDisable(false);
       shiftEndTimeInput.setDisable(false);
       addDataBtn.setDisable(false);
+      removeDataBtn.setDisable(true);
+      updateListView();
+    });
+
+    myDataListView.setOnMouseClicked((event) -> {
+      if(myDataListView.getSelectionModel().getSelectedItem() != null)
+      removeDataBtn.setDisable(false);
     });
 
   }
@@ -109,27 +117,43 @@ public class DataInputController<event> extends AbstractController {
       throw new IllegalArgumentException(error);
     }
 
-    myDataListView.getItems().clear();
     int startHour = Integer.parseInt(shiftStartTimeInput.getText(0, 2));
     int startMinute = Integer.parseInt(shiftStartTimeInput.getText(3, 5));
     int endHour = Integer.parseInt(shiftEndTimeInput.getText(0, 2));
     int endMinute = Integer.parseInt(shiftEndTimeInput.getText(3, 5));
-    //System.out.println("starthour:"+startHour+"startminute"+startMinute);
 
     try{
     Work newData=new Work(workStartDatePicker.getValue().atTime(startHour, startMinute),workEndDatePicker.getValue().atTime(endHour, endMinute));
-    //System.out.println("valgte workperiod" +workPeriod.getIdentifier());
-    //System.out.println("work som skal legges til" +newData.toString());
-    //System.out.println(newData.getHours());
     workPeriod.addWork(newData);
     } catch (IllegalArgumentException e){
       errorMessage.setText(e.getMessage());
     }
-    for (Work work:workPeriod.getPeriodWorkHistory()){
-      myDataListView.getItems().add(String.valueOf(work));
-    }
+    updateListView();
 
   }
+
+  private void updateListView() {
+    myDataListView.getItems().clear();
+    for (Work work:workPeriod.getPeriodWorkHistory()) {
+      myDataListView.getItems().add(work);
+    }
+  }
+
+
+  @FXML
+  private void removeFromWorkPeriod() {
+    try {
+    this.workPeriod.removeWork(myDataListView.getSelectionModel().getSelectedItem());
+    }
+    catch (IllegalArgumentException e) {
+      errorMessage.setText(e.getMessage());
+    }
+    updateListView();
+    removeDataBtn.setDisable(true);
+
+  }
+
+
 
 
   @FXML
