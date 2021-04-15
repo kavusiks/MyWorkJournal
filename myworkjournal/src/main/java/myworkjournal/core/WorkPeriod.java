@@ -61,21 +61,14 @@ public class WorkPeriod implements Iterable<Work> {
   /**
    * Method used to check if the two given instances for Work are the same.
    * This is done by comparing the start time and end time of each work.
-   * The comparison is done by first comparing the date, and the following start hour and minute.
    * @param work1 The first instance of Work
    * @param work2 The second instance of Work
    * @return true if they are the same
    */
   private boolean checkIfSameWork(Work work1, Work work2) {
-    if (work1.getStartTime().toLocalDate().equals(work2.getStartTime().toLocalDate())) {
-      if((work1.getStartTime().getHour() == work2.getStartTime().getHour()) && (work1.getStartTime().getMinute() == work2.getStartTime().getMinute()))
-        if ((work1.getEndTime().toLocalDate().equals(work2.getEndTime().toLocalDate()))){
-          return work1.getEndTime().getHour() == work2.getEndTime().getHour() && work1.getEndTime().getMinute() == work2
-              .getEndTime().getMinute();
-        }
-    }
-    return false;
+    return work1.getStartTime().equals(work2.getStartTime()) && work1.getEndTime().equals(work2.getEndTime());
   }
+
 
   private boolean checkWorkAlreadyAdded(Work workToCheck) {
     return periodWorkHistory.stream().anyMatch(work -> checkIfSameWork(work, workToCheck));
@@ -115,18 +108,19 @@ public class WorkPeriod implements Iterable<Work> {
   }
 
   public static void main(String[] args) {
-    Work work11 = new Work(LocalDateTime.now().minusHours(2), LocalDateTime.now());
-    Work work12 = new Work(LocalDateTime.now().minusHours(2), LocalDateTime.now());
+    Work work11 = new Work(LocalDateTime.now().minusHours(1), LocalDateTime.now());
+    Work work12 = new Work(LocalDateTime.now().minusHours(1), LocalDateTime.now());
     Work work2 = new Work(LocalDateTime.now().minusHours(2), LocalDateTime.now().plusHours(1));
     Work work3 = new Work(LocalDateTime.now().minusHours(3), LocalDateTime.now());
     Work work4 = new Work(LocalDateTime.now().minusHours(3), LocalDateTime.now().plusHours(2));
     WorkPeriod wp = new WorkPeriod("mars", 2021, 200);
-    wp.addWork(work11);
+    //wp.addWork(work11);
     //wp.addWork(work12);
-    wp.addWork(work2);
-    wp.addWork(work3);
-    wp.addWork(work4);
+    //wp.addWork(work2);
+    //wp.addWork(work3);
+    //wp.addWork(work4);
     //System.out.println(wp.checkIfSameWork(work11, work12));
+    System.out.println(wp.checkIfSameWork(work11, work12));
 }
 
   @Override public Iterator<Work> iterator() {
