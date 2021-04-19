@@ -93,7 +93,7 @@ public class EmployeePersistence implements DataSaverInterface<Employee> {
   @Override public void serialize(PrintWriter outFile, int indentation) {
     outFile.println("Employee {");
     outFile.println("  name: " + employee.getName());
-    outFile.println("  workPeriods: [ amount= " + employee.getWorkPeriods().values().size());
+    outFile.println("  workPeriods: [ amount= " + employee.getWorkPeriods().size());
     boolean firstWorkPeriodSerialized= false;
     for (WorkPeriod workPeriod : employee) {
       if (firstWorkPeriodSerialized) {

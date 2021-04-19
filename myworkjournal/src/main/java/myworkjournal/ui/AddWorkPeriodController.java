@@ -49,7 +49,7 @@ public class AddWorkPeriodController extends AbstractController {
     @Override void sceneSwitchedUpdate() {
     employee = getEmployee();
     existingMonthListView.getItems().clear();
-    for (WorkPeriod month: getEmployee().getWorkPeriods().values()){
+    for (WorkPeriod month: getEmployee().getWorkPeriods()){
       existingMonthListView.getItems().add(month);
     }
     monthChoiceBox.getItems().setAll(WorkPeriod.months);
@@ -57,6 +57,9 @@ public class AddWorkPeriodController extends AbstractController {
         .getYear() + 1));
     yearChoiceBox.getItems().setAll(yearsToAdd);
   }
+
+  //TODO: prøv å få over logikk i employwwklasse@
+  //TODO: vurder å ha en egen metode som sjekker om to workperiod er like, den streamen altså
 
   @FXML private void addMonth() throws IllegalArgumentException {
     String error = "";
@@ -77,7 +80,7 @@ public class AddWorkPeriodController extends AbstractController {
     }
     int wage = Integer.parseInt(wageInputField.getText());
     WorkPeriod newPeriod = new WorkPeriod(startMonth, startYear, wage);
-    if (employee.getWorkPeriods().containsKey(newPeriod.getIdentifier())) {
+    if (employee.getWorkPeriods().stream().anyMatch(p -> p.getIdentifier().equals(newPeriod.getIdentifier()))) {
       error = "Work month already exists";
       errorMessage.setText(error);
       throw new IllegalArgumentException(error);

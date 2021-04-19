@@ -1,20 +1,19 @@
 package myworkjournal.core;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
+import java.util.*;
 
 public class Employee implements Iterable<WorkPeriod> {
 
     private String name;
-    private HashMap<String, WorkPeriod> workPeriods; //Collection eller array?
+    //private HashMap<String, WorkPeriod> workPeriods; //Collection eller array?
+    private List<WorkPeriod> workPeriods = new ArrayList<>();
 
     public Employee(String name) {
         setName(name);
-        this.workPeriods = new HashMap<>();
+        //todo: hvorfor ha setname?
     }
 
-    public Employee(String name, HashMap<String, WorkPeriod> workPeriods) {
+    public Employee(String name, List<WorkPeriod> workPeriods) {
         this.name = name;
         this.workPeriods = workPeriods;
     }
@@ -27,29 +26,50 @@ public class Employee implements Iterable<WorkPeriod> {
         this.name = name;
     }
 
-    public HashMap<String, WorkPeriod> getWorkPeriods() {
+    /*public HashMap<String, WorkPeriod> getWorkPeriods() {
+        return this.workPeriods;
+    }*/
+    public List<WorkPeriod> getWorkPeriods() {
         return this.workPeriods;
     }
 
     public void addWorkPeriod(WorkPeriod workPeriod) {
+        if(workPeriods.stream().anyMatch(p -> p.getIdentifier().equals(workPeriod.getIdentifier()))) {
+            WorkPeriod existingWorkPeriod = workPeriods.stream().filter(existingWP -> existingWP.getIdentifier().equals(workPeriod.getIdentifier())).findAny().orElseThrow();
+            workPeriods.remove(existingWorkPeriod);
+            workPeriods.add(mergeTwoWorkPeriods(existingWorkPeriod, workPeriod));
+        }
+        /*
         if(workPeriods.containsKey(workPeriod.getIdentifier())) {
+
             workPeriods.put(workPeriod.getIdentifier(), mergeTwoWorkPeriods(workPeriods.get(workPeriod.getIdentifier()), workPeriod));
         }
+        */
         else {
-
-        workPeriods.put(workPeriod.getIdentifier(), workPeriod);
+            workPeriods.add(workPeriod);
+        //workPeriods.put(workPeriod.getIdentifier(), workPeriod);
         }
-    }
 
+        Collections.sort(workPeriods);
+    }
+/*
     public void removeWorkPeriod(WorkPeriod workPeriod) throws IllegalArgumentException {
         if(workPeriod== null) throw new IllegalArgumentException("The employee's workPeriods doesn't contain the given workPeriod. Choose on of the existing workPeriods");
         if(!workPeriods.containsKey(workPeriod.getIdentifier())) throw new IllegalArgumentException("The employee's workPeriods doesn't contain the given workPeriod. Choose on of the existing workPeriods");
         workPeriods.remove(workPeriod.getIdentifier());
     }
 
+ */
+
+    public void removeWorkPeriod(WorkPeriod workPeriod) throws IllegalArgumentException {
+        if(workPeriod== null) throw new IllegalArgumentException("The employee's workPeriods doesn't contain the given workPeriod. Choose on of the existing workPeriods");
+        if(!workPeriods.contains(workPeriod)) throw new IllegalArgumentException("The employee's workPeriods doesn't contain the given workPeriod. Choose on of the existing workPeriods");
+        workPeriods.remove(workPeriod);
+    }
+
     public WorkPeriod mergeTwoWorkPeriods(WorkPeriod workPeriod1, WorkPeriod workPeriod2) {
-        Collection<Work> workHistory1 = workPeriod1.getPeriodWorkHistory();
-        Collection<Work> workHistory2 = workPeriod2.getPeriodWorkHistory();
+        List<Work> workHistory1 = workPeriod1.getPeriodWorkHistory();
+        List<Work> workHistory2 = workPeriod2.getPeriodWorkHistory();
         for (Work work : workHistory2) {
             if (!workHistory1.contains(work)) {
                 workHistory1.add(work);
@@ -67,8 +87,13 @@ public class Employee implements Iterable<WorkPeriod> {
         return "Employee{" + "name='" + name + '\'' + ", workPeriods=" + workPeriods + '}';
     }
 
+    /*
     @Override public Iterator<WorkPeriod> iterator() {
         return workPeriods.values().iterator();
+    }*/
+
+    @Override public Iterator<WorkPeriod> iterator() {
+        return workPeriods.iterator();
     }
 }
 

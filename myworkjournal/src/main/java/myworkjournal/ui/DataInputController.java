@@ -42,7 +42,7 @@ public class DataInputController extends AbstractController {
   @FXML
   ListView<Work> myDataListView;
 
-  @FXML ChoiceBox<String> monthChoiceBox;
+  @FXML ChoiceBox<WorkPeriod> monthChoiceBox;
 
   private WorkPeriod workPeriod;
 
@@ -51,7 +51,8 @@ public class DataInputController extends AbstractController {
 
   @FXML
   private void initialize(){
-    monthChoiceBox.setValue("Velg arbeidsmåned");
+    //monthChoiceBox.setValue("Velg arbeidsmåned");
+
 
   workStartDatePicker.setOnAction((event) -> {
     LocalDate selectedDate = workStartDatePicker.getValue();
@@ -60,8 +61,9 @@ public class DataInputController extends AbstractController {
   });
 
     monthChoiceBox.setOnAction((event) -> {
-      String selectedPeriod = monthChoiceBox.getSelectionModel().getSelectedItem();
-      workPeriod = getEmployee().getWorkPeriods().get(selectedPeriod);
+      //String selectedPeriod = monthChoiceBox.getSelectionModel().getSelectedItem();
+      //workPeriod = getEmployee().getWorkPeriods().stream().filter(wp ->wp.getIdentifier().equals(selectedPeriod)).;
+      workPeriod = monthChoiceBox.getSelectionModel().getSelectedItem();
       workStartDatePicker.setDisable(false);
       workEndDatePicker.setDisable(false);
       shiftStartTimeInput.setDisable(false);
@@ -79,8 +81,8 @@ public class DataInputController extends AbstractController {
   }
   @Override void sceneSwitchedUpdate() {
     monthChoiceBox.getItems().clear();
-    for (WorkPeriod workPeriod : getEmployee().getWorkPeriods().values()) {
-      monthChoiceBox.getItems().add(workPeriod.getIdentifier());
+    for (WorkPeriod workPeriod : getEmployee().getWorkPeriods()) {
+      monthChoiceBox.getItems().add(workPeriod);
     }
     updateChoiceBox();
 
@@ -89,8 +91,8 @@ public class DataInputController extends AbstractController {
   @FXML
   private void updateChoiceBox() {
     monthChoiceBox.getItems().clear();
-    for (WorkPeriod workPeriod : getEmployee().getWorkPeriods().values()){
-      monthChoiceBox.getItems().add(workPeriod.getIdentifier());
+    for (WorkPeriod workPeriod : getEmployee().getWorkPeriods()){
+      monthChoiceBox.getItems().add(workPeriod);
     }
   }
 

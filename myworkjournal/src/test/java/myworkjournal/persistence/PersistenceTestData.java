@@ -65,8 +65,8 @@ public class PersistenceTestData extends CoreTestData {
     assertEquals(expected.getWorkPeriods().size(),actual.getWorkPeriods().size(), errorText);
     //TODO: også sjekk inneholdet i lista
     if(actual.getWorkPeriods().size() > 0) {
-      for (WorkPeriod workPeriodActual : actual.getWorkPeriods().values()) {
-        for (WorkPeriod workPeriodExpected: expected.getWorkPeriods().values()) {
+      for (WorkPeriod workPeriodActual : actual.getWorkPeriods()) {
+        for (WorkPeriod workPeriodExpected: expected.getWorkPeriods()) {
           if (workPeriodExpected.getIdentifier().equals(workPeriodActual.getIdentifier())) {
             assertSameWorkPeriod(workPeriodExpected, workPeriodActual, errorText + "Because the Employees didn't contain the same workPeriods.");
           }

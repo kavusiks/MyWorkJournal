@@ -42,12 +42,12 @@ public class ViewStatsController extends AbstractController {
     MyStats stats = new MyStats(getEmployee());
     int timer = 0;
     int lonn = stats.getTotalSalary();
-    for(WorkPeriod workPeriod: getEmployee().getWorkPeriods().values()) {
+    for(WorkPeriod workPeriod: getEmployee().getWorkPeriods()) {
       System.out.println("WorkPeriod " + workPeriod.getIdentifier() +" totlønn: " + workPeriod.getMonthSalary() + " times "+ workPeriod.getHourlyWage() + " timer med arbeid tot: " + workPeriod.getTotalHours());
     }
     System.out.println("LØNN, " + lonn);
     WorkPeriod highestPaisWorkPeriod = stats.getBestPaidWorkPeriod();
-    for (WorkPeriod workPeriod: getEmployee().getWorkPeriods().values()) {
+    for (WorkPeriod workPeriod: getEmployee().getWorkPeriods()) {
       timer+= workPeriod.getTotalHours();
     }
     bestWorkPeriodLabel.setText(highestPaisWorkPeriod.getIdentifier());

@@ -31,7 +31,7 @@ public class MyStatsTest extends CoreTestData{
 
 		totalHours = workNextMonth.getHours() + workThisMonth.getHours() + workThisMonth2.getHours() + workThisMonth3.getHours();
 		totatSalary = totalHours * validHourlyWage;
-		totalShifts = employee.getWorkPeriods().values().stream().mapToInt(workPeriod -> (workPeriod.getPeriodWorkHistory().size())).sum();
+		totalShifts = employee.getWorkPeriods().stream().mapToInt(workPeriod -> (workPeriod.getPeriodWorkHistory().size())).sum();
 		totalWorkPeriods = employee.getWorkPeriods().size();
 	}
 
@@ -41,8 +41,8 @@ public class MyStatsTest extends CoreTestData{
 		myStats = new MyStats(employee);
 		assertNotNull(myStats, "The object wasn't sat correctly");
 		String errorText = "The object doesn't contain correct work periods";
-		assertTrue(employee.getWorkPeriods().containsValue(thisMonthWorkPeriod), errorText);
-		assertTrue(employee.getWorkPeriods().containsValue(nextMonthWorkPeriod), errorText);
+		assertTrue(employee.getWorkPeriods().contains(thisMonthWorkPeriod), errorText);
+		assertTrue(employee.getWorkPeriods().contains(nextMonthWorkPeriod), errorText);
 	}
 
 	@Test
@@ -64,3 +64,4 @@ public class MyStatsTest extends CoreTestData{
 
 
 }
+

@@ -16,15 +16,15 @@ public class MyStats {
   }
 
   public int getTotalSalary() {
-    return employee.getWorkPeriods().values().stream().mapToInt(WorkPeriod::getMonthSalary).sum();
+    return employee.getWorkPeriods().stream().mapToInt(WorkPeriod::getMonthSalary).sum();
   }
 
   public WorkPeriod getBestPaidWorkPeriod() {
-    //optinalInt test = employee.getWorkPeriods().values().stream().mapToInt(WorkPeriod::getMonthSalary).max();
+    //optinalInt test = employee.getWorkPeriods().stream().mapToInt(WorkPeriod::getMonthSalary).max();
 
     WorkPeriod highestPaidWorkPeriod = null;
     int salaryForHighestPaidWorkPeriod = 0;
-    for (WorkPeriod workPeriod : employee.getWorkPeriods().values()) {
+    for (WorkPeriod workPeriod : employee.getWorkPeriods()) {
       if (workPeriod.getMonthSalary() > salaryForHighestPaidWorkPeriod) {
         salaryForHighestPaidWorkPeriod = workPeriod.getMonthSalary();
         highestPaidWorkPeriod = workPeriod;
@@ -37,7 +37,7 @@ public class MyStats {
 /*
   public double getAverage(Method method) {
     int total =
-        employee.getWorkPeriods().values().stream().mapToInt(workPeriod -> {
+        employee.getWorkPeriods().stream().mapToInt(workPeriod -> {
           try {
             return (method.invoke(workPeriod));
           } catch (IllegalAccessException e) {
@@ -47,38 +47,39 @@ public class MyStats {
           }
         })
             .sum();
-    return (double)total / (double)employee.getWorkPeriods().values().size();
+    return (double)total / (double)employee.getWorkPeriods().size();
   }
 
  */
 
   public double getAverageShiftAmount() {
     int totalShiftAmounts =
-        employee.getWorkPeriods().values().stream().mapToInt(workPeriod -> (workPeriod.getPeriodWorkHistory().size()))
+        employee.getWorkPeriods().stream().mapToInt(workPeriod -> (workPeriod.getPeriodWorkHistory().size()))
             .sum();
-    return (double)totalShiftAmounts / (double)employee.getWorkPeriods().values().size();
+    return (double)totalShiftAmounts / (double)employee.getWorkPeriods().size();
   }
 
   public double getAverageWorkHours() {
     int totalHours =
-        employee.getWorkPeriods().values().stream().mapToInt(WorkPeriod::getTotalHours)
+        employee.getWorkPeriods().stream().mapToInt(WorkPeriod::getTotalHours)
             .sum();
-    return (double)totalHours / (double)employee.getWorkPeriods().values().size();
+    return (double)totalHours / (double)employee.getWorkPeriods().size();
   }
 
   public double getAverageSalary() {
     int totalSalary =
-        employee.getWorkPeriods().values().stream().mapToInt(WorkPeriod::getMonthSalary)
+        employee.getWorkPeriods().stream().mapToInt(WorkPeriod::getMonthSalary)
             .sum();
-    return (double)totalSalary / (double)employee.getWorkPeriods().values().size();
+    return (double)totalSalary / (double)employee.getWorkPeriods().size();
   }
 
   public double getAverageHourlyWage() {
 
     int totalHourlyWage =
-        employee.getWorkPeriods().values().stream().mapToInt(WorkPeriod::getHourlyWage)
+        employee.getWorkPeriods().stream().mapToInt(WorkPeriod::getHourlyWage)
             .sum();
-    return (double)totalHourlyWage / (double)employee.getWorkPeriods().values().size();
+    return (double)totalHourlyWage / (double)employee.getWorkPeriods().size();
   }
 
 }
+

@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -149,7 +150,7 @@ public class WorkPeriodTest extends CoreTestData {
     //Testing setPeriodWorkHistory()
     assertEquals(0, thisMonthWorkPeriod.getPeriodWorkHistory().size(),
         "Verifying that the workPeriod contains no works before test setting workperiodhistory failed");
-    Collection<Work> periodWorhistoryToAdd = new ArrayList<>(Arrays.asList(workThisMonth, workThisMonth2));
+    List<Work> periodWorhistoryToAdd = new ArrayList<>(Arrays.asList(workThisMonth, workThisMonth2));
     thisMonthWorkPeriod.setPeriodWorkHistory(periodWorhistoryToAdd);
     assertEquals(2, thisMonthWorkPeriod.getPeriodWorkHistory().size(), "The periodworkhisotry was not set correctly");
     assertTrue(thisMonthWorkPeriod.getPeriodWorkHistory().contains(workThisMonth),
