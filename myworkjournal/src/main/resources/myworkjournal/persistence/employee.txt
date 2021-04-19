@@ -5,20 +5,25 @@ WorkPeriod {
   month: april
   year: 2021
   hourlyWage: 200
-  periodWorkHistory: [ amount=3
-  Work {
-    startTime: 2021-04-15T22:42
-      endTime: 2021-04-16T04:42
-  } /Work
-  ,
+  periodWorkHistory: [ amount=4
   Work {
     startTime: 2021-04-14T01:42
       endTime: 2021-04-14T05:42
   } /Work
   ,
   Work {
-    startTime: 2021-04-16T00:42
-      endTime: 2021-04-16T06:42
+    startTime: 2021-04-14T06:00
+      endTime: 2021-04-14T10:00
+  } /Work
+  ,
+  Work {
+    startTime: 2021-04-15T22:42
+      endTime: 2021-04-16T04:42
+  } /Work
+  ,
+  Work {
+    startTime: 2021-04-16T10:42
+      endTime: 2021-04-16T16:42
   } /Work
     ]
 } /WorkPeriod
@@ -29,13 +34,13 @@ WorkPeriod {
   hourlyWage: 200
   periodWorkHistory: [ amount=2
   Work {
-    startTime: 2021-05-16T00:42
-      endTime: 2021-05-16T05:42
+    startTime: 2021-05-14T01:42
+      endTime: 2021-05-14T05:42
   } /Work
   ,
   Work {
-    startTime: 2021-05-14T01:42
-      endTime: 2021-05-14T05:42
+    startTime: 2021-05-16T00:42
+      endTime: 2021-05-16T05:42
   } /Work
     ]
 } /WorkPeriod

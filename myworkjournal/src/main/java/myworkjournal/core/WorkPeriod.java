@@ -60,20 +60,28 @@ public class WorkPeriod implements Iterable<Work>, Comparable<WorkPeriod> {
   }
 
   /**
-   * Method used to check if the two given instances for Work are the same.
-   * This is done by comparing the start time and end time of each work.
+   * Method used to check if the given instance of Work alreadt exists in the workPeriod.
+   * This is done by comparing the start time and end time of the given work with all of the works in this workPeriod.
    *
-   * @param work1 The first instance of Work
-   * @param work2 The second instance of Work
-   * @return true if they are the same
+   * @param workToCheck The work we want to check.
+   * @return true if already exists.
    */
-  private boolean checkIfSameWork(Work work1, Work work2) {
-    return work1.getStartTime().equals(work2.getStartTime()) && work1.getEndTime().equals(work2.getEndTime());
+  private boolean checkWorkAlreadyAdded(Work workToCheck) {
+    return periodWorkHistory.stream().anyMatch(work -> work.getStartTime().equals(workToCheck.getStartTime()) && work.getEndTime().equals(workToCheck.getEndTime()));
   }
 
-
-  private boolean checkWorkAlreadyAdded(Work workToCheck) {
-    return periodWorkHistory.stream().anyMatch(work -> checkIfSameWork(work, workToCheck));
+  /**
+   * Method used to check if a given Work is overlapping with some of the already existing works.
+   * This is done by checking if the given work start within an already existing work, or if it ends within an already existing work.
+   * And by checking if the given shifts cover an already existing shift.
+   * @param workToCheck the work we want to check if it overlaps.
+   * @return True it the work is overlapping.
+   */
+  private boolean checkIfAnyOverlappingWorksExists(Work workToCheck) {
+    boolean startTimeIsOverlapping = periodWorkHistory.stream().anyMatch(work -> work.getStartTime().isBefore(workToCheck.getStartTime()) && work.getEndTime().isAfter(workToCheck.getStartTime()));
+    boolean endTimeIsOverlapping = periodWorkHistory.stream().anyMatch(work -> work.getStartTime().isBefore(workToCheck.getEndTime()) && work.getEndTime().isAfter(workToCheck.getEndTime()));
+    boolean coversExistingShift = periodWorkHistory.stream().anyMatch(work -> workToCheck.getStartTime().isBefore(work.getStartTime()) && workToCheck.getEndTime().isAfter(work.getStartTime()));
+    return startTimeIsOverlapping || endTimeIsOverlapping || coversExistingShift;
   }
 
 
@@ -81,6 +89,7 @@ public class WorkPeriod implements Iterable<Work>, Comparable<WorkPeriod> {
 
     if (checkWorkAlreadyAdded(work))
       throw new IllegalArgumentException("This work data already exists");
+    if (checkIfAnyOverlappingWorksExists(work)) throw new IllegalArgumentException("This work is overlapping with an already existing work. You can only have one shift at a time!");
     if (work.getEndTime().toLocalDate().isBefore(getPeriodEndDate().plusDays(1))) {
       periodWorkHistory.add(work);
     } else {
@@ -133,7 +142,6 @@ public class WorkPeriod implements Iterable<Work>, Comparable<WorkPeriod> {
     System.out.println(wp.getPeriodWorkHistory().size());
     wp.removeWork(work11);
     System.out.println(wp.getPeriodWorkHistory().size());
-    System.out.println(wp.checkIfSameWork(work11, work12));
   }
 
   @Override public Iterator<Work> iterator() {

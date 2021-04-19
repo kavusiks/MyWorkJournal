@@ -114,14 +114,49 @@ public class WorkPeriodTest extends CoreTestData {
           testFailedMessage);
     }
 
-    //Testing checkIfSameWork() and checkAlreadyAdded() here since they are private method used by addWork()
+    //Testing checkWorkAlreadyAdded() here since it is a private method used by addWork()
     thisMonthWorkPeriod.setPeriodWorkHistory(new ArrayList<>());
     thisMonthWorkPeriod.addWork(workThisMonth);
     try {
       thisMonthWorkPeriod.addWork(workThisMonth);
-      fail("An already existing shift was added");
+      fail("An already existing work was added");
     } catch (IllegalArgumentException e) {
       assertEquals("This work data already exists", e.getMessage());
+    }
+
+    //Testing checkIfAnyOverlappingWorksExists here since it is a private method used by addWork()
+    String errorMessage = "This work is overlapping with an already existing work. You can only have one shift at a time!";
+
+    //Overlapping startTime
+    try {
+      thisMonthWorkPeriod.addWork(new Work(workThisMonth.getStartTime().plusHours(1), workThisMonth.getEndTime().plusHours(1)));
+      fail("An overlapping work with startTime within an existing work was added");
+    } catch (IllegalArgumentException e) {
+      assertEquals(errorMessage, e.getMessage());
+    }
+
+    //Overlapping endTime
+    try {
+      thisMonthWorkPeriod.addWork(new Work(workThisMonth.getStartTime().minusHours(1), workThisMonth.getEndTime().minusHours(1)));
+      fail("An overlapping work with endTime within an existing work was added");
+    } catch (IllegalArgumentException e) {
+      assertEquals(errorMessage, e.getMessage());
+    }
+
+    //Overlapping startTime and endTime, a work within another existing work
+    try {
+      thisMonthWorkPeriod.addWork(new Work(workThisMonth.getStartTime().plusHours(1), workThisMonth.getEndTime().minusHours(1)));
+      fail("An overlapping work with both startTime and endTime within an existing work was added");
+    } catch (IllegalArgumentException e) {
+      assertEquals(errorMessage, e.getMessage());
+    }
+
+    //Adding a work that covers an existing work.
+    try {
+      thisMonthWorkPeriod.addWork(new Work(workThisMonth.getStartTime().minusHours(1), workThisMonth.getEndTime().plusHours(1)));
+      fail("A work that covers an existing work was added");
+    } catch (IllegalArgumentException e) {
+      assertEquals(errorMessage, e.getMessage());
     }
 
   }
