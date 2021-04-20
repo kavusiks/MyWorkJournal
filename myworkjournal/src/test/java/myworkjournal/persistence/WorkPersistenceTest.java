@@ -1,8 +1,5 @@
 package myworkjournal.persistence;
 
-import myworkjournal.persistence.WorkPersistence;
-
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -12,7 +9,7 @@ import java.io.FileNotFoundException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class WorkPersistenceTest extends PersistenceTestData implements PersistenceTestInterface {
+public class WorkPersistenceTest extends PersistenceTest implements PersistenceTestInterface {
 
 	WorkPersistence workPersistence;
 
@@ -35,9 +32,9 @@ public class WorkPersistenceTest extends PersistenceTestData implements Persiste
 		workPersistence = null;
 		workPersistence = new WorkPersistence(filepath);
 		assertNotNull(workPersistence, "The workpersistence without work was not created properly.");
-		workPersistence = new WorkPersistence(filepath, workThisMonth);
+		workPersistence = new WorkPersistence(filepath, testData.getWorkThisMonth());
 		assertNotNull(workPersistence, "The workpersistence with work was not created properly.");
-		assertEquals(workThisMonth, workPersistence.getWork(), "The workpersistence with work was created, but doesn't contain the correct work.");
+		assertEquals(testData.getWorkThisMonth(), workPersistence.getWork(), "The workpersistence with work was created, but doesn't contain the correct work.");
 
 	}
 
@@ -60,7 +57,7 @@ public class WorkPersistenceTest extends PersistenceTestData implements Persiste
 
 
 		//Testing writeFile() with valid filepath
-		workPersistence = new WorkPersistence(filepath, workThisMonth);
+		workPersistence = new WorkPersistence(filepath, testData.getWorkThisMonth());
 		assertFileIsEmpty(filepath);
 		try {
 			workPersistence.writeFile();
@@ -74,7 +71,7 @@ public class WorkPersistenceTest extends PersistenceTestData implements Persiste
 		workPersistence = new WorkPersistence(filepath);
 		try {
 			workPersistence.readFile();
-			assertSameWork(workThisMonth, workPersistence.getWork(), "The read work was not the written work.");
+			assertSameWork(testData.getWorkThisMonth(), workPersistence.getWork(), "The read work was not the written work.");
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 			fail("WorkPersistence was not able to read from correct path");

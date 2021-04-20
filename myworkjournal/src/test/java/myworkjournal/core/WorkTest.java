@@ -1,7 +1,5 @@
 package myworkjournal.core;
 
-
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static java.time.temporal.ChronoUnit.MINUTES;
 
@@ -9,40 +7,34 @@ import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class WorkTest extends CoreTestData{
+public class WorkTest {
 		private Work work;
+		private TestData testData = new TestData();
 
-	@BeforeEach
-	public void setUp() {
-		work = null;
-	}
 	
 	@Test
 	public void testConstructor() {
-		LocalDateTime invalidEndTimeBeforeStarTime = LocalDateTime.now().minusHours(2);
+		//Testing with valid inputs
 		try {
-			work = new Work(validStartTime, invalidEndTimeBeforeStarTime);
-			fail("A invalid work has been created. Endtime " + invalidEndTimeBeforeStarTime + " has to be after Starttime " + validStartTime + ".");
-		} catch (IllegalArgumentException e) {
-			assertNull(work, "Work should not be assigned when Exceptions is thrown");
+			work = new Work(testData.getValidStartTime(), testData.getValidEndTime());
+			assertNotNull(work, "Work should be assigned when Exceptions is not thrown");
+			assertEquals(testData.getValidStartTime().truncatedTo(MINUTES), work.getStartTime(), "Expected starttime and actual starttime doesn't match.");
+			assertEquals(testData.getValidEndTime().truncatedTo(MINUTES), work.getEndTime(),  "Expected starttime and actual starttime doesn't match.");
+		} catch (Exception e) {
+			fail("A valid work couldn't be created. Following starttime  " + testData.getValidStartTime() + " and following endtime " + testData.getValidEndTime() + " was used.");
 		}
+
+		//Testing with invalid inputs
+		LocalDateTime invalidEndTimeBeforeStarTime = LocalDateTime.now().minusHours(2);
+		assertThrows(IllegalArgumentException.class, () -> {
+			work = new Work(testData.getValidStartTime(), invalidEndTimeBeforeStarTime);
+		}, "Expected an IllegalArgumentException to be thrown when creating a work with invalid endTime that is before the startTime.");
 
 		LocalDateTime invalidEndTimeLastingMoreThanOneDay = LocalDateTime.now().plusDays(3);
-		try {
-			work = new Work(validStartTime, invalidEndTimeLastingMoreThanOneDay);
-			fail("A invalid work has been created. Endtime " + invalidEndTimeLastingMoreThanOneDay + " has to be after Starttime " + validStartTime + ".");
-		} catch (IllegalArgumentException e) {
-			assertNull(work, "Work should not be assigned when Exceptions is thrown");
-		}
+		assertThrows(IllegalArgumentException.class, () -> {
+			work = new Work(testData.getValidStartTime(), invalidEndTimeLastingMoreThanOneDay);
+		},"Expected an IllegalArgumentException to be thrown when creating an work with invalid endTime that makes the work lasts more than a day" );
 
-		try {
-			work = new Work(validStartTime, validEndTime);
-			assertNotNull(work, "Work should be assigned when Exceptions is not thrown");
-			assertEquals(validStartTime.truncatedTo(MINUTES), work.getStartTime(), "Expected starttime and actual starttime doesn't match.");
-			assertEquals(validEndTime.truncatedTo(MINUTES), work.getEndTime(),  "Expected starttime and actual starttime doesn't match.");
-		} catch (Exception e) {
-			fail("A valid work couldn't be created. Following starttime  " + validStartTime + " and following endtime " + validEndTime + " was used.");
-		}
 
 
 		
@@ -50,19 +42,19 @@ public class WorkTest extends CoreTestData{
 	
 	@Test
 	public void testGetHours() {
-		work = new Work(validStartTime, validEndTime);
-		assertEquals(shiftDurationHours, work.getHours(),  "Expected shift duration and actual shift duration doesn't match.");
+		work = new Work(testData.getValidStartTime(), testData.getValidEndTime());
+		assertEquals(testData.getShiftDurationHours(), work.getHours(),  "Expected shift duration and actual shift duration doesn't match.");
 		LocalDateTime startTimeForShiftOverNight = LocalDateTime.parse("2021-04-03T23:00:00");
-		LocalDateTime endTimeForShiftOverNight = startTimeForShiftOverNight.plusHours(shiftDurationHours);
+		LocalDateTime endTimeForShiftOverNight = startTimeForShiftOverNight.plusHours(testData.getShiftDurationHours());
 		work = new Work(startTimeForShiftOverNight, endTimeForShiftOverNight);
-		assertEquals(shiftDurationHours, work.getHours(), "Expected shift duration and actual shift duration doesn't match for overnight shifts.");
+		assertEquals(testData.getShiftDurationHours(), work.getHours(), "Expected shift duration and actual shift duration doesn't match for overnight shifts.");
 
 	}
 	
 	@Test
 	public void testToString() {
-		work = new Work(validStartTime, validEndTime);
-		assertEquals(validStartTime.truncatedTo(MINUTES).toLocalDate() + " kl: " + validStartTime.truncatedTo(MINUTES).toLocalTime() + " - " + validEndTime.truncatedTo(MINUTES).toLocalDate() + " kl: " + validEndTime.truncatedTo(MINUTES).toLocalTime(), work.toString());
+		work = new Work(testData.getValidStartTime(), testData.getValidEndTime());
+		assertEquals(testData.getValidStartTime().truncatedTo(MINUTES).toLocalDate() + " kl: " + testData.getValidStartTime().truncatedTo(MINUTES).toLocalTime() + " - " + testData.getValidEndTime().truncatedTo(MINUTES).toLocalDate() + " kl: " + testData.getValidEndTime().truncatedTo(MINUTES).toLocalTime(), work.toString());
 	}
 
 }

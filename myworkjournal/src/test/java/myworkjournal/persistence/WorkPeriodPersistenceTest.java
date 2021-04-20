@@ -1,9 +1,6 @@
 package myworkjournal.persistence;
 
-import myworkjournal.persistence.WorkPeriodPersistence;
-
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -12,9 +9,10 @@ import java.io.FileNotFoundException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class WorkPeriodPersistenceTest extends PersistenceTestData implements PersistenceTestInterface {
+public class WorkPeriodPersistenceTest extends PersistenceTest implements PersistenceTestInterface {
 
 	private WorkPeriodPersistence workPeriodPersistence;
+
 
 
 	/**
@@ -37,9 +35,9 @@ public class WorkPeriodPersistenceTest extends PersistenceTestData implements Pe
 		workPeriodPersistence = null;
 		workPeriodPersistence = new WorkPeriodPersistence(filepath);
 		assertNotNull(workPeriodPersistence, "The workpersistence without work was not created properly.");
-		workPeriodPersistence = new WorkPeriodPersistence(filepath, thisMonthWorkPeriod);
+		workPeriodPersistence = new WorkPeriodPersistence(filepath, testData.getThisMonthWorkPeriod());
 		assertNotNull(workPeriodPersistence, "The workpersistence with work was not created properly.");
-		assertEquals(thisMonthWorkPeriod, workPeriodPersistence.getWorkPeriod(), "The workPeriodpersistence with workPeriod was created, but doesn't contain the correct workPeriod.");
+		assertEquals(testData.getThisMonthWorkPeriod(), workPeriodPersistence.getWorkPeriod(), "The workPeriodpersistence with workPeriod was created, but doesn't contain the correct workPeriod.");
 
 	}
 
@@ -73,7 +71,7 @@ public class WorkPeriodPersistenceTest extends PersistenceTestData implements Pe
 
 		//Testing writeFile() with valid filepath
 		//Testing with no work in periodWorkHistory()
-		workPeriodPersistence = new WorkPeriodPersistence(filepath, thisMonthWorkPeriod);
+		workPeriodPersistence = new WorkPeriodPersistence(filepath, testData.getThisMonthWorkPeriod());
 		assertFileIsEmpty(filepath);
 		try {
 			workPeriodPersistence.writeFile();
@@ -87,7 +85,7 @@ public class WorkPeriodPersistenceTest extends PersistenceTestData implements Pe
 		workPeriodPersistence = new WorkPeriodPersistence(filepath);
 		try {
 			workPeriodPersistence.readFile();
-			assertSameWorkPeriod(thisMonthWorkPeriod, workPeriodPersistence.getWorkPeriod(), "The read workPeriod was not the written workPeriod.");
+			assertSameWorkPeriod(testData.getThisMonthWorkPeriod(), workPeriodPersistence.getWorkPeriod(), "The read workPeriod was not the written workPeriod.");
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 			fail("WorkPeriodPersistence was not able to read from correct path");
@@ -98,8 +96,8 @@ public class WorkPeriodPersistenceTest extends PersistenceTestData implements Pe
 	@Test
 	public void testWriteAndReadFileWithSingleWork() {
 		//Testing with one work in periodWorkHistory()
-		thisMonthWorkPeriod.addWork(workThisMonth);
-		workPeriodPersistence = new WorkPeriodPersistence(filepath, thisMonthWorkPeriod);
+		testData.getThisMonthWorkPeriod().addWork(testData.getWorkThisMonth());
+		workPeriodPersistence = new WorkPeriodPersistence(filepath, testData.getThisMonthWorkPeriod());
 		assertFileIsEmpty(filepath);
 		try {
 			workPeriodPersistence.writeFile();
@@ -113,7 +111,7 @@ public class WorkPeriodPersistenceTest extends PersistenceTestData implements Pe
 		workPeriodPersistence = new WorkPeriodPersistence(filepath);
 		try {
 			workPeriodPersistence.readFile();
-			assertSameWorkPeriod(thisMonthWorkPeriod, workPeriodPersistence.getWorkPeriod(), "The read workPeriod was not the written workPeriod.");
+			assertSameWorkPeriod(testData.getThisMonthWorkPeriod(), workPeriodPersistence.getWorkPeriod(), "The read workPeriod was not the written workPeriod.");
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 			fail("WorkPeriodPersistence was not able to read from correct path");
@@ -123,9 +121,9 @@ public class WorkPeriodPersistenceTest extends PersistenceTestData implements Pe
 	@Test
 	public void testWriteAndReadFileWithMultipleWork() {
 		//Testing with two work in periodWorkHistory()
-		thisMonthWorkPeriod.addWork(workThisMonth);
-		thisMonthWorkPeriod.addWork(workThisMonth2);
-		workPeriodPersistence = new WorkPeriodPersistence(filepath, thisMonthWorkPeriod);
+		testData.getThisMonthWorkPeriod().addWork(testData.getWorkThisMonth());
+		testData.getThisMonthWorkPeriod().addWork(testData.getWorkThisMonth2());
+		workPeriodPersistence = new WorkPeriodPersistence(filepath, testData.getThisMonthWorkPeriod());
 		assertFileIsEmpty(filepath);
 		try {
 			workPeriodPersistence.writeFile();
@@ -139,7 +137,7 @@ public class WorkPeriodPersistenceTest extends PersistenceTestData implements Pe
 		workPeriodPersistence = new WorkPeriodPersistence(filepath);
 		try {
 			workPeriodPersistence.readFile();
-			assertSameWorkPeriod(thisMonthWorkPeriod, workPeriodPersistence.getWorkPeriod(), "The read workPeriod was not the written workPeriod.");
+			assertSameWorkPeriod(testData.getThisMonthWorkPeriod(), workPeriodPersistence.getWorkPeriod(), "The read workPeriod was not the written workPeriod.");
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 			fail("WorkPeriodPersistence was not able to read from correct path");

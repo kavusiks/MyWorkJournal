@@ -1,5 +1,7 @@
 package myworkjournal.core;
 
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -7,221 +9,186 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class WorkPeriodTest extends CoreTestData {
+public class WorkPeriodTest {
+  private TestData testData = new TestData();
   private int invalidYear1 = 1;
-  private int invalidYear2 = validYear - 2;
+  private int invalidYear2 = testData.getValidYear() - 2;
   private int invalidHourlyWage = -151;
   private String invalidMonth = "Invalid";
-
-
-  @BeforeEach public void setUp() {
-    thisMonthWorkPeriod = new WorkPeriod(validThisMonth, validYear, validHourlyWage);
-  }
-
+  WorkPeriod testCreateWorkPeriod;
 
 
   @Test public void testConstructor() {
-    WorkPeriod testCreateWorkPeriod = null;
 
-    String testFailedMessage = "A workperiod with invalid month should not be created";
-    try {
-      testCreateWorkPeriod = new WorkPeriod(invalidMonth, validYear, validHourlyWage);
-      fail(testFailedMessage);
-    } catch (IllegalArgumentException e) {
-      assertNull(testCreateWorkPeriod, testFailedMessage);
-    }
+    //Testing with valid inputs
+    testCreateWorkPeriod = new WorkPeriod(testData.getValidThisMonth(), testData.getValidYear(), testData.getValidHourlyWage());
+    assertNotNull(testCreateWorkPeriod, "A valid workPeriod couldn't be created");
 
-    testFailedMessage = "A workperiod with invalid year as " + invalidYear1 + "should not be created.";
-    try {
-      testCreateWorkPeriod = new WorkPeriod(validThisMonth, invalidYear1, validHourlyWage);
-      fail(testFailedMessage);
-    } catch (IllegalArgumentException e) {
-      assertNull(testCreateWorkPeriod, testFailedMessage);
-    }
+    //Testing with invalid inputs
+    assertThrows(IllegalArgumentException.class, () -> {
+      testCreateWorkPeriod = new WorkPeriod(invalidMonth, testData.getValidYear(), testData.getValidHourlyWage());
+    }, "Expected an IllegalArgumentException to be thrown when creating a workPeriod with invalid month");
 
-    testFailedMessage = "A workperiod with invalid year as " + invalidYear2 + "should not be created.";
-    try {
-      testCreateWorkPeriod = new WorkPeriod(validThisMonth, invalidYear2, validHourlyWage);
-      fail(testFailedMessage);
-    } catch (IllegalArgumentException e) {
-      assertNull(testCreateWorkPeriod, testFailedMessage);
-    }
+    assertThrows(IllegalArgumentException.class, () -> {
+      testCreateWorkPeriod = new WorkPeriod(testData.getValidThisMonth(), invalidYear1, testData.getValidHourlyWage());
+    }, "Expected an IllegalArgumentException to be thrown when creating a workPeriod with invalid year that is just a random number");
 
-    testFailedMessage = "A workperiod with invalid hourlywage as " + invalidHourlyWage + "should not be created.";
-    try {
-      testCreateWorkPeriod = new WorkPeriod(validThisMonth, validYear, invalidHourlyWage);
-      fail(testFailedMessage);
-    } catch (IllegalArgumentException e) {
-      assertNull(testCreateWorkPeriod, testFailedMessage);
-    }
 
-    testCreateWorkPeriod = new WorkPeriod(validThisMonth, validYear, validHourlyWage);
-    assertNotNull(testCreateWorkPeriod, "A valid workperiod couldn't be created");
+    assertThrows(IllegalArgumentException.class, () -> {
+      testCreateWorkPeriod = new WorkPeriod(testData.getValidThisMonth(), invalidYear2, testData.getValidHourlyWage());
+    }, "Expected an IllegalArgumentException to be thrown when creating a workPeriod with invalid year that is more that a year from the current year");
 
+    assertThrows(IllegalArgumentException.class, () -> {
+      testCreateWorkPeriod = new WorkPeriod(testData.getValidThisMonth(), testData.getValidYear(), invalidHourlyWage);
+    }, "Expected an IllegalArgumentException to be thrown when creating a workPeriod with invalid hourlyWage");
 
 
   }
 
 
   @Test public void testAddWork() {
-    assertEquals(0, thisMonthWorkPeriod.getPeriodWorkHistory().size());
-    thisMonthWorkPeriod.addWork(workThisMonth);
-    assertTrue(thisMonthWorkPeriod.getPeriodWorkHistory().contains(workThisMonth),
+    //Testing valid works:
+
+    assertEquals(0, testData.getThisMonthWorkPeriod().getPeriodWorkHistory().size());
+    testData.getThisMonthWorkPeriod().addWork(testData.getWorkThisMonth());
+    assertTrue(testData.getThisMonthWorkPeriod().getPeriodWorkHistory().contains(testData.getWorkThisMonth()),
         "Work was not properly added to the WorkPeriod");
 
-    String testFailedMessage = "A work that is not in this period has been added to this period.";
-    try {
-      thisMonthWorkPeriod.addWork(workNextMonth);
-      fail(testFailedMessage);
-    } catch (IllegalArgumentException e) {
-      assertFalse(thisMonthWorkPeriod.getPeriodWorkHistory().contains(workNextMonth), testFailedMessage);
-    }
-
-    testFailedMessage = "A duplicate work has been added";
-    try {
-      thisMonthWorkPeriod.addWork(workThisMonth);
-      fail(testFailedMessage);
-    } catch (IllegalArgumentException e) {
-      assertEquals(1, thisMonthWorkPeriod.getPeriodWorkHistory().size(), testFailedMessage);
-    }
-
-    //Testing that a shift at the end of month is added correctly
+    //Testing that a work at the end of month is added correctly
     LocalDateTime validStartTimeEndOfThisMonth =
-        LocalDateTime.now().withDayOfMonth(LocalDateTime.now().toLocalDate().lengthOfMonth());
-    LocalDateTime validEndTimeEndOfThisMonth = validStartTimeEndOfThisMonth.plusHours(shiftDurationHours);
+        LocalDateTime.now().withHour(0).withDayOfMonth(LocalDateTime.now().toLocalDate().lengthOfMonth());
+    LocalDateTime validEndTimeEndOfThisMonth = validStartTimeEndOfThisMonth.plusHours(testData.getShiftDurationHours());
     Work workAtTheEndOfThisMonth = new Work(validStartTimeEndOfThisMonth, validEndTimeEndOfThisMonth);
-    thisMonthWorkPeriod.addWork(workAtTheEndOfThisMonth);
-    assertTrue(thisMonthWorkPeriod.getPeriodWorkHistory().contains(workAtTheEndOfThisMonth));
+    testData.getThisMonthWorkPeriod().addWork(workAtTheEndOfThisMonth);
+    assertTrue(testData.getThisMonthWorkPeriod().getPeriodWorkHistory().contains(workAtTheEndOfThisMonth));
 
-    //Testing that a shift that start at the end of the month, and ends next month will not be added
+    //Testing with invalid works:
+    String errorMessage = "A work shall not be added when an Exceptions is thrown!";
+
+    //A Work that starts at the end of the month, and ends next month shall not be added
     LocalDateTime validStartTimeEndOfThisMonthOverNight = validStartTimeEndOfThisMonth.toLocalDate().atTime(23, 0);
     LocalDateTime invalidEndTimeEndOfThisMonthOverNight =
-        validStartTimeEndOfThisMonthOverNight.plusHours(shiftDurationHours);
+        validStartTimeEndOfThisMonthOverNight.plusHours(testData.getShiftDurationHours());
     Work workOverNightAtTheLastDayOfMonth =
         new Work(validStartTimeEndOfThisMonthOverNight, invalidEndTimeEndOfThisMonthOverNight);
 
-    testFailedMessage = "A shift ending next month should not be added to this month's workPeriod.";
-    try {
-      thisMonthWorkPeriod.addWork(workOverNightAtTheLastDayOfMonth);
-      fail(testFailedMessage);
-    } catch (IllegalArgumentException e) {
-      assertFalse(thisMonthWorkPeriod.getPeriodWorkHistory().contains(workOverNightAtTheLastDayOfMonth),
-          testFailedMessage);
-    }
+    assertThrows(IllegalArgumentException.class, () -> {
+      testData.getThisMonthWorkPeriod().addWork(testData.getWorkNextMonth());
+    }, "Expects an IllegalArgumentException when adding a work that is not in the period we want to add to.");
+    assertFalse(testData.getThisMonthWorkPeriod().getPeriodWorkHistory().contains(testData.getWorkNextMonth()), errorMessage);
+
+    int sizeBeforeAdding =  testData.getThisMonthWorkPeriod().getPeriodWorkHistory().size();
+    assertThrows(IllegalArgumentException.class, () -> {
+      testData.getThisMonthWorkPeriod().addWork(testData.getWorkThisMonth());
+
+    }, "Expects an IllegalArgumentException when adding an already existing work.");
+    assertEquals(sizeBeforeAdding, testData.getThisMonthWorkPeriod().getPeriodWorkHistory().size(), errorMessage);
+
+    assertThrows(IllegalArgumentException.class, () -> {
+      testData.getThisMonthWorkPeriod().addWork(workOverNightAtTheLastDayOfMonth);
+    }, "Expects an IllegalArgumentException when adding a work ending next month");
+    assertFalse(testData.getThisMonthWorkPeriod().getPeriodWorkHistory().contains(workOverNightAtTheLastDayOfMonth), errorMessage);
 
     //Testing checkWorkAlreadyAdded() here since it is a private method used by addWork()
-    thisMonthWorkPeriod.setPeriodWorkHistory(new ArrayList<>());
-    thisMonthWorkPeriod.addWork(workThisMonth);
-    try {
-      thisMonthWorkPeriod.addWork(workThisMonth);
-      fail("An already existing work was added");
-    } catch (IllegalArgumentException e) {
-      assertEquals("This work data already exists", e.getMessage());
-    }
+    testData.getThisMonthWorkPeriod().setPeriodWorkHistory(new ArrayList<>());
+    testData.getThisMonthWorkPeriod().addWork(testData.getWorkThisMonth());
+    assertThrows(IllegalArgumentException.class, () -> {
+      testData.getThisMonthWorkPeriod().addWork(testData.getWorkThisMonth());
+    }, "Expects an IllegalArgumentException when adding the same work again");
 
-    //Testing checkIfAnyOverlappingWorksExists here since it is a private method used by addWork()
-    String errorMessage = "This work is overlapping with an already existing work. You can only have one shift at a time!";
+
+    errorMessage = "Expects an IllegalArgumentExceptions to be thrown when adding an overlapping work. A workperiod can only have one shift at a time!";
 
     //Overlapping startTime
-    try {
-      thisMonthWorkPeriod.addWork(new Work(workThisMonth.getStartTime().plusHours(1), workThisMonth.getEndTime().plusHours(1)));
-      fail("An overlapping work with startTime within an existing work was added");
-    } catch (IllegalArgumentException e) {
-      assertEquals(errorMessage, e.getMessage());
-    }
+    assertThrows(IllegalArgumentException.class, () -> {
+    //Testing checkIfAnyOverlappingWorksExists here since it is a private method used by addWork()
+      testData.getThisMonthWorkPeriod().addWork(new Work(testData.getWorkThisMonth().getStartTime().plusHours(1), testData.getWorkThisMonth().getEndTime().plusHours(1)));
+    }, errorMessage);
 
     //Overlapping endTime
-    try {
-      thisMonthWorkPeriod.addWork(new Work(workThisMonth.getStartTime().minusHours(1), workThisMonth.getEndTime().minusHours(1)));
-      fail("An overlapping work with endTime within an existing work was added");
-    } catch (IllegalArgumentException e) {
-      assertEquals(errorMessage, e.getMessage());
-    }
+    assertThrows(IllegalArgumentException.class, () -> {
+      testData.getThisMonthWorkPeriod().addWork(new Work(testData.getWorkThisMonth().getStartTime().minusHours(1), testData.getWorkThisMonth().getEndTime().minusHours(1)));
+    }, errorMessage);
 
     //Overlapping startTime and endTime, a work within another existing work
-    try {
-      thisMonthWorkPeriod.addWork(new Work(workThisMonth.getStartTime().plusHours(1), workThisMonth.getEndTime().minusHours(1)));
-      fail("An overlapping work with both startTime and endTime within an existing work was added");
-    } catch (IllegalArgumentException e) {
-      assertEquals(errorMessage, e.getMessage());
-    }
+    assertThrows(IllegalArgumentException.class, () -> {
+      testData.getThisMonthWorkPeriod().addWork(new Work(testData.getWorkThisMonth().getStartTime().plusHours(1), testData.getWorkThisMonth().getEndTime().minusHours(1)));
+    }, errorMessage);
+
 
     //Adding a work that covers an existing work.
-    try {
-      thisMonthWorkPeriod.addWork(new Work(workThisMonth.getStartTime().minusHours(1), workThisMonth.getEndTime().plusHours(1)));
-      fail("A work that covers an existing work was added");
-    } catch (IllegalArgumentException e) {
-      assertEquals(errorMessage, e.getMessage());
-    }
+    assertThrows(IllegalArgumentException.class, () -> {
+      testData.getThisMonthWorkPeriod().addWork(new Work(testData.getWorkThisMonth().getStartTime().minusHours(1), testData.getWorkThisMonth().getEndTime().plusHours(1)));
+
+    }, errorMessage);
 
   }
 
   @Test public void testRemoveWork() {
-    assertEquals(0, thisMonthWorkPeriod.getPeriodWorkHistory().size());
-    thisMonthWorkPeriod.addWork(workThisMonth);
-    assertTrue(thisMonthWorkPeriod.getPeriodWorkHistory().contains(workThisMonth),
+    assertEquals(0, testData.getThisMonthWorkPeriod().getPeriodWorkHistory().size());
+    testData.getThisMonthWorkPeriod().addWork(testData.getWorkThisMonth());
+    assertTrue(testData.getThisMonthWorkPeriod().getPeriodWorkHistory().contains(testData.getWorkThisMonth()),
         "Some error occurred during adding work in testRemoveWork()");
-    thisMonthWorkPeriod.removeWork(workThisMonth);
-    assertFalse(thisMonthWorkPeriod.getPeriodWorkHistory().contains(workThisMonth),
+    testData.getThisMonthWorkPeriod().removeWork(testData.getWorkThisMonth());
+    assertFalse(testData.getThisMonthWorkPeriod().getPeriodWorkHistory().contains(testData.getWorkThisMonth()),
         "Test failed in valid usage of removeWork()");
 
     //testing removeWork with invalid argument. Expecting an IllegalArgumentException
     String testFailedMessage =
-        "An error wasn't thrown when trying to remove a work that doesn't contain in the WorkPeriod";
-    try {
-      thisMonthWorkPeriod.removeWork(workNextMonth);
-      fail(testFailedMessage);
-    } catch (IllegalArgumentException e) {
-      assertFalse(thisMonthWorkPeriod.getPeriodWorkHistory().contains(workNextMonth), testFailedMessage);
-    }
+        "An error wasn't thrown when trying to remove a work that doesn't exist in the WorkPeriod";
+    assertThrows(IllegalArgumentException.class, () -> {
+    //Verifying that the Work we'll try to remove doesn't exist in the WorkPeriod.
+      assertFalse(testData.getThisMonthWorkPeriod().getPeriodWorkHistory().contains(testData.getWorkNextMonth()), "The WorkPeriod should not contain the given Work.");
+      testData.getThisMonthWorkPeriod().removeWork(testData.getWorkNextMonth());
+    }, "Expecting an IllegalArgumentException to be thrown when trying to remove a work that doesn't exist in the WorkPeriod");
+
   }
 
   @Test public void testSetAndGetPeriodWorkHistory() {
     //Testing setPeriodWorkHistory()
-    assertEquals(0, thisMonthWorkPeriod.getPeriodWorkHistory().size(),
+    assertEquals(0, testData.getThisMonthWorkPeriod().getPeriodWorkHistory().size(),
         "Verifying that the workPeriod contains no works before test setting workperiodhistory failed");
-    List<Work> periodWorhistoryToAdd = new ArrayList<>(Arrays.asList(workThisMonth, workThisMonth2));
-    thisMonthWorkPeriod.setPeriodWorkHistory(periodWorhistoryToAdd);
-    assertEquals(2, thisMonthWorkPeriod.getPeriodWorkHistory().size(), "The periodworkhisotry was not set correctly");
-    assertTrue(thisMonthWorkPeriod.getPeriodWorkHistory().contains(workThisMonth),
+    List<Work> periodWorhistoryToAdd = new ArrayList<>(Arrays.asList(testData.getWorkThisMonth(), testData.getWorkThisMonth2()));
+    testData.getThisMonthWorkPeriod().setPeriodWorkHistory(periodWorhistoryToAdd);
+    assertEquals(2, testData.getThisMonthWorkPeriod().getPeriodWorkHistory().size(), "The periodworkhisotry was not set correctly");
+    assertTrue(testData.getThisMonthWorkPeriod().getPeriodWorkHistory().contains(testData.getWorkThisMonth()),
         "The workperiod doesn't contain the correct works that was in the periodworkhistory which was sat for the workperiod..");
-    assertTrue(thisMonthWorkPeriod.getPeriodWorkHistory().contains(workThisMonth2),
+    assertTrue(testData.getThisMonthWorkPeriod().getPeriodWorkHistory().contains(testData.getWorkThisMonth2()),
         "The workperiod doesn't contain the correct works that was in the periodworkhistory which was sat for the workperiod..");
     //Testing getPeriodWorkHistory()
-    assertEquals(periodWorhistoryToAdd, thisMonthWorkPeriod.getPeriodWorkHistory());
+    assertEquals(periodWorhistoryToAdd, testData.getThisMonthWorkPeriod().getPeriodWorkHistory());
   }
 
 
 
   @Test public void testGetters() {
     Work workThisMonth2 =
-        new Work(LocalDateTime.now().minusDays(1), LocalDateTime.now().plusHours(shiftDurationHours).minusDays(1));
-    thisMonthWorkPeriod.addWork(workThisMonth);
-    thisMonthWorkPeriod.addWork(workThisMonth2);
-    int totalWorkHours = shiftDurationHours * 2;
+        new Work(LocalDateTime.now().minusDays(1), LocalDateTime.now().plusHours(testData.getShiftDurationHours()).minusDays(1));
+    testData.getThisMonthWorkPeriod().addWork(testData.getWorkThisMonth());
+    testData.getThisMonthWorkPeriod().addWork(workThisMonth2);
+    int totalWorkHours = testData.getShiftDurationHours() * 2;
     //Testing getHourlyWage()
-    assertEquals(validHourlyWage, thisMonthWorkPeriod.getHourlyWage(), "getHourlyWage didn't give the correct amount.");
+    assertEquals(testData.getValidHourlyWage(), testData.getThisMonthWorkPeriod().getHourlyWage(), "getHourlyWage() didn't give the correct amount.");
     //Testing getTotalHours()
-    assertEquals(totalWorkHours, thisMonthWorkPeriod.getTotalHours(),
+    assertEquals(totalWorkHours, testData.getThisMonthWorkPeriod().getTotalHours(),
         "getTotalHours() didn't give the correct amount.");
     //Testing getMonthSalary()
-    assertEquals(totalWorkHours * validHourlyWage, thisMonthWorkPeriod.getMonthSalary(),
+    assertEquals(totalWorkHours * testData.getValidHourlyWage(), testData.getThisMonthWorkPeriod().getMonthSalary(),
         "getMonthSalary() didn't give the correct amount.");
     //Testing getIdentifier()
-    String correctIdentifier = validThisMonth + "-" + validYear;
-    assertEquals(correctIdentifier, thisMonthWorkPeriod.getIdentifier(),
+    String correctIdentifier = testData.getValidThisMonth() + "-" + testData.getValidYear();
+    assertEquals(correctIdentifier, testData.getThisMonthWorkPeriod().getIdentifier(),
         "getIdentifier() didn't give the correct workperiod-identifier string");
     //Testing getPeriodStartDate()
-    assertEquals(LocalDate.now().withDayOfMonth(1), thisMonthWorkPeriod.getPeriodStartDate(),
+    assertEquals(LocalDate.now().withDayOfMonth(1), testData.getThisMonthWorkPeriod().getPeriodStartDate(),
         "getPeriodStartDate() didn't give the correct startdate for this period");
     //Testing getPeriodEndDate()
     assertEquals(LocalDate.now().withDayOfMonth(LocalDate.now().lengthOfMonth()),
-        thisMonthWorkPeriod.getPeriodEndDate(), "getPeriodEndDate() didn't give the correct enddate for this period");
+        testData.getThisMonthWorkPeriod().getPeriodEndDate(), "getPeriodEndDate() didn't give the correct enddate for this period");
   }
 
 

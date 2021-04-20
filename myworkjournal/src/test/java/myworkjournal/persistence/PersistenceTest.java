@@ -1,6 +1,6 @@
 package myworkjournal.persistence;
 
-import myworkjournal.core.CoreTestData;
+import myworkjournal.core.TestData;
 import myworkjournal.core.Employee;
 import myworkjournal.core.Work;
 import myworkjournal.core.WorkPeriod;
@@ -8,33 +8,34 @@ import myworkjournal.core.WorkPeriod;
 import static org.junit.jupiter.api.Assertions.*;
 import java.io.File;
 
-public class PersistenceTestData extends CoreTestData {
+public abstract class PersistenceTest {
 
 
-  String filepath;
-  String invalidPath = "invalid";
+  protected String filepath;
+  protected String invalidPath = "invalid";
+  protected TestData testData = new TestData();
 
-  public PersistenceTestData() {
+  public PersistenceTest() {
 
   }
 
-  public void assertFileIsEmpty(String filepath) {
+  protected void assertFileIsEmpty(String filepath) {
     File file = new File(filepath);
     assertEquals(0, file.length(), "The file was not empty as expected");
   }
 
-  public void assertFileIsNotEmpty(String filepath){
+  protected void assertFileIsNotEmpty(String filepath){
     File file = new File(filepath);
     assertNotEquals(0, file.length(), "The file was empty as expected");
 
   }
 
-  public void assertSameWork(Work expected, Work actual, String errorText) {
+  protected void assertSameWork(Work expected, Work actual, String errorText) {
     assertEquals(expected.getStartTime(),actual.getStartTime(), errorText);
     assertEquals(expected.getEndTime(),actual.getEndTime(), errorText);
   }
 
-  public void assertSameWorkPeriod(WorkPeriod expected, WorkPeriod actual, String errorText) {
+  protected void assertSameWorkPeriod(WorkPeriod expected, WorkPeriod actual, String errorText) {
     assertEquals(expected.getIdentifier(),actual.getIdentifier(), errorText);
     assertEquals(expected.getPeriodStartDate(),actual.getPeriodStartDate(), errorText);
     assertEquals(expected.getPeriodEndDate(),actual.getPeriodEndDate(), errorText);
@@ -60,7 +61,7 @@ public class PersistenceTestData extends CoreTestData {
     }
   }
 
-  public void assertSameEmployee(Employee expected, Employee actual, String errorText) {
+  protected void assertSameEmployee(Employee expected, Employee actual, String errorText) {
     assertEquals(expected.getName(),actual.getName(), errorText);
     assertEquals(expected.getWorkPeriods().size(),actual.getWorkPeriods().size(), errorText);
     //TODO: også sjekk inneholdet i lista
