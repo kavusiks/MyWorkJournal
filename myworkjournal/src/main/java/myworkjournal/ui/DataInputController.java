@@ -151,6 +151,7 @@ public class DataInputController extends AbstractController {
     }
     updateListView();
     removeDataBtn.setDisable(true);
+    deletePopupPane.setVisible(false);
 
   }
 

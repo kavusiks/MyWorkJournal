@@ -16,11 +16,16 @@ import myworkjournal.persistence.EmployeePersistence;
 
 
 public abstract class AbstractController {
-	@FXML Button saveBtn;
-	@FXML Button closePopupBtn;
-	@FXML Button closeAppBtn;
-	@FXML Button saveAndCloseAppBtn;
+	//@FXML Button saveBtn;
+	//@FXML Button closePopupBtn;
+	//@FXML Button closeAppBtn;
+	//@FXML Button saveAndCloseAppBtn;
 	@FXML AnchorPane popupPane;
+
+	//@FXML Button closeDeletePopupBtn;
+	//@FXML Button closeDeleteXPopupBtn;;
+	//@FXML Button deleteObjectBtn;
+	@FXML AnchorPane deletePopupPane;
 
 	private Employee employee;
 
@@ -69,6 +74,16 @@ public abstract class AbstractController {
 	@FXML
 	protected void closePopup() {
 		popupPane.setVisible(false);
+	}
+
+	@FXML
+	private void closeDeletePopup() {
+		deletePopupPane.setVisible(false);
+	}
+
+	@FXML
+	private void showDeletePopup() {
+		deletePopupPane.setVisible(true);
 	}
 
 	

@@ -2,6 +2,7 @@ package myworkjournal.ui;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.layout.AnchorPane;
 import myworkjournal.core.Employee;
 import myworkjournal.core.Work;
 import myworkjournal.core.WorkPeriod;
@@ -22,6 +23,7 @@ public class AddWorkPeriodController extends AbstractController {
   @FXML ChoiceBox<String> monthChoiceBox;
   @FXML ChoiceBox<Integer> yearChoiceBox;
   @FXML Label errorMessage;
+
 
   private Employee employee;
 
@@ -101,8 +103,10 @@ public class AddWorkPeriodController extends AbstractController {
     setEmployee(employee);
     sceneSwitchedUpdate();
     removeMonthBtn.setDisable(true);
+    deletePopupPane.setVisible(false);
 
   }
+
 
   @FXML private void goToDataInput() throws IOException {
     changeScreen("dataInput.fxml",goToDataInputBtn );

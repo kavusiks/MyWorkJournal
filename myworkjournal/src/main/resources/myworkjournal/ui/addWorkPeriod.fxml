@@ -16,7 +16,7 @@
       <ChoiceBox fx:id="yearChoiceBox" disable="true" layoutX="492.0" layoutY="54.0" prefHeight="27.0" prefWidth="91.0" />
       <TextField fx:id="wageInputField" disable="true" layoutX="415.0" layoutY="98.0" />
       <Button fx:id="addMonthBtn" disable="true" layoutX="366.0" layoutY="146.0" mnemonicParsing="false" onAction="#addMonth" style="-fx-background-color: #aaffaa #aaffaa;" text="Legg til måned" />
-      <Button fx:id="removeMonthBtn" disable="true" layoutX="489.0" layoutY="146.0" mnemonicParsing="false" onAction="#removeMonth" prefHeight="27.0" prefWidth="98.0" style="-fx-background-color: #ff9999 #ff9999;" text="Slett" />
+      <Button fx:id="removeMonthBtn" disable="true" layoutX="489.0" layoutY="146.0" mnemonicParsing="false" onAction="#showDeletePopup" prefHeight="27.0" prefWidth="98.0" style="-fx-background-color: #ff9999 #ff9999;" text="Slett" />
       <Button fx:id="goToDataInputBtn" layoutX="455.0" layoutY="346.0" mnemonicParsing="false" onAction="#goToDataInput" text="Legg til jobbhistorikk" />
       <Text layoutX="42.0" layoutY="65.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Eksisterende måneder:" />
       <Text layoutX="280.0" layoutY="72.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Måned:" />
@@ -41,4 +41,22 @@
             <Button fx:id="saveAndCloseAppBtn" layoutX="97.0" layoutY="84.0" mnemonicParsing="false" onAction="#saveDataAndClose" text="Lagre og avslutt" />
             <Button fx:id="closeAppBtn" layoutX="309.0" layoutY="84.0" mnemonicParsing="false" onAction="#closeApp" text="Avslutt uten å lagre" />
       </AnchorPane>
+   <AnchorPane fx:id="deletePopupPane" layoutX="71.0" layoutY="145.0" prefHeight="128.0" prefWidth="480.0" style="-fx-background-color: #d3d3d3;" visible="false">
+      <children>
+         <BorderPane prefHeight="34.0" prefWidth="480.0" style="-fx-background-color: #aaaaaa;" />
+         <Text layoutX="8.0" layoutY="22.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Slett" wrappingWidth="141.0">
+            <font>
+               <Font name="System Bold" size="17.0" />
+            </font>
+         </Text>
+         <Button fx:id="closeDeletePopupXBtn" layoutX="445.0" mnemonicParsing="false" onAction="#closeDeletePopup" prefHeight="33.0" prefWidth="35.0" style="-fx-background-color: #FF4449;" text="x" />
+         <Text layoutX="8.0" layoutY="57.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Denne handlingen er irreveribel. Er du sikker på at du vil slette?">
+            <font>
+               <Font size="14.0" />
+            </font>
+         </Text>
+         <Button fx:id="deleteObjectBtn" layoutX="97.0" layoutY="84.0" mnemonicParsing="false" onAction="#removeMonth" text="Slett" />
+         <Button fx:id="closeDeletePopupBtn" layoutX="309.0" layoutY="84.0" mnemonicParsing="false" onAction="#closeDeletePopup" text="Lukk" />
+      </children>
+   </AnchorPane>
 </Pane>
