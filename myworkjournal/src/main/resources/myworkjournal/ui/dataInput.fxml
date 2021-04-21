@@ -37,7 +37,7 @@
                </font>
             </Text>
             <Button fx:id="closePopupBtn" layoutX="445.0" mnemonicParsing="false" onAction="#closePopup" prefHeight="33.0" prefWidth="35.0" style="-fx-background-color: #FF4449;" text="x" />
-            <Text layoutX="8.0" layoutY="57.0" strokeType="OUTSIDE" strokeWidth="0.0" text="All tidligere data vil bli overskrevet. Er du sikker på at du vil lagre og avlustte?">
+            <Text layoutX="8.0" layoutY="57.0" strokeType="OUTSIDE" strokeWidth="0.0" text="All tidligere data vil bli overskrevet. Er du sikker på at du vil lagre og avslutte?">
                <font>
                   <Font size="14.0" />
                </font>
