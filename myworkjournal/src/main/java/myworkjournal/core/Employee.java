@@ -109,5 +109,67 @@ public class Employee implements Iterable<WorkPeriod> {
     @Override public Iterator<WorkPeriod> iterator() {
         return workPeriods.iterator();
     }
+
+    /**
+     * Used to sum up salary for every WorkPeriods.
+     * @return Employee's total salary.
+     */
+    public double getTotalSalary() {
+        return this.getWorkPeriods().stream().mapToDouble(WorkPeriod::getMonthSalary).sum();
+    }
+
+    public WorkPeriod getBestPaidWorkPeriod() {
+        //optinalInt test = employee.getWorkPeriods().stream().mapToInt(WorkPeriod::getMonthSalary).max();
+
+        WorkPeriod highestPaidWorkPeriod = null;
+        double salaryForHighestPaidWorkPeriod = 0;
+        for (WorkPeriod workPeriod : this) {
+            if (workPeriod.getMonthSalary() > salaryForHighestPaidWorkPeriod) {
+                salaryForHighestPaidWorkPeriod = workPeriod.getMonthSalary();
+                highestPaidWorkPeriod = workPeriod;
+            }
+        }
+        return highestPaidWorkPeriod;
+    }
+
+    /**
+     * Method used to calculate different average amounts. This private method is
+     * used by other getAverage.... methods.
+     * @param total The total amount we want to divide on the amount of WorkPeriods.
+     * @return the average amount of the given sum.
+     */
+    private double getAveragePerWorkPeriod(double total) {
+        return total/ (double) this.getWorkPeriods().size();
+    }
+
+    public double getAverageShiftAmount() {
+        int totalShiftAmounts = this.getWorkPeriods().stream()
+            .mapToInt(workPeriod -> (workPeriod.getPeriodWorkHistory().size()))
+            .sum();
+        return getAveragePerWorkPeriod(totalShiftAmounts);
+
+    }
+
+    public double getAverageWorkHours() {
+        double totalHours = this.getWorkPeriods().stream()
+            .mapToDouble(WorkPeriod::getTotalHours)
+            .sum();
+        return getAveragePerWorkPeriod(totalHours);
+    }
+
+    public double getAverageSalary() {
+        double totalSalary = this.getWorkPeriods().stream()
+            .mapToDouble(WorkPeriod::getMonthSalary)
+            .sum();
+        return getAveragePerWorkPeriod(totalSalary);
+    }
+
+    public double getAverageHourlyWage() {
+        int totalHourlyWage = this.getWorkPeriods().stream()
+            .mapToInt(WorkPeriod::getHourlyWage)
+            .sum();
+        return getAveragePerWorkPeriod(totalHourlyWage);
+    }
+
 }
 
