@@ -1,5 +1,6 @@
 package myworkjournal.persistence;
 
+import myworkjournal.core.WorkPeriod;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -9,9 +10,10 @@ import java.io.FileNotFoundException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class WorkPeriodAbstractPersistenceTest extends AbstractPersistenceTest implements PersistenceTestInterface {
+public class WorkPeriodPersistenceTest extends AbstractPersistenceTest implements PersistenceTestInterface {
 
 	private WorkPeriodPersistence workPeriodPersistence;
+	private WorkPeriod readWorkPeriod;
 
 
 
@@ -35,9 +37,6 @@ public class WorkPeriodAbstractPersistenceTest extends AbstractPersistenceTest i
 		workPeriodPersistence = null;
 		workPeriodPersistence = new WorkPeriodPersistence(filepath);
 		assertNotNull(workPeriodPersistence, "The workpersistence without work was not created properly.");
-		//workPeriodPersistence = new WorkPeriodPersistence(filepath, testData.getThisMonthWorkPeriod());
-		//assertNotNull(workPeriodPersistence, "The workpersistence with work was not created properly.");
-		//assertEquals(testData.getThisMonthWorkPeriod(), workPeriodPersistence.getWorkPeriod(), "The workPeriodpersistence with workPeriod was created, but doesn't contain the correct workPeriod.");
 
 	}
 
@@ -47,27 +46,14 @@ public class WorkPeriodAbstractPersistenceTest extends AbstractPersistenceTest i
 	 */
 	@Test
 	@Override public void testWriteAndReadFile() {
-		//Testing writeFile() with invalid filepath
-		/*
-		workPersistence = new WorkPersistence(invalidPath, workThisMonth);
-		try {
-			workPersistence.writeFile();
-			fail("Work should not be saved when the savepath is invalid. FileNotFoundExceptions was not thrown.");
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
-		*/
-
 
 		//Testing readFile() froom invalid filepath
 		workPeriodPersistence = new WorkPeriodPersistence(invalidPath);
-		try {
-//			workPeriodPersistence.readFile();
-			assertNull(workPeriodPersistence.readFile(), "No work should be read, when there are no valid files.");
-			fail("FileNotFoundExceptions was not thrown");
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
+		assertThrows(FileNotFoundException.class, () -> {
+			readWorkPeriod =workPeriodPersistence.readFile();
+
+		},"FileNotFoundExceptions was not thrown" );
+		assertNull(readWorkPeriod, "No work should be read, when there are no valid files.");
 
 		//Testing writeFile() with valid filepath
 		//Testing with no work in periodWorkHistory()
@@ -84,8 +70,8 @@ public class WorkPeriodAbstractPersistenceTest extends AbstractPersistenceTest i
 		//Testing readFile() by reading the data saved from the sub-test above
 		workPeriodPersistence = new WorkPeriodPersistence(filepath);
 		try {
-			//workPeriodPersistence.readFile();
-			assertSameWorkPeriod(testData.getThisMonthWorkPeriod(), workPeriodPersistence.readFile(), "The read workPeriod was not the written workPeriod.");
+			readWorkPeriod = workPeriodPersistence.readFile();
+			assertSameWorkPeriod(testData.getThisMonthWorkPeriod(), readWorkPeriod, "The read workPeriod was not the written workPeriod.");
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 			fail("WorkPeriodPersistence was not able to read from correct path");
@@ -110,8 +96,8 @@ public class WorkPeriodAbstractPersistenceTest extends AbstractPersistenceTest i
 		//Testing readFile() by reading the data saved from the sub-test above
 		workPeriodPersistence = new WorkPeriodPersistence(filepath);
 		try {
-			workPeriodPersistence.readFile();
-			assertSameWorkPeriod(testData.getThisMonthWorkPeriod(), testData.getThisMonthWorkPeriod(), "The read workPeriod was not the written workPeriod.");
+			readWorkPeriod = workPeriodPersistence.readFile();
+			assertSameWorkPeriod(testData.getThisMonthWorkPeriod(), readWorkPeriod, "The read workPeriod was not the written workPeriod.");
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 			fail("WorkPeriodPersistence was not able to read from correct path");
@@ -136,8 +122,8 @@ public class WorkPeriodAbstractPersistenceTest extends AbstractPersistenceTest i
 		//Testing readFile() by reading the data saved from the sub-test above
 		workPeriodPersistence = new WorkPeriodPersistence(filepath);
 		try {
-			workPeriodPersistence.readFile();
-			assertSameWorkPeriod(testData.getThisMonthWorkPeriod(), workPeriodPersistence.readFile(), "The read workPeriod was not the written workPeriod.");
+			readWorkPeriod = workPeriodPersistence.readFile();
+			assertSameWorkPeriod(testData.getThisMonthWorkPeriod(), readWorkPeriod, "The read workPeriod was not the written workPeriod.");
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 			fail("WorkPeriodPersistence was not able to read from correct path");
