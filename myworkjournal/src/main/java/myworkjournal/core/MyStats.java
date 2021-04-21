@@ -15,15 +15,15 @@ public class MyStats {
     this.employee = employee;
   }
 
-  public int getTotalSalary() {
-    return employee.getWorkPeriods().stream().mapToInt(WorkPeriod::getMonthSalary).sum();
+  public double getTotalSalary() {
+    return employee.getWorkPeriods().stream().mapToDouble(WorkPeriod::getMonthSalary).sum();
   }
 
   public WorkPeriod getBestPaidWorkPeriod() {
     //optinalInt test = employee.getWorkPeriods().stream().mapToInt(WorkPeriod::getMonthSalary).max();
 
     WorkPeriod highestPaidWorkPeriod = null;
-    int salaryForHighestPaidWorkPeriod = 0;
+    double salaryForHighestPaidWorkPeriod = 0;
     for (WorkPeriod workPeriod : employee.getWorkPeriods()) {
       if (workPeriod.getMonthSalary() > salaryForHighestPaidWorkPeriod) {
         salaryForHighestPaidWorkPeriod = workPeriod.getMonthSalary();
@@ -60,17 +60,17 @@ public class MyStats {
   }
 
   public double getAverageWorkHours() {
-    int totalHours =
-        employee.getWorkPeriods().stream().mapToInt(WorkPeriod::getTotalHours)
+    double totalHours =
+        employee.getWorkPeriods().stream().mapToDouble(WorkPeriod::getTotalHours)
             .sum();
-    return (double)totalHours / (double)employee.getWorkPeriods().size();
+    return totalHours / (double)employee.getWorkPeriods().size();
   }
 
   public double getAverageSalary() {
-    int totalSalary =
-        employee.getWorkPeriods().stream().mapToInt(WorkPeriod::getMonthSalary)
+    double totalSalary =
+        employee.getWorkPeriods().stream().mapToDouble(WorkPeriod::getMonthSalary)
             .sum();
-    return (double)totalSalary / (double)employee.getWorkPeriods().size();
+    return totalSalary / (double)employee.getWorkPeriods().size();
   }
 
   public double getAverageHourlyWage() {

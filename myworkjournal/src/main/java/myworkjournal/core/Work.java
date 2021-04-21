@@ -1,21 +1,36 @@
 package myworkjournal.core;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.time.Duration;
 import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
+import java.util.Locale;
 
 import static java.time.temporal.ChronoUnit.DAYS;
 import static java.time.temporal.ChronoUnit.MINUTES;
 
-public class Work implements Comparable<Work>{
+/**
+ * This class represents a shift. A shift is made up by a startTime and a endTime. This is used to calculate the shift's duration.
+ */
+public class Work implements Comparable<Work> {
   private LocalDateTime startTime;
   private LocalDateTime endTime;
 
-  public Work(LocalDateTime startTime, LocalDateTime endTime) throws IllegalArgumentException{
-    //Er kun interessert i timer og minutter
-    if(!endTime.isAfter(startTime))
+
+  /**
+   * The constructor to create an instance of Work. The shift has to start and end within 0-1 calender days.
+   * The start- and endtime will be truncated to only show up to the specific minutes.
+   *
+   * @param startTime the shifts startingTime
+   * @param endTime   the shifts endingTime
+   * @throws IllegalArgumentException if the endTime is before the startTime
+   *                                  or if the work lasts for more than 1 calender days.
+   */
+  public Work(LocalDateTime startTime, LocalDateTime endTime) throws IllegalArgumentException {
+    if (!endTime.isAfter(startTime))
       throw new IllegalArgumentException("End time must be after start time!");
-    //System.out.println("days between " + endTime + startTime +DAYS.between(startTime, endTime));
-    if(DAYS.between(startTime, endTime) > 1) throw new IllegalArgumentException("A shift has to start and end during 0-1 day(s)!");
+    if (DAYS.between(startTime, endTime) > 1)
+      throw new IllegalArgumentException("A shift has to start and end during 0-1 calender day(s)!");
     this.startTime = startTime.truncatedTo(MINUTES);
     this.endTime = endTime.truncatedTo(MINUTES);
   }
@@ -28,15 +43,21 @@ public class Work implements Comparable<Work>{
     return endTime;
   }
 
-  public int getHours() {
-    int startHour = startTime.getHour();
-    int endHour = endTime.getHour();
-    if(startHour > endHour) endHour += 24;
-    return endHour - startHour;
+  /**
+   * Method used to calculate the shift's duration.
+   *
+   * @return the duration in hours
+   */
+  public double getShiftDurationInHours() {
+    DecimalFormat df = new DecimalFormat("###.##");
+    df.setDecimalFormatSymbols(DecimalFormatSymbols.getInstance(Locale.ENGLISH));
+    double test = (double) Duration.between(getStartTime(), getEndTime()).toMinutes() / 60.00;
+    return Double.valueOf(df.format((double) Duration.between(getStartTime(), getEndTime()).toMinutes() / 60.00));
   }
 
   @Override public String toString() {
-    return startTime.toLocalDate() + " kl: " + startTime.toLocalTime() + " - " + endTime.toLocalDate() + " kl: " + endTime.toLocalTime();
+    return startTime.toLocalDate() + " kl: " + startTime.toLocalTime() + " - " + endTime.toLocalDate() + " kl: "
+        + endTime.toLocalTime();
   }
 
   /**
@@ -44,45 +65,20 @@ public class Work implements Comparable<Work>{
    * negative integer, zero, or a positive integer as this object is less
    * than, equal to, or greater than the specified object.
    *
-   * <p>The implementor must ensure
-   * {@code sgn(x.compareTo(y)) == -sgn(y.compareTo(x))}
-   * for all {@code x} and {@code y}.  (This
-   * implies that {@code x.compareTo(y)} must throw an exception iff
-   * {@code y.compareTo(x)} throws an exception.)
-   *
-   * <p>The implementor must also ensure that the relation is transitive:
-   * {@code (x.compareTo(y) > 0 && y.compareTo(z) > 0)} implies
-   * {@code x.compareTo(z) > 0}.
-   *
-   * <p>Finally, the implementor must ensure that {@code x.compareTo(y)==0}
-   * implies that {@code sgn(x.compareTo(z)) == sgn(y.compareTo(z))}, for
-   * all {@code z}.
-   *
-   * <p>It is strongly recommended, but <i>not</i> strictly required that
-   * {@code (x.compareTo(y)==0) == (x.equals(y))}.  Generally speaking, any
-   * class that implements the {@code Comparable} interface and violates
-   * this condition should clearly indicate this fact.  The recommended
-   * language is "Note: this class has a natural ordering that is
-   * inconsistent with equals."
-   *
-   * <p>In the foregoing description, the notation
-   * {@code sgn(}<i>expression</i>{@code )} designates the mathematical
-   * <i>signum</i> function, which is defined to return one of {@code -1},
-   * {@code 0}, or {@code 1} according to whether the value of
-   * <i>expression</i> is negative, zero, or positive, respectively.
-   *
    * @param o the object to be compared.
    * @return a negative integer, zero, or a positive integer as this object
    * is less than, equal to, or greater than the specified object.
-   * @throws NullPointerException if the specified object is null
-   * @throws ClassCastException   if the specified object's type prevents it
-   *                              from being compared to this object.
    */
   @Override public int compareTo(Work o) {
-    if(this.getStartTime().getYear() != o.getStartTime().getYear()) return this.getStartTime().getYear() - o.getStartTime().getYear();
-    if(this.getStartTime().getMonth() != o.getStartTime().getMonth()) return  this.getStartTime().getMonthValue() - o.getStartTime().getMonthValue();
-    if(this.getStartTime().getDayOfMonth() != o.getStartTime().getDayOfMonth()) return this.getStartTime().getDayOfMonth() - o.getStartTime().getDayOfMonth();
-    if(this.getStartTime().getHour() != o.getStartTime().getHour()) return this.getStartTime().getHour() - o.getStartTime().getHour();
+    if (this.getStartTime().getYear() != o.getStartTime().getYear())
+      return this.getStartTime().getYear() - o.getStartTime().getYear();
+    if (this.getStartTime().getMonth() != o.getStartTime().getMonth())
+      return this.getStartTime().getMonthValue() - o.getStartTime().getMonthValue();
+    if (this.getStartTime().getDayOfMonth() != o.getStartTime().getDayOfMonth())
+      return this.getStartTime().getDayOfMonth() - o.getStartTime().getDayOfMonth();
+    if (this.getStartTime().getHour() != o.getStartTime().getHour())
+      return this.getStartTime().getHour() - o.getStartTime().getHour();
     return this.getStartTime().getMinute() - o.getStartTime().getMinute();
   }
+
 }

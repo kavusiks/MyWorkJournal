@@ -43,11 +43,11 @@ public class WorkTest {
 	@Test
 	public void testGetHours() {
 		work = new Work(testData.getValidStartTime(), testData.getValidEndTime());
-		assertEquals(testData.getShiftDurationHours(), work.getHours(),  "Expected shift duration and actual shift duration doesn't match.");
+		assertEquals(testData.getShiftDurationHours(), work.getShiftDurationInHours(),  "Expected shift duration and actual shift duration doesn't match.");
 		LocalDateTime startTimeForShiftOverNight = LocalDateTime.parse("2021-04-03T23:00:00");
 		LocalDateTime endTimeForShiftOverNight = startTimeForShiftOverNight.plusHours(testData.getShiftDurationHours());
 		work = new Work(startTimeForShiftOverNight, endTimeForShiftOverNight);
-		assertEquals(testData.getShiftDurationHours(), work.getHours(), "Expected shift duration and actual shift duration doesn't match for overnight shifts.");
+		assertEquals(testData.getShiftDurationHours(), work.getShiftDurationInHours(), "Expected shift duration and actual shift duration doesn't match for overnight shifts.");
 
 	}
 	

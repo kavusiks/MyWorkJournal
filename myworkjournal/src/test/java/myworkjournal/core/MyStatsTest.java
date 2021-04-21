@@ -10,8 +10,8 @@ public class MyStatsTest {
 	private TestData testData = new TestData();
 	private MyStats myStats;
 	private WorkPeriod nextMonthWorkPeriod = new WorkPeriod(testData.getValidNextMonth(), testData.getValidYear(), testData.getValidHourlyWage());
-	private int totalHours;
-	private int totalSalary;
+	private double totalHours;
+	private double totalSalary;
 	private int totalShifts;
 	private int totalWorkPeriods;
 
@@ -27,7 +27,7 @@ public class MyStatsTest {
 		testData.getEmployee().addWorkPeriod(testData.getThisMonthWorkPeriod());
 		testData.getEmployee().addWorkPeriod(nextMonthWorkPeriod);
 
-		totalHours = testData.getWorkNextMonth().getHours() + testData.getWorkThisMonth().getHours() + testData.getWorkThisMonth2().getHours() + testData.getWorkThisMonth3().getHours();
+		totalHours = testData.getWorkNextMonth().getShiftDurationInHours() + testData.getWorkThisMonth().getShiftDurationInHours() + testData.getWorkThisMonth2().getShiftDurationInHours() + testData.getWorkThisMonth3().getShiftDurationInHours();
 		totalSalary = totalHours * testData.getValidHourlyWage();
 		totalShifts = testData.getEmployee().getWorkPeriods().stream().mapToInt(workPeriod -> (workPeriod.getPeriodWorkHistory().size())).sum();
 		totalWorkPeriods = testData.getEmployee().getWorkPeriods().size();

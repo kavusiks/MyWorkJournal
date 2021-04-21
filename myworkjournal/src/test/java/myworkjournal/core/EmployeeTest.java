@@ -25,7 +25,8 @@ public class EmployeeTest {
 	    });
 		
 	}
-	
+
+	/*
 	@Test
 	public void testSetName() {
 		Employee employee = new Employee("Ola");
@@ -43,7 +44,7 @@ public class EmployeeTest {
 	        employee.setName("'-e");
 	    });
 		
-	}
+	}*/
 	
 	@Test
 	public void testAddWorkPeriod() {

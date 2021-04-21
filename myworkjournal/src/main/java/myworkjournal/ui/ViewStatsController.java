@@ -41,7 +41,7 @@ public class ViewStatsController extends AbstractController {
   @Override void sceneSwitchedUpdate() {
     MyStats stats = new MyStats(getEmployee());
     int timer = 0;
-    int lonn = stats.getTotalSalary();
+    double lonn = stats.getTotalSalary();
     for(WorkPeriod workPeriod: getEmployee().getWorkPeriods()) {
       System.out.println("WorkPeriod " + workPeriod.getIdentifier() +" totlønn: " + workPeriod.getMonthSalary() + " times "+ workPeriod.getHourlyWage() + " timer med arbeid tot: " + workPeriod.getTotalHours());
     }
@@ -51,7 +51,7 @@ public class ViewStatsController extends AbstractController {
       timer+= workPeriod.getTotalHours();
     }
     bestWorkPeriodLabel.setText(highestPaisWorkPeriod.getIdentifier());
-    bestWorkPeriodSalaryLabel.setText(Integer.toString(highestPaisWorkPeriod.getMonthSalary()));
+    bestWorkPeriodSalaryLabel.setText(Double.toString(highestPaisWorkPeriod.getMonthSalary()));
     lonnLabel.setText(lonn +"kr");
     timerLabel.setText((Integer.toString(timer)));
     avgShiftsLabel.setText(df.format(stats.getAverageShiftAmount()));
