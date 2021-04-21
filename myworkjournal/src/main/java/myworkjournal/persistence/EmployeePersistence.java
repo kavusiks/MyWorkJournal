@@ -9,42 +9,53 @@ import java.io.FileReader;
 import java.io.PrintWriter;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Iterator;
 import java.util.Scanner;
 
-public class EmployeePersistence implements DataSaverInterface<Employee> {
-
-  private String filepath;
-
-
- // private Employee employee;
+public class EmployeePersistence extends AbstractPersistence implements DataSaverInterface<Employee> {
 
   public EmployeePersistence (String filepath) {
     this.filepath = filepath;
   }
 
-  /*
-  public EmployeePersistence (String filepath, Employee employee) {
-    this(filepath);
-    this.employee = employee;
+  /**
+   * Used to read from file and then deserialize.
+   * @return the read object of T
+   * @throws FileNotFoundException if the file is not found.
+   */
+  @Override public Employee readFile() throws FileNotFoundException {
+    Scanner inFile = new Scanner((new FileReader(filepath)));
+    Employee readEmployee = deserialize(inFile);
+    inFile.close();
+    return readEmployee;
   }
-  */
 
-/*
-  public Employee getEmployee() {
-    return employee;
+
+  /**
+   * Used to serialize and the write to file.
+   * @throws FileNotFoundException if the file can't be written to.
+   */
+  @Override public void writeFile(Employee employeeToWrite) throws FileNotFoundException {
+    PrintWriter outFile = new PrintWriter(filepath);
+    serialize(outFile,employeeToWrite);
+    outFile.close();
   }
-  */
+
+  /**
+   * Used to deserialize an object from a scanner that is reading from a file.
+   * This method is used in readFile and sometimes by itself in other persistence classes.
+   * This method receives data from the file by reading and collecting expected value line by line.
+   * These read values are then used to recreate the saved file.
+   * @param inFile the scanner that can read the file.
+   * @return the deserialized object of T.
+   * @throws IllegalStateException if the reading file isn't properly written.
+   */
   @Override public Employee deserialize(Scanner inFile) {
     while (inFile.hasNext()) {
       String name;
       Employee employee;
-      //KANSKJE JEG BURDE TA HAS NEXT HER, MULIG SOM EN STATISK METODE INTERFACEN
-      String nextLine = DataSaverInterface.nextLineIfItHas(inFile);
-      //Sjekkes i metoden over
-      //assert nextLine != null;
+      String nextLine = nextLineIfItHas(inFile);
       if (nextLine.strip().equals("Employee {")) {
-        nextLine = DataSaverInterface.nextLineIfItHas(inFile);
+        nextLine = nextLineIfItHas(inFile);
         if (nextLine.contains("name")) {
           name = nextLine.replace("name:", "").strip();
           employee = new Employee(name);
@@ -52,7 +63,7 @@ public class EmployeePersistence implements DataSaverInterface<Employee> {
         else {
           throw new IllegalStateException("Save file doesn't contain proper employee info");
         }
-        nextLine = DataSaverInterface.nextLineIfItHas(inFile);
+        nextLine = nextLineIfItHas(inFile);
         if (nextLine.contains("workPeriods:")) {
           if (!nextLine.replace("workPeriods: [ amount= ", "").strip().equals("0")) {
             WorkPeriod workPeriodToAdd;
@@ -63,38 +74,33 @@ public class EmployeePersistence implements DataSaverInterface<Employee> {
                 employee.addWorkPeriod(workPeriodToAdd);
               }
               if (inFile.hasNext()) {
-                nextLine = DataSaverInterface.nextLineIfItHas(inFile);
+                nextLine = nextLineIfItHas(inFile);
               }
             }
           } else {
-            //Dette er for å lese av "]" dersom lista er tom
-            DataSaverInterface.nextLineIfItHas(inFile);
+            //Calling nextLine() her to reach the list's endmark("]") in the empty list
+            nextLineIfItHas(inFile);
           }
         }
-          //For å lese ferdig siste "}" av objektet og nå bunnen av filen
-          nextLine = DataSaverInterface.nextLineIfItHas(inFile);
+        //Calling nextLine() her to reach the object's endmark("}") at bottom of the file.
+        nextLine = nextLineIfItHas(inFile);
         if (nextLine.contains("} /Employee")) {
-          //TODO vurder behovet fo rå ha en this.worp... framfor å returnere workperiod direkte
-          //this.employee = employee;
-            return employee;
-          } else {
-            throw new IllegalStateException("Save file doesn't contain proper workPeriod info");
-          }
+          return employee;
+        } else {
+          throw new IllegalStateException("Save file doesn't contain proper workPeriod info");
         }
+      }
     }
-
-    //System.out.println(employee.toString());
-    //System.out.println(employee.getName());
     return null;
   }
-  @Override public Employee readFile() throws FileNotFoundException {
-    Scanner inFile = new Scanner((new FileReader(filepath)));
-    Employee readEmployee = deserialize(inFile);
-    inFile.close();
-    return readEmployee;
-  }
 
-
+  /**
+   * Used to serialize an object with a printWriter that is going to write to a file.
+   * This method is used in writeFile and sometimes by itself in other persistence classes.
+   * This method receives data from the object in the class and writes the values line by line
+   * in a specific order.
+   * @param outFile the printWriter that will write the data to the it's file.
+   */
   @Override public void serialize(PrintWriter outFile, Employee employeeToSerialize) {
     outFile.println("Employee {");
     outFile.println("  name: " + employeeToSerialize.getName());
@@ -115,12 +121,6 @@ public class EmployeePersistence implements DataSaverInterface<Employee> {
     outFile.println("} /Employee");
   }
 
-  @Override public void writeFile(Employee employeeToWrite) throws FileNotFoundException {
-    PrintWriter outFile = new PrintWriter(filepath);
-    serialize(outFile,employeeToWrite);
-    outFile.close();
-  }
-
   public static void main(String[] args) throws FileNotFoundException {
     Work work1 = new Work(LocalDateTime.now().minusHours(3), LocalDateTime.now().plusHours(3));
     Work work2 = new Work(LocalDateTime.now().minusDays(2), LocalDateTime.now().minusDays(2).plusHours(4));
@@ -139,11 +139,9 @@ public class EmployeePersistence implements DataSaverInterface<Employee> {
     workPeriod11.addWork(work22);
     e.addWorkPeriod(workPeriod1);
     e.addWorkPeriod(workPeriod11);
-    //EmployeePersistence ep = new EmployeePersistence("src/main/resources/myworkjournal/persistence/employee.txt");
     EmployeePersistence ep2 = new EmployeePersistence("src/main/resources/myworkjournal/persistence/employee.txt");
     ep2.writeFile(e);
     ep2.readFile();
-    //System.out.println(e.getWorkPeriods().toString());
-    //System.out.println("EMPLOYEE" + ep2.getEmployee());
   }
 }
+

@@ -11,11 +11,11 @@ import java.util.Scanner;
  * @param <T> The Object that the persistence class is for.
  */
 public interface DataSaverInterface<T> {
-  String valueFieldIndentationString = "    ";
-  String objectFieldIndentationString = "  ";
+
 
   /**
    * Used to read from file and then deserialize.
+   * @return the read object of T
    * @throws FileNotFoundException if the file is not found.
    */
   T readFile() throws FileNotFoundException;
@@ -46,14 +46,4 @@ public interface DataSaverInterface<T> {
    */
   void serialize(PrintWriter outFile, T objectToSerialize);
 
-  /**
-   * Static method used to verify that the scanner has next(), before calling next to avoid error.
-
-   * @param inFile the scanner we are reading
-   * @return next line if it has, else null.
-   */
-  static String nextLineIfItHas(Scanner inFile) {
-    if (inFile.hasNext()) return inFile.nextLine();
-    return null;
-  }
 }

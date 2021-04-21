@@ -1,6 +1,7 @@
 package myworkjournal.core;
 
 import java.util.*;
+import java.util.stream.Stream;
 
 /**
  * This class represents an Employee. An Employee has a name and a list of WorkPeriods.
@@ -119,16 +120,10 @@ public class Employee implements Iterable<WorkPeriod> {
     }
 
     public WorkPeriod getBestPaidWorkPeriod() {
-        //optinalInt test = employee.getWorkPeriods().stream().mapToInt(WorkPeriod::getMonthSalary).max();
-
-        WorkPeriod highestPaidWorkPeriod = null;
-        double salaryForHighestPaidWorkPeriod = 0;
-        for (WorkPeriod workPeriod : this) {
-            if (workPeriod.getMonthSalary() > salaryForHighestPaidWorkPeriod) {
-                salaryForHighestPaidWorkPeriod = workPeriod.getMonthSalary();
-                highestPaidWorkPeriod = workPeriod;
-            }
-        }
+        WorkPeriod highestPaidWorkPeriod = this.getWorkPeriods().stream()
+            .sorted((o1, o2) -> (int) (o1.getMonthSalary() - o2.getMonthSalary()))
+            .reduce((first, second) -> second)
+            .orElse(null);
         return highestPaidWorkPeriod;
     }
 

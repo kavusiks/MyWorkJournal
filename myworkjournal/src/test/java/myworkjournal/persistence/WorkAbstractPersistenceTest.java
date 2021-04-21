@@ -9,7 +9,7 @@ import java.io.FileNotFoundException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class WorkPersistenceTest extends PersistenceTest implements PersistenceTestInterface {
+public class WorkAbstractPersistenceTest extends AbstractPersistenceTest implements PersistenceTestInterface {
 
 	WorkPersistence workPersistence;
 

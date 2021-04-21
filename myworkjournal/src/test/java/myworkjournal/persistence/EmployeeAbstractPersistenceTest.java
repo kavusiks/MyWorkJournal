@@ -1,6 +1,5 @@
 package myworkjournal.persistence;
 
-import myworkjournal.core.TestData;
 import myworkjournal.core.WorkPeriod;
 
 import org.junit.jupiter.api.AfterEach;
@@ -12,7 +11,7 @@ import java.io.FileNotFoundException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class EmployeePersistenceTest extends PersistenceTest implements PersistenceTestInterface{
+public class EmployeeAbstractPersistenceTest extends AbstractPersistenceTest implements PersistenceTestInterface{
 
 	private EmployeePersistence employeePersistence;
 

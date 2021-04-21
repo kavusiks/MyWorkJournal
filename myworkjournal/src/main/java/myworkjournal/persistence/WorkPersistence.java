@@ -8,32 +8,20 @@ import java.io.PrintWriter;
 import java.time.LocalDateTime;
 import java.util.Scanner;
 
-public class WorkPersistence implements DataSaverInterface<Work> {
+/**
+ * Persistence class for Work. This is used by the persistence class for WorkPeriod.
+ */
+public class WorkPersistence extends AbstractPersistence implements DataSaverInterface<Work> {
 
-
-  private String filepath;
-
-
-  //private Work workToSerialize;
 
   public WorkPersistence (String filepath) {
     this.filepath = filepath;
   }
 
-  /*
-  public WorkPersistence (String filepath, Work workToSerialize) {
-    this(filepath);
-    this.workToSerialize = workToSerialize;
-  }*/
-
-  /*
-  public Work getWork() {
-    return workToSerialize;
-  }*/
-
   /**
    * Used to read from file and then deserialize.
    *
+   * @return the read object of T
    * @throws FileNotFoundException if the file is not found.
    */
   @Override public Work readFile() throws FileNotFoundException {
@@ -69,24 +57,16 @@ public class WorkPersistence implements DataSaverInterface<Work> {
       LocalDateTime startTime = null;
       LocalDateTime endTime = null;
       boolean properFile = false;
-      //boolean workLineDetected = false;
-      String nextLine = DataSaverInterface.nextLineIfItHas(inFile);
+      String nextLine = nextLineIfItHas(inFile);
       if(nextLine.strip().equals("Work {")) {
-        //workLineDetected = true;
-        nextLine = DataSaverInterface.nextLineIfItHas(inFile);
+        nextLine = nextLineIfItHas(inFile);
         if (nextLine.contains("startTime")) startTime = LocalDateTime.parse(nextLine.replace("startTime:", "").strip());
-        nextLine = DataSaverInterface.nextLineIfItHas(inFile);
+        nextLine = nextLineIfItHas(inFile);
         if (nextLine.contains("endTime")) endTime = LocalDateTime.parse(nextLine.replace("endTime:", "").strip());
-        nextLine = DataSaverInterface.nextLineIfItHas(inFile);
+        nextLine = nextLineIfItHas(inFile);
         if(startTime!=null && endTime!= null && nextLine.contains("} /Work")) properFile=true;
       }
-      if(properFile) {
-        System.out.println(startTime.toString() + endTime.toString());
-        //TODO: vurder å fjerne dette
-        //this.workToSerialize = new Work(startTime, endTime);
-        //return workToSerialize;
-        return new Work(startTime, endTime);
-      }
+      if(properFile) return new Work(startTime, endTime);
       else throw new IllegalStateException("Save file doesn't contain proper work info");
     }
     return null;
@@ -118,3 +98,4 @@ public class WorkPersistence implements DataSaverInterface<Work> {
 
   }
 }
+

@@ -8,14 +8,14 @@ import myworkjournal.core.WorkPeriod;
 import static org.junit.jupiter.api.Assertions.*;
 import java.io.File;
 
-public abstract class PersistenceTest {
+public abstract class AbstractPersistenceTest {
 
 
   protected String filepath;
   protected String invalidPath = "invalid";
   protected TestData testData = new TestData();
 
-  public PersistenceTest() {
+  public AbstractPersistenceTest() {
 
   }
 

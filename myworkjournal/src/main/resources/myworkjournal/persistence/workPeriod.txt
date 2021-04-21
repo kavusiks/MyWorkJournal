@@ -2,10 +2,20 @@ WorkPeriod {
   month: juni
   year: 2021
   hourlyWage: 200
-  periodWorkHistory: [ amount=1
+  periodWorkHistory: [ amount=3
   Work {
-    startTime: 2021-04-21T16:19
-      endTime: 2021-04-21T22:19
+    startTime: 2021-04-19T20:29
+      endTime: 2021-04-20T00:29
+  } /Work
+  ,
+  Work {
+    startTime: 2021-04-20T19:29
+      endTime: 2021-04-21T01:29
+  } /Work
+  ,
+  Work {
+    startTime: 2021-04-21T17:29
+      endTime: 2021-04-21T23:29
   } /Work
     ]
 } /WorkPeriod
