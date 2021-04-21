@@ -16,20 +16,21 @@ public class WorkPeriodPersistence implements DataSaverInterface<WorkPeriod> {
 
 
   private String filepath;
-  private WorkPeriod workPeriodToSerialize;
+  //private WorkPeriod workPeriodToSerialize;
 
   public WorkPeriodPersistence(String filepath) {
     this.filepath = filepath;
   }
 
+  /*
   public WorkPeriodPersistence(String filepath, WorkPeriod workPeriodToSerialize) {
     this(filepath);
-    this.workPeriodToSerialize = workPeriodToSerialize;
+    //this.workPeriodToSerialize = workPeriodToSerialize;
   }
-
-  public WorkPeriod getWorkPeriod() {
-    return this.workPeriodToSerialize;
-  }
+*/
+  //public WorkPeriod getWorkPeriod() {
+    //return this.workPeriodToSerialize;
+  //}
 
   public WorkPeriod deserialize(Scanner inFile) {
 
@@ -78,8 +79,9 @@ public class WorkPeriodPersistence implements DataSaverInterface<WorkPeriod> {
         nextLine = DataSaverInterface.nextLineIfItHas(inFile);
         if (nextLine.contains("} /WorkPeriod")) {
           //TODO vurder behovet fo rå ha en this.worp... framfor å returnere workperiod direkte
-          this.workPeriodToSerialize = workPeriod;
-          return workPeriodToSerialize;
+          //this.workPeriodToSerialize = workPeriod;
+          //return workPeriodToSerialize;
+          return workPeriod;
         } else {
           throw new IllegalStateException("Save file doesn't contain proper workPeriod info");
         }
@@ -88,50 +90,51 @@ public class WorkPeriodPersistence implements DataSaverInterface<WorkPeriod> {
     return null;
   }
 
-  @Override public void readFile() throws FileNotFoundException {
+  /**
+   * Used to serialize an object with a printwriter that is going to write to a file.
+   *
+   * @param outFile the printwriter that will write the data to the it's file.
+   */
+  @Override public void serialize(PrintWriter outFile, WorkPeriod workPeriodToSerialize) {
+    {
+
+      outFile.println("WorkPeriod {");
+      outFile
+          .println("  month: " + WorkPeriod.months.get(workPeriodToSerialize.getPeriodStartDate().getMonthValue() - 1));
+      outFile.println("  year: " + workPeriodToSerialize.getPeriodStartDate().getYear());
+      outFile.println("  hourlyWage: " + workPeriodToSerialize.getHourlyWage());
+      outFile.println("  periodWorkHistory: [ amount=" + workPeriodToSerialize.getPeriodWorkHistory().size());
+      boolean firstWorkSerialized= false;
+      for (Work work : workPeriodToSerialize) {
+        if (firstWorkSerialized) {
+          outFile.println("  ,");
+        }
+        else {
+          firstWorkSerialized = true;
+        }
+        WorkPersistence workPersistence = new WorkPersistence(filepath);
+        workPersistence.serialize(outFile, work);
+      }
+
+      outFile.println("    ]");
+      outFile.println("} /WorkPeriod");
+
+    }
+
+  }
+
+  @Override public WorkPeriod readFile() throws FileNotFoundException {
     Scanner inFile = new Scanner((new FileReader(filepath)));
-    deserialize(inFile);
+    WorkPeriod readWorkPeriod = deserialize(inFile);
     inFile.close();
+    return readWorkPeriod;
   }
 
 
 
-  public void serialize(PrintWriter outFile, int indentation) {
-    String valueIndentationString = "";
-    String objectIndentationString = "";
-    for (int i = 0; i < indentation; i++) {
-      valueIndentationString += " ";
-    }
-    for (int i = 0; i < indentation / 2; i++) {
-      objectIndentationString += " ";
-    }
-
-    outFile.println("WorkPeriod {");
-    outFile
-        .println("  month: " + WorkPeriod.months.get(workPeriodToSerialize.getPeriodStartDate().getMonthValue() - 1));
-    outFile.println("  year: " + workPeriodToSerialize.getPeriodStartDate().getYear());
-    outFile.println("  hourlyWage: " + workPeriodToSerialize.getHourlyWage());
-    outFile.println("  periodWorkHistory: [ amount=" + workPeriodToSerialize.getPeriodWorkHistory().size());
-    boolean firstWorkSerialized= false;
-    for (Work work : workPeriodToSerialize) {
-      if (firstWorkSerialized) {
-        outFile.println("  ,");
-      }
-      else {
-      firstWorkSerialized = true;
-      }
-      WorkPersistence workPersistence = new WorkPersistence(filepath, work);
-      workPersistence.serialize(outFile, 4);
-    }
-
-    outFile.println("    ]");
-    outFile.println("} /WorkPeriod");
-
-  }
-
-  @Override public void writeFile() throws FileNotFoundException {
+  @Override public void writeFile(WorkPeriod workPeriodToWrite) throws FileNotFoundException {
     PrintWriter outFile = new PrintWriter(filepath);
-    serialize(outFile, 4);
+    serialize(outFile, workPeriodToWrite);
     outFile.close();
   }
 
@@ -145,11 +148,12 @@ public class WorkPeriodPersistence implements DataSaverInterface<WorkPeriod> {
     //Fiks adde flere i serializer i workpersistence
     //workPeriod.addWork(work2);
     //workPeriod.addWork(work3);
-    WorkPeriodPersistence wp =
+    /*WorkPeriodPersistence wp =
         new WorkPeriodPersistence("src/main/resources/myworkjournal/persistence/workPeriod.txt", workPeriod);
+    */
     WorkPeriodPersistence wp1 =
         new WorkPeriodPersistence("src/main/resources/myworkjournal/persistence/workPeriod.txt");
-    wp.writeFile();
+    wp1.writeFile(workPeriod);
     wp1.readFile();
 
   }

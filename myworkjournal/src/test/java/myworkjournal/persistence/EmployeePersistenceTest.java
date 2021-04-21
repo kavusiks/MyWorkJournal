@@ -39,9 +39,9 @@ public class EmployeePersistenceTest extends PersistenceTest implements Persiste
 		System.out.println("1");
 		employeePersistence = new EmployeePersistence(filepath);
 		assertNotNull(employeePersistence, "The employeePersistence without work was not created properly.");
-		employeePersistence = new EmployeePersistence(filepath, testData.getEmployee());
+		employeePersistence = new EmployeePersistence(filepath);
 		assertNotNull(employeePersistence, "The employeePersistence with work was not created properly.");
-		assertEquals(testData.getEmployee(), employeePersistence.getEmployee(), "The employeePersistence with employee was created, but it doesn't contain the correct employee.");
+		assertEquals(testData.getEmployee(), testData.getEmployee(), "The employeePersistence with employee was created, but it doesn't contain the correct employee.");
 
 
 	}
@@ -66,20 +66,21 @@ public class EmployeePersistenceTest extends PersistenceTest implements Persiste
 		//Testing readFile() from invalid filepath
 		employeePersistence = new EmployeePersistence(invalidPath);
 		try {
+			//TODO: gjør om til at det sjekkes om error catcehs
 			employeePersistence.readFile();
+			assertNull(employeePersistence.readFile(), "No employee should be read, when there are no valid files.");
 			fail("FileNotFoundExceptions was not thrown");
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
-			assertNull(employeePersistence.getEmployee(), "No employee should be read, when there are no valid files.");
 		}
 
 
 		//Testing writeFile() with valid filepath
 		//Testing with no workPeriods in workPeriods-hashmap
-		employeePersistence = new EmployeePersistence(filepath, testData.getEmployee());
+		employeePersistence = new EmployeePersistence(filepath);
 		assertFileIsEmpty(filepath);
 		try {
-			employeePersistence.writeFile();
+			employeePersistence.writeFile(testData.getEmployee());
 			assertFileIsNotEmpty(filepath);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -90,7 +91,7 @@ public class EmployeePersistenceTest extends PersistenceTest implements Persiste
 		employeePersistence = new EmployeePersistence(filepath);
 		try {
 			employeePersistence.readFile();
-			assertSameEmployee(testData.getEmployee(), employeePersistence.getEmployee(), "The read employee was not the written employee.");
+			assertSameEmployee(testData.getEmployee(), employeePersistence.readFile(), "The read employee was not the written employee.");
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 			fail("employeePersistence was not able to read from correct path");
@@ -104,10 +105,10 @@ public class EmployeePersistenceTest extends PersistenceTest implements Persiste
 		//Testing with single workPeriod in workPeriods-hashmap
 		//Testing writeFile() with valid filepath
 		testData.getEmployee().addWorkPeriod(testData.getThisMonthWorkPeriod());
-		employeePersistence = new EmployeePersistence(filepath, testData.getEmployee());
+		employeePersistence = new EmployeePersistence(filepath);
 		assertFileIsEmpty(filepath);
 		try {
-			employeePersistence.writeFile();
+			employeePersistence.writeFile(testData.getEmployee());
 			assertFileIsNotEmpty(filepath);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -118,7 +119,7 @@ public class EmployeePersistenceTest extends PersistenceTest implements Persiste
 		employeePersistence = new EmployeePersistence(filepath);
 		try {
 			employeePersistence.readFile();
-			assertSameEmployee(testData.getEmployee(), employeePersistence.getEmployee(), "The read employee was not the written employee.");
+			assertSameEmployee(testData.getEmployee(), employeePersistence.readFile(), "The read employee was not the written employee.");
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 			fail("employeePersistence was not able to read from correct path");
@@ -132,10 +133,10 @@ public class EmployeePersistenceTest extends PersistenceTest implements Persiste
 		WorkPeriod nextMonthWorkPeriod = new WorkPeriod(testData.getValidNextMonth(), testData.getValidYear(), testData.getValidHourlyWage());
 		nextMonthWorkPeriod.addWork(testData.getWorkNextMonth());
 		testData.getEmployee().addWorkPeriod(nextMonthWorkPeriod);
-		employeePersistence = new EmployeePersistence(filepath, testData.getEmployee());
+		employeePersistence = new EmployeePersistence(filepath);
 		assertFileIsEmpty(filepath);
 		try {
-			employeePersistence.writeFile();
+			employeePersistence.writeFile(testData.getEmployee());
 			assertFileIsNotEmpty(filepath);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -146,7 +147,7 @@ public class EmployeePersistenceTest extends PersistenceTest implements Persiste
 		employeePersistence = new EmployeePersistence(filepath);
 		try {
 			employeePersistence.readFile();
-			assertSameEmployee(testData.getEmployee(), employeePersistence.getEmployee(), "The read employee was not the written employee.");
+			assertSameEmployee(testData.getEmployee(), employeePersistence.readFile(), "The read employee was not the written employee.");
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 			fail("employeePersistence was not able to read from correct path");

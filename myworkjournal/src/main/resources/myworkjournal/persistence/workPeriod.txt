@@ -4,8 +4,8 @@ WorkPeriod {
   hourlyWage: 200
   periodWorkHistory: [ amount=1
   Work {
-    startTime: 2021-04-11T18:48
-      endTime: 2021-04-12T00:48
+    startTime: 2021-04-21T16:19
+      endTime: 2021-04-21T22:19
   } /Work
     ]
 } /WorkPeriod

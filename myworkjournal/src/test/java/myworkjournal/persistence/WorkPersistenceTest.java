@@ -32,9 +32,9 @@ public class WorkPersistenceTest extends PersistenceTest implements PersistenceT
 		workPersistence = null;
 		workPersistence = new WorkPersistence(filepath);
 		assertNotNull(workPersistence, "The workpersistence without work was not created properly.");
-		workPersistence = new WorkPersistence(filepath, testData.getWorkThisMonth());
-		assertNotNull(workPersistence, "The workpersistence with work was not created properly.");
-		assertEquals(testData.getWorkThisMonth(), workPersistence.getWork(), "The workpersistence with work was created, but doesn't contain the correct work.");
+		//workPersistence = new WorkPersistence(filepath, testData.getWorkThisMonth());
+		//assertNotNull(workPersistence, "The workpersistence with work was not created properly.");
+		//assertEquals(testData.getWorkThisMonth(), workPersistence.getWork(), "The workpersistence with work was created, but doesn't contain the correct work.");
 
 	}
 
@@ -57,10 +57,10 @@ public class WorkPersistenceTest extends PersistenceTest implements PersistenceT
 
 
 		//Testing writeFile() with valid filepath
-		workPersistence = new WorkPersistence(filepath, testData.getWorkThisMonth());
+		workPersistence = new WorkPersistence(filepath);
 		assertFileIsEmpty(filepath);
 		try {
-			workPersistence.writeFile();
+			workPersistence.writeFile(testData.getWorkThisMonth());
 			assertFileIsNotEmpty(filepath);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -70,8 +70,8 @@ public class WorkPersistenceTest extends PersistenceTest implements PersistenceT
 		//Testing readFile() by reading the data saved from the sub-test above
 		workPersistence = new WorkPersistence(filepath);
 		try {
-			workPersistence.readFile();
-			assertSameWork(testData.getWorkThisMonth(), workPersistence.getWork(), "The read work was not the written work.");
+			//workPersistence.readFile();
+			assertSameWork(testData.getWorkThisMonth(), workPersistence.readFile(), "The read work was not the written work.");
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 			fail("WorkPersistence was not able to read from correct path");
@@ -80,11 +80,11 @@ public class WorkPersistenceTest extends PersistenceTest implements PersistenceT
 		//Testing readFile() froom invalid filepath
 		workPersistence = new WorkPersistence(invalidPath);
 		try {
-			workPersistence.readFile();
+			assertNull(workPersistence.readFile(), "No workPeriod should be read, when there are no valid files.");
+			//workPersistence.readFile();
 			fail("FileNotFoundExceptions was not thrown");
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
-			assertNull(workPersistence.getWork(), "No workPeriod should be read, when there are no valid files.");
 		}
 
 

@@ -51,8 +51,8 @@ public abstract class AbstractController {
 		if (employee== null) {
 			throw new IllegalArgumentException("Employee to save is not defined");
 		}
-		EmployeePersistence employeeSaver = new EmployeePersistence("src/main/resources/myworkjournal/persistence/employee.txt", employee);
-		employeeSaver.writeFile();
+		EmployeePersistence employeeSaver = new EmployeePersistence("src/main/resources/myworkjournal/persistence/employee.txt");
+		employeeSaver.writeFile(employee);
 		System.exit(0);
 	}
 
