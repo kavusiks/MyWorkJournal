@@ -115,7 +115,9 @@ public class WorkPeriod implements Iterable<Work>, Comparable<WorkPeriod> {
    *                                  or isn't during this WorkPeriod.
    */
   public void addWork(Work work) throws IllegalArgumentException {
-
+	  
+	if (work == null)
+	  throw new IllegalArgumentException("Can't add null-object");
     if (checkWorkAlreadyAdded(work))
       throw new IllegalArgumentException("This work data already exists");
     if (checkIfAnyOverlappingWorksExists(work))

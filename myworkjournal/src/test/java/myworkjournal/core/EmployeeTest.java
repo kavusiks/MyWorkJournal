@@ -4,9 +4,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.DisplayName;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import java.util.ArrayList;
 
 public class EmployeeTest {
 	private TestData testData = new TestData();
@@ -39,6 +36,7 @@ public class EmployeeTest {
 		// Check if name corresponds
 		Employee employee = new Employee("Ola");
 		assertEquals("Ola", employee.getName());
+		assertTrue(employee.getWorkPeriods().isEmpty());
 
 		// Check if it throws exception when number is in name
 		assertThrows(IllegalArgumentException.class, () -> {
@@ -83,14 +81,18 @@ public class EmployeeTest {
 	@DisplayName("testAddWorkPeriod() og testMergeTwoWorkPeriods().")
 	public void testAddWorkPeriod() {
 		Employee employee = new Employee("Ola");
-		
-//		employee.addWorkPeriod(null);
-//		assertEquals("[null]",employee.getWorkPeriods());
+				
+		assertThrows(IllegalArgumentException.class, () -> {
+			employee.addWorkPeriod(null);
+		});
+		assertTrue(employee.getWorkPeriods().isEmpty());
 						
 		employee.addWorkPeriod(nextMonthWorkPeriod);
-		ArrayList<WorkPeriod> wplist = new ArrayList<>();
-		wplist.add(nextMonthWorkPeriod);
-		assertEquals(wplist,employee.getWorkPeriods());
+		assertTrue(employee.getWorkPeriods().contains(nextMonthWorkPeriod));
+		
+		WorkPeriod wptest = new WorkPeriod("juni", 2021, 100);
+		employee.addWorkPeriod(wptest);
+		assertTrue(employee.getWorkPeriods().contains(wptest) && employee.getWorkPeriods().contains(nextMonthWorkPeriod));
 		
 	}
 	
@@ -112,7 +114,11 @@ public class EmployeeTest {
 		// testing if it removes a workperiod
 		employee.addWorkPeriod(nextMonthWorkPeriod);
 		employee.addWorkPeriod(wptest);
+		assertTrue(employee.getWorkPeriods().contains(nextMonthWorkPeriod));
+		assertTrue(employee.getWorkPeriods().contains(nextMonthWorkPeriod));
 		employee.removeWorkPeriod(wptest);
+		assertTrue(employee.getWorkPeriods().contains(nextMonthWorkPeriod));
+		assertFalse(employee.getWorkPeriods().contains(wptest));
 		assertEquals("[" +nextMonthWorkPeriod.toString() + "]", employee.getWorkPeriods().toString());
 		
 	}

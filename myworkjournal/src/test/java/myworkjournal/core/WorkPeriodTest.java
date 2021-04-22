@@ -49,8 +49,12 @@ public class WorkPeriodTest {
 
   @Test 
   public void testAddWork() {
+	//Testing that null object can't be added
+	assertThrows(IllegalArgumentException.class, () -> {
+			testData.getThisMonthWorkPeriod().addWork(null);
+	});	  
+	  
     //Testing valid works:
-
     assertEquals(0, testData.getThisMonthWorkPeriod().getPeriodWorkHistory().size());
     testData.getThisMonthWorkPeriod().addWork(testData.getWorkThisMonth());
     assertTrue(testData.getThisMonthWorkPeriod().getPeriodWorkHistory().contains(testData.getWorkThisMonth()),

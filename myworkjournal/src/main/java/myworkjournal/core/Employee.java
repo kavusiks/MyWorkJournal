@@ -55,6 +55,9 @@ public class Employee implements Iterable<WorkPeriod> {
             workPeriods.remove(existingWorkPeriod);
             workPeriods.add(mergeTwoWorkPeriods(existingWorkPeriod, workPeriod));
         }
+        else if (workPeriod == null) {
+        	throw new IllegalArgumentException("Can't add null-object");
+        }
         else {
             workPeriods.add(workPeriod);
         }
