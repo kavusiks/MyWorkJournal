@@ -1,7 +1,6 @@
 package myworkjournal.core;
 
 import java.util.*;
-import java.util.stream.Stream;
 
 /**
  * This class represents an Employee. An Employee has a name and a list of WorkPeriods.
@@ -97,7 +96,8 @@ public class Employee implements Iterable<WorkPeriod> {
         return this.name;
     }
 
-    @Override public String toString() {
+    @Override 
+    public String toString() {
         return "Employee{" + "name='" + name + '\'' + ", workPeriods=" + workPeriods + '}';
     }
 
@@ -107,7 +107,8 @@ public class Employee implements Iterable<WorkPeriod> {
      *
      * @return the iterator of the list with WorkPeriod.
      */
-    @Override public Iterator<WorkPeriod> iterator() {
+    @Override 
+    public Iterator<WorkPeriod> iterator() {
         return workPeriods.iterator();
     }
 
