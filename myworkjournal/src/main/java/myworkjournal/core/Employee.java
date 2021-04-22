@@ -124,11 +124,10 @@ public class Employee implements Iterable<WorkPeriod> {
     }
 
     public WorkPeriod getBestPaidWorkPeriod() {
-        WorkPeriod highestPaidWorkPeriod = this.getWorkPeriods().stream()
-            .sorted((o1, o2) -> (int) (o1.getMonthSalary() - o2.getMonthSalary()))
-            .reduce((first, second) -> second)
+
+        return this.getWorkPeriods().stream()
+            .min((o1, o2) -> (int) (o2.getMonthSalary() - o1.getMonthSalary()))
             .orElse(null);
-        return highestPaidWorkPeriod;
     }
 
     /**

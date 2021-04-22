@@ -44,14 +44,6 @@ public class TestData {
     return workThisMonth3;
   }
 
-  public LocalDateTime getValidStartTimeNextMonth() {
-    return validStartTimeNextMonth;
-  }
-
-  public LocalDateTime getValidEndTimeNextMonth() {
-    return validEndTimeNextMonth;
-  }
-
   public Work getWorkNextMonth() {
     return workNextMonth;
   }

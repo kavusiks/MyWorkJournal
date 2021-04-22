@@ -2,9 +2,7 @@ package myworkjournal.ui;
 
 import java.io.IOException;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
-import javafx.event.ActionEvent;
 import javafx.scene.control.*;
 import myworkjournal.core.Work;
 import myworkjournal.core.WorkPeriod;
@@ -81,7 +79,7 @@ public class DataInputController extends AbstractController {
   }
   @Override void sceneSwitchedUpdate() {
     monthChoiceBox.getItems().clear();
-    for (WorkPeriod workPeriod : getEmployee().getWorkPeriods()) {
+    for (WorkPeriod workPeriod : getLoggedInEmployee().getWorkPeriods()) {
       monthChoiceBox.getItems().add(workPeriod);
     }
     updateChoiceBox();
@@ -91,7 +89,7 @@ public class DataInputController extends AbstractController {
   @FXML
   private void updateChoiceBox() {
     monthChoiceBox.getItems().clear();
-    for (WorkPeriod workPeriod : getEmployee().getWorkPeriods()){
+    for (WorkPeriod workPeriod : getLoggedInEmployee().getWorkPeriods()){
       monthChoiceBox.getItems().add(workPeriod);
     }
   }
@@ -160,11 +158,12 @@ public class DataInputController extends AbstractController {
 
   @FXML
   private void goToStats() throws IOException {
-    Employee employee = getEmployee();
+    Employee employee = getLoggedInEmployee();
     if (workPeriod != null) {
       employee.addWorkPeriod(workPeriod);
     }
-    setEmployee(employee);
+    //Todo: hvorfor gjør jeg deelen over
+    //setLoggedInEmployee(employee);
 
     changeScreen("myStats.fxml", viewStatsBtn);
   }

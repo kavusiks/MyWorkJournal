@@ -2,14 +2,11 @@ package myworkjournal.ui;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.layout.AnchorPane;
 import myworkjournal.core.Employee;
-import myworkjournal.core.Work;
 import myworkjournal.core.WorkPeriod;
 
 import java.io.IOException;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 
@@ -49,9 +46,9 @@ public class AddWorkPeriodController extends AbstractController {
 
 
     @Override void sceneSwitchedUpdate() {
-    employee = getEmployee();
+    employee = getLoggedInEmployee();
     existingMonthListView.getItems().clear();
-    for (WorkPeriod month: getEmployee().getWorkPeriods()){
+    for (WorkPeriod month: getLoggedInEmployee().getWorkPeriods()){
       existingMonthListView.getItems().add(month);
     }
     monthChoiceBox.getItems().setAll(WorkPeriod.months);
@@ -88,7 +85,7 @@ public class AddWorkPeriodController extends AbstractController {
       throw new IllegalArgumentException(error);
     }
     employee.addWorkPeriod(newPeriod);
-    setEmployee(employee);
+    //setLoggedInEmployee(employee);
     sceneSwitchedUpdate();
   }
 
@@ -100,7 +97,6 @@ public class AddWorkPeriodController extends AbstractController {
     catch (IllegalArgumentException e) {
       errorMessage.setText(e.getMessage());
     }
-    setEmployee(employee);
     sceneSwitchedUpdate();
     removeMonthBtn.setDisable(true);
     deletePopupPane.setVisible(false);

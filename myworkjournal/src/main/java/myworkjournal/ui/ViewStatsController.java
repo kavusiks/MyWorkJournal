@@ -29,7 +29,7 @@ public class ViewStatsController extends AbstractController {
   @FXML
   private void goToDataInput() throws IOException {
     //Employee employee = new Employee(profileNameInputField.getText());
-    setEmployee(getEmployee());
+    //setLoggedInEmployee(getLoggedInEmployee());
     changeScreen("dataInput.fxml", goToDataInputBtn);
   }
 
@@ -37,23 +37,23 @@ public class ViewStatsController extends AbstractController {
 
   @Override void sceneSwitchedUpdate() {
     int timer = 0;
-    double lonn = getEmployee().getTotalSalary();
-    for(WorkPeriod workPeriod: getEmployee()) {
+    double lonn = getLoggedInEmployee().getTotalSalary();
+    for(WorkPeriod workPeriod: getLoggedInEmployee()) {
       System.out.println("WorkPeriod " + workPeriod.getIdentifier() +" totlønn: " + workPeriod.getMonthSalary() + " times "+ workPeriod.getHourlyWage() + " timer med arbeid tot: " + workPeriod.getTotalHours());
     }
     System.out.println("LØNN, " + lonn);
-    WorkPeriod highestPaisWorkPeriod = getEmployee().getBestPaidWorkPeriod();
-    for (WorkPeriod workPeriod: getEmployee().getWorkPeriods()) {
+    WorkPeriod highestPaisWorkPeriod = getLoggedInEmployee().getBestPaidWorkPeriod();
+    for (WorkPeriod workPeriod: getLoggedInEmployee().getWorkPeriods()) {
       timer+= workPeriod.getTotalHours();
     }
     bestWorkPeriodLabel.setText(highestPaisWorkPeriod.getIdentifier());
     bestWorkPeriodSalaryLabel.setText(Double.toString(highestPaisWorkPeriod.getMonthSalary()));
     lonnLabel.setText(lonn +"kr");
     timerLabel.setText((Integer.toString(timer)));
-    avgShiftsLabel.setText(df.format(getEmployee().getAverageShiftAmount()));
-    avgWorkHoursLabel.setText(df.format(getEmployee().getAverageWorkHours()));
-    avgSalaryLabel.setText(df.format(getEmployee().getAverageSalary()));
-    avgHourlyWageLabel.setText(df.format(getEmployee().getAverageHourlyWage()));
+    avgShiftsLabel.setText(df.format(getLoggedInEmployee().getAverageShiftAmount()));
+    avgWorkHoursLabel.setText(df.format(getLoggedInEmployee().getAverageWorkHours()));
+    avgSalaryLabel.setText(df.format(getLoggedInEmployee().getAverageSalary()));
+    avgHourlyWageLabel.setText(df.format(getLoggedInEmployee().getAverageHourlyWage()));
 
   }
 }

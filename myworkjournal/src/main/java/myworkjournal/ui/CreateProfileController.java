@@ -35,12 +35,14 @@ public class CreateProfileController extends AbstractController{
     private void initialize(){
       sceneSwitchedUpdate();
     }
-    
+
+
+
     @FXML
     private void createProfile() throws IOException {
     	try {
     		Employee employee = new Employee(profileNameInputField.getText());
-    		setEmployee(employee);
+    		setLoggedInEmployee(employee);
     		goToAddWorkPeriod();
     	} catch (IllegalArgumentException e) {
     		errorMessage1.setText(e.getMessage());   		
@@ -83,7 +85,7 @@ public class CreateProfileController extends AbstractController{
         //employeePersistence.readFile();
         //Employee employee = employeePersistence.getEmployee();
         Employee employee = employeePersistence.readFile();
-        setEmployee(employee);
+        setLoggedInEmployee(employee);
         savedUserDisplayField.setText(employee.getName());
       } catch (FileNotFoundException e) {
         savedUserDisplayField.setText("No saved user");
