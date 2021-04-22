@@ -47,7 +47,6 @@ public class WorkPeriodTest {
 
   }
 
-
   @Test 
   public void testAddWork() {
     //Testing valid works:
@@ -164,8 +163,6 @@ public class WorkPeriodTest {
     assertEquals(periodWorhistoryToAdd, testData.getThisMonthWorkPeriod().getPeriodWorkHistory());
   }
 
-
-
   @Test 
   @DisplayName("Sjekk at getters fungerer. (getHourlyWage(), getTotalHours(), getMonthSalary(), getIdentifier(), getPeriodStartDate(), getPeriodEndDate()).")
   public void testGetters() {
@@ -193,6 +190,5 @@ public class WorkPeriodTest {
     assertEquals(LocalDate.now().withDayOfMonth(LocalDate.now().lengthOfMonth()),
         testData.getThisMonthWorkPeriod().getPeriodEndDate(), "getPeriodEndDate() didn't give the correct enddate for this period");
   }
-
 
 }

@@ -34,8 +34,6 @@ public class EmployeeTest {
 		totalWorkPeriods = testData.getEmployee().getWorkPeriods().size();
 	}
 
-
-
 	@Test
 	public void testConstructor() {
 		// Check if name corresponds
@@ -43,13 +41,13 @@ public class EmployeeTest {
 		assertEquals("Ola", employee.getName());
 
 		// Check if it throws exception when number is in name
-		Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+		assertThrows(IllegalArgumentException.class, () -> {
 	        Employee employee1 = new Employee("1234Ola");
 	    });
-		Exception exception2 = assertThrows(IllegalArgumentException.class, () -> {
+		assertThrows(IllegalArgumentException.class, () -> {
 	        Employee employee3 = new Employee("");
 	    });
-		Exception exception3 = assertThrows(IllegalArgumentException.class, () -> {
+		assertThrows(IllegalArgumentException.class, () -> {
 	        Employee employee4 = new Employee("'-e");
 	    });
 
@@ -82,6 +80,7 @@ public class EmployeeTest {
 	}
 		
 	@Test
+	@DisplayName("testAddWorkPeriod() og testMergeTwoWorkPeriods().")
 	public void testAddWorkPeriod() {
 		Employee employee = new Employee("Ola");
 		
@@ -101,12 +100,12 @@ public class EmployeeTest {
 		WorkPeriod wptest = new WorkPeriod("juni", 2021, 100);
 		
 		// testing if it throws exception if workperiod is not there.
-		Exception exception1 = assertThrows(IllegalArgumentException.class, () -> {
+		assertThrows(IllegalArgumentException.class, () -> {
 	        employee.removeWorkPeriod(nextMonthWorkPeriod);
 	    });
 		
 		// testing if it throws exception if workperiod is null
-		Exception exception2 = assertThrows(IllegalArgumentException.class, () -> {
+		assertThrows(IllegalArgumentException.class, () -> {
 			employee.removeWorkPeriod(null);
 		});
 		
@@ -115,11 +114,6 @@ public class EmployeeTest {
 		employee.addWorkPeriod(wptest);
 		employee.removeWorkPeriod(wptest);
 		assertEquals("[" +nextMonthWorkPeriod.toString() + "]", employee.getWorkPeriods().toString());
-		
-	}
-	
-	@Test
-	public void mergeTwoWorkPeriods() {
 		
 	}
 	
