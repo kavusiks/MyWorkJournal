@@ -7,6 +7,8 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.ArrayList;
+
 public class EmployeeTest {
 	private TestData testData = new TestData();
 	private WorkPeriod nextMonthWorkPeriod = new WorkPeriod(testData.getValidNextMonth(), testData.getValidYear(), testData.getValidHourlyWage());
@@ -78,38 +80,54 @@ public class EmployeeTest {
 		//testing getAverageHourlyWage()  The average salary is the same as validHourlySalary, since all of the employee's workperiods has this as hourlyWage.
 		assertEquals(testData.getValidHourlyWage(), testData.getEmployee().getAverageHourlyWage(), "Wrong amount of hourly wage returned.");
 	}
-	/*
-	@Test
-	public void testSetName() {
-		Employee employee = new Employee("Ola");
-		employee.setName("OlaNordmann");
-		assertEquals("OlaNordmann", employee.getName());
-		employee.setName("Ola");
-		assertEquals("Ola", employee.getName());
-		Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-	        employee.setName("1234");
-	    });
-		Exception exception2 = assertThrows(IllegalArgumentException.class, () -> {
-	        employee.setName("");
-	    });
-		Exception exception3 = assertThrows(IllegalArgumentException.class, () -> {
-	        employee.setName("'-e");
-	    });
 		
-	}*/
-	
 	@Test
 	public void testAddWorkPeriod() {
-		// WIP
+		Employee employee = new Employee("Ola");
+		
+//		employee.addWorkPeriod(null);
+//		assertEquals("[null]",employee.getWorkPeriods());
+						
+		employee.addWorkPeriod(nextMonthWorkPeriod);
+		ArrayList<WorkPeriod> wplist = new ArrayList<>();
+		wplist.add(nextMonthWorkPeriod);
+		assertEquals(wplist,employee.getWorkPeriods());
+		
+	}
+	
+	@Test
+	public void testRemoveWorkPeriod() {
+		Employee employee = new Employee("Ola");
+		WorkPeriod wptest = new WorkPeriod("juni", 2021, 100);
+		
+		// testing if it throws exception if workperiod is not there.
+		Exception exception1 = assertThrows(IllegalArgumentException.class, () -> {
+	        employee.removeWorkPeriod(nextMonthWorkPeriod);
+	    });
+		
+		// testing if it throws exception if workperiod is null
+		Exception exception2 = assertThrows(IllegalArgumentException.class, () -> {
+			employee.removeWorkPeriod(null);
+		});
+		
+		// testing if it removes a workperiod
+		employee.addWorkPeriod(nextMonthWorkPeriod);
+		employee.addWorkPeriod(wptest);
+		employee.removeWorkPeriod(wptest);
+		assertEquals("[" +nextMonthWorkPeriod.toString() + "]", employee.getWorkPeriods().toString());
+		
 	}
 	
 	@Test
 	public void mergeTwoWorkPeriods() {
-		// WIP
+		
 	}
 	
 	@Test
 	public void testToString() {
-		// WIP
+		Employee employee = new Employee("Ola");
+		assertEquals("Employee{" + "name='" + "Ola" + '\'' + ", workPeriods=" + "[]" + '}', employee.toString());
+		employee.addWorkPeriod(nextMonthWorkPeriod);
+		assertEquals("Employee{" + "name='" + "Ola" + '\'' + ", workPeriods=" + "[mai-2021]" + '}', employee.toString());
 	}
 }
