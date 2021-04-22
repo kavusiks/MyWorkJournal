@@ -1,11 +1,10 @@
 package myworkjournal.core;
 
 import org.junit.jupiter.api.Test;
-import static java.time.temporal.ChronoUnit.MINUTES;
-
-import java.time.LocalDateTime;
-
 import static org.junit.jupiter.api.Assertions.*;
+
+import static java.time.temporal.ChronoUnit.MINUTES;
+import java.time.LocalDateTime;
 
 public class WorkTest {
 		private Work work;

@@ -1,9 +1,8 @@
 package myworkjournal.core;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
+import org.junit.jupiter.api.DisplayName;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -65,6 +64,7 @@ public class EmployeeTest {
 	}
 
 	@Test
+	@DisplayName("Sjekk at getters fungerer. (getTotalSalary(), getBestPaidWorkPeriod(), getAverageShiftAmount(), getAverageWorkHours(), getAverageSalary(), getAverageHourlyWage()).")
 	public void testGetters() {
 		//DETTE ER KUN DET SOM VAR I STATSTEST FRA FØR
 		//testing getTotalSalary()

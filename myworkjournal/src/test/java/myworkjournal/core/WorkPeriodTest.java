@@ -1,17 +1,14 @@
 package myworkjournal.core;
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 public class WorkPeriodTest {
   private TestData testData = new TestData();
@@ -22,7 +19,8 @@ public class WorkPeriodTest {
   WorkPeriod testCreateWorkPeriod;
 
 
-  @Test public void testConstructor() {
+  @Test 
+  public void testConstructor() {
 
     //Testing with valid inputs
     testCreateWorkPeriod = new WorkPeriod(testData.getValidThisMonth(), testData.getValidYear(), testData.getValidHourlyWage());
@@ -50,7 +48,8 @@ public class WorkPeriodTest {
   }
 
 
-  @Test public void testAddWork() {
+  @Test 
+  public void testAddWork() {
     //Testing valid works:
 
     assertEquals(0, testData.getThisMonthWorkPeriod().getPeriodWorkHistory().size());
@@ -128,7 +127,8 @@ public class WorkPeriodTest {
 
   }
 
-  @Test public void testRemoveWork() {
+  @Test 
+  public void testRemoveWork() {
     assertEquals(0, testData.getThisMonthWorkPeriod().getPeriodWorkHistory().size());
     testData.getThisMonthWorkPeriod().addWork(testData.getWorkThisMonth());
     assertTrue(testData.getThisMonthWorkPeriod().getPeriodWorkHistory().contains(testData.getWorkThisMonth()),
@@ -148,7 +148,8 @@ public class WorkPeriodTest {
 
   }
 
-  @Test public void testSetAndGetPeriodWorkHistory() {
+  @Test 
+  public void testSetAndGetPeriodWorkHistory() {
     //Testing setPeriodWorkHistory()
     assertEquals(0, testData.getThisMonthWorkPeriod().getPeriodWorkHistory().size(),
         "Verifying that the workPeriod contains no works before test setting workperiodhistory failed");
@@ -165,7 +166,9 @@ public class WorkPeriodTest {
 
 
 
-  @Test public void testGetters() {
+  @Test 
+  @DisplayName("Sjekk at getters fungerer. (getHourlyWage(), getTotalHours(), getMonthSalary(), getIdentifier(), getPeriodStartDate(), getPeriodEndDate()).")
+  public void testGetters() {
     Work workThisMonth2 =
         new Work(LocalDateTime.now().minusDays(1), LocalDateTime.now().plusHours(testData.getShiftDurationHours()).minusDays(1));
     testData.getThisMonthWorkPeriod().addWork(testData.getWorkThisMonth());
