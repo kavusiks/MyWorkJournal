@@ -1,5 +1,6 @@
 package myworkjournal.core;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
@@ -11,12 +12,21 @@ import java.util.Arrays;
 import java.util.List;
 
 public class WorkPeriodTest {
-  private TestData testData = new TestData();
-  private int invalidYear1 = 1;
-  private int invalidYear2 = testData.getValidYear() - 2;
-  private int invalidHourlyWage = -151;
-  private String invalidMonth = "Invalid";
+  private TestData testData;
+  private int invalidYear1;
+  private int invalidYear2;
+  private int invalidHourlyWage;
+  private String invalidMonth;
   WorkPeriod testCreateWorkPeriod;
+
+
+  @BeforeEach public void setUp() {
+    testData = new TestData();
+    invalidYear1 = 0;
+    invalidYear2 = testData.getValidYear() - 2;
+    invalidHourlyWage = -151;
+    invalidMonth = "Invalid";
+  }
 
 
   @Test 
@@ -43,6 +53,14 @@ public class WorkPeriodTest {
     assertThrows(IllegalArgumentException.class, () -> {
       testCreateWorkPeriod = new WorkPeriod(testData.getValidThisMonth(), testData.getValidYear(), invalidHourlyWage);
     }, "Expected an IllegalArgumentException to be thrown when creating a workPeriod with invalid hourlyWage");
+
+    assertThrows(IllegalArgumentException.class, () -> {
+      testCreateWorkPeriod = new WorkPeriod(null, testData.getValidYear(), testData.getValidHourlyWage());
+    }, "Expected an IllegalArgumentException to be thrown when creating a workPeriod with null as month");
+
+    assertThrows(IllegalArgumentException.class, () -> {
+      testCreateWorkPeriod = new WorkPeriod(testData.getValidThisMonth(), testData.getValidYear(), 0);
+    }, "Expected an IllegalArgumentException to be thrown when creating a workPeriod with 0 hourlyWage");
 
 
   }

@@ -34,6 +34,7 @@ public class WorkPeriod implements Iterable<Work>, Comparable<WorkPeriod> {
    * @throws IllegalArgumentException if month, year or hourlyWage are invalid.
    */
   public WorkPeriod(String month, int year, int hourlyWage) throws IllegalArgumentException {
+    if(month == null || hourlyWage == 0) throw new IllegalArgumentException("Month or hourlyWage can´t be null/0");
     String monthValue;
     if (months.contains(month.toLowerCase())) {
       monthValue = String.valueOf(months.indexOf(month.toLowerCase()) + 1);
@@ -147,6 +148,7 @@ public class WorkPeriod implements Iterable<Work>, Comparable<WorkPeriod> {
   public int getHourlyWage() {
     return this.hourlyWage;
   }
+
 
   /**
    * Calculates the total hours of work during this WorkPeriod by sum up shift duration hours

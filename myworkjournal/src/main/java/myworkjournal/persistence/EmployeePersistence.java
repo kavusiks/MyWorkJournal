@@ -22,7 +22,7 @@ public class EmployeePersistence extends AbstractPersistence implements DataSave
    * @return the read object of T
    * @throws FileNotFoundException if the file is not found.
    */
-  @Override public Employee readFile() throws FileNotFoundException {
+  @Override public Employee readFile() throws FileNotFoundException, IllegalStateException {
     Scanner inFile = new Scanner((new FileReader(filepath)));
     Employee readEmployee = deserialize(inFile);
     inFile.close();
@@ -49,7 +49,7 @@ public class EmployeePersistence extends AbstractPersistence implements DataSave
    * @return the deserialized object of T.
    * @throws IllegalStateException if the reading file isn't properly written.
    */
-  @Override public Employee deserialize(Scanner inFile) {
+  @Override public Employee deserialize(Scanner inFile) throws IllegalStateException {
     while (inFile.hasNext()) {
       String name;
       Employee employee;

@@ -25,8 +25,8 @@ public abstract class AbstractController {
 	protected Employee loggedInEmployee;
 
 	/**
-	 * Used to set the employee when employee logs in.
-	 * @param loggedInEmployee the employee who is logged in
+	 * Used to set the employee. Method is used when the employee logs in and everytime the scene switches..
+	 * @param loggedInEmployee the employee who is sat as logged in
 	 */
 	protected void setLoggedInEmployee(Employee loggedInEmployee) {
 		this.loggedInEmployee = loggedInEmployee;
@@ -42,6 +42,9 @@ public abstract class AbstractController {
 		return this.loggedInEmployee;
 	}
 
+	/**
+	 * Used to update elements according to the scene with data from the logged in employee.
+	 */
 	abstract void sceneSwitchedUpdate();
 
 
@@ -61,8 +64,6 @@ public abstract class AbstractController {
 		controller.setLoggedInEmployee(getLoggedInEmployee());
 		stage.show();
 		controller.sceneSwitchedUpdate();
-		//controller.initi
-		//todo hva med initialize
 	}
 
 	@FXML

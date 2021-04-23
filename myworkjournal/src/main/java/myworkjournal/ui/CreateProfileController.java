@@ -19,20 +19,18 @@ public class CreateProfileController extends AbstractController{
     Button createProfileBtn;
 
     @FXML
-    Button getProfileBtn;
-    
-    @FXML
     TextField savedUserDisplayField;
-    
+
     @FXML
     Button savedUserLoginBtn;
-    
+
     @FXML
     Label errorMessage1;
 
 
     @FXML
     private void initialize(){
+      //loading any saved user
       sceneSwitchedUpdate();
     }
 
@@ -40,14 +38,15 @@ public class CreateProfileController extends AbstractController{
 
     @FXML
     private void createProfile() throws IOException {
-    	try {
-    		Employee employee = new Employee(profileNameInputField.getText());
+      Employee employee = null;
+      try {
+    	  employee = new Employee(profileNameInputField.getText());
+    	} catch (IllegalArgumentException e) {
+    		errorMessage1.setText(e.getMessage());
+    	}
     		setLoggedInEmployee(employee);
     		goToAddWorkPeriod();
-    	} catch (IllegalArgumentException e) {
-    		errorMessage1.setText(e.getMessage());   		
-    	}
-       
+
     }
 
     @FXML
@@ -55,39 +54,16 @@ public class CreateProfileController extends AbstractController{
       changeScreen("addWorkPeriod.fxml", createProfileBtn);
     }
 
-/*
-    @FXML
-    private void getProfile() {
-    	// Hent profil fra
-      System.out.println("Kjører sceneswirched");
-      try {
-        EmployeePersistence employeePersistence = new EmployeePersistence("src/main/resources/myworkjournal/persistence/employee.txt");
-        employeePersistence.readFile();
-        Employee employee = employeePersistence.getEmployee();
-        setEmployee(employee);
-        //System.out.println(employee.getName());
-        savedUserDisplayField.setText(employee.getName());
-      } catch (FileNotFoundException e) {
-        savedUserDisplayField.setText("No saved user");
-      }
-    }
-
-
-    @FXML
-    private void userLogin() {
-    	// Logg inn til saved profile
-    }
-    */
 
     @Override void sceneSwitchedUpdate() {
       try {
         EmployeePersistence employeePersistence = new EmployeePersistence("src/main/resources/myworkjournal/persistence/employee.txt");
-        //employeePersistence.readFile();
-        //Employee employee = employeePersistence.getEmployee();
         Employee employee = employeePersistence.readFile();
         setLoggedInEmployee(employee);
         savedUserDisplayField.setText(employee.getName());
-      } catch (FileNotFoundException e) {
+        savedUserLoginBtn.setDisable(false);
+      } catch (FileNotFoundException | IllegalStateException e) {
+        errorMessage1.setText("An error occured while trying to load user: " +e.getMessage());
         savedUserDisplayField.setText("No saved user");
       }
     }

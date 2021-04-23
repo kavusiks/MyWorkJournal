@@ -26,7 +26,7 @@ public class WorkPeriodPersistence extends AbstractPersistence implements DataSa
    * @return the read object of T
    * @throws FileNotFoundException if the file is not found.
    */
-  @Override public WorkPeriod readFile() throws FileNotFoundException {
+  @Override public WorkPeriod readFile() throws FileNotFoundException, IllegalStateException {
     Scanner inFile = new Scanner((new FileReader(filepath)));
     WorkPeriod readWorkPeriod = deserialize(inFile);
     inFile.close();
@@ -54,7 +54,7 @@ public class WorkPeriodPersistence extends AbstractPersistence implements DataSa
    * @return the deserialized object of T.
    * @throws IllegalStateException if the reading file isn't properly written.
    */
-  public WorkPeriod deserialize(Scanner inFile) {
+  public WorkPeriod deserialize(Scanner inFile) throws IllegalStateException {
 
     while (inFile.hasNext()) {
       String month = "";

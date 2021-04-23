@@ -28,28 +28,17 @@ public class ViewStatsController extends AbstractController {
 
   @FXML
   private void goToDataInput() throws IOException {
-    //Employee employee = new Employee(profileNameInputField.getText());
-    //setLoggedInEmployee(getLoggedInEmployee());
     changeScreen("dataInput.fxml", goToDataInputBtn);
   }
 
 
 
   @Override void sceneSwitchedUpdate() {
-    int timer = 0;
-    double lonn = getLoggedInEmployee().getTotalSalary();
-    for(WorkPeriod workPeriod: getLoggedInEmployee()) {
-      System.out.println("WorkPeriod " + workPeriod.getIdentifier() +" totlønn: " + workPeriod.getMonthSalary() + " times "+ workPeriod.getHourlyWage() + " timer med arbeid tot: " + workPeriod.getTotalHours());
-    }
-    System.out.println("LØNN, " + lonn);
     WorkPeriod highestPaisWorkPeriod = getLoggedInEmployee().getBestPaidWorkPeriod();
-    for (WorkPeriod workPeriod: getLoggedInEmployee().getWorkPeriods()) {
-      timer+= workPeriod.getTotalHours();
-    }
     bestWorkPeriodLabel.setText(highestPaisWorkPeriod.getIdentifier());
     bestWorkPeriodSalaryLabel.setText(Double.toString(highestPaisWorkPeriod.getMonthSalary()));
-    lonnLabel.setText(lonn +"kr");
-    timerLabel.setText((Integer.toString(timer)));
+    lonnLabel.setText(df.format(getLoggedInEmployee().getTotalSalary()) +"kr");
+    timerLabel.setText(df.format(getLoggedInEmployee().getTotalWorkHours()));
     avgShiftsLabel.setText(df.format(getLoggedInEmployee().getAverageShiftAmount()));
     avgWorkHoursLabel.setText(df.format(getLoggedInEmployee().getAverageWorkHours()));
     avgSalaryLabel.setText(df.format(getLoggedInEmployee().getAverageSalary()));

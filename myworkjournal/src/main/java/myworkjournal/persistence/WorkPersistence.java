@@ -24,7 +24,7 @@ public class WorkPersistence extends AbstractPersistence implements DataSaverInt
    * @return the read object of T
    * @throws FileNotFoundException if the file is not found.
    */
-  @Override public Work readFile() throws FileNotFoundException {
+  @Override public Work readFile() throws FileNotFoundException, IllegalStateException {
     Scanner inFile = new Scanner((new FileReader(filepath)));
     Work readWork = deserialize(inFile);
     inFile.close();
@@ -52,7 +52,7 @@ public class WorkPersistence extends AbstractPersistence implements DataSaverInt
    * @return the deserialized object of T.
    * @throws IllegalStateException if the reading file isn't properly written.
    */
-  @Override public Work deserialize(Scanner inFile) {
+  @Override public Work deserialize(Scanner inFile) throws IllegalStateException{
     while (inFile.hasNext()) {
       LocalDateTime startTime = null;
       LocalDateTime endTime = null;

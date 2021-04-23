@@ -49,9 +49,6 @@ public class DataInputController extends AbstractController {
 
   @FXML
   private void initialize(){
-    //monthChoiceBox.setValue("Velg arbeidsmåned");
-
-
   workStartDatePicker.setOnAction((event) -> {
     LocalDate selectedDate = workStartDatePicker.getValue();
     workEndDatePicker.setValue(selectedDate);
@@ -59,8 +56,6 @@ public class DataInputController extends AbstractController {
   });
 
     monthChoiceBox.setOnAction((event) -> {
-      //String selectedPeriod = monthChoiceBox.getSelectionModel().getSelectedItem();
-      //workPeriod = getEmployee().getWorkPeriods().stream().filter(wp ->wp.getIdentifier().equals(selectedPeriod)).;
       workPeriod = monthChoiceBox.getSelectionModel().getSelectedItem();
       workStartDatePicker.setDisable(false);
       workEndDatePicker.setDisable(false);
@@ -77,6 +72,10 @@ public class DataInputController extends AbstractController {
     });
 
   }
+
+  /**
+   * Used to update elements according to the scene with data from the logged in employee.
+   */
   @Override void sceneSwitchedUpdate() {
     monthChoiceBox.getItems().clear();
     for (WorkPeriod workPeriod : getLoggedInEmployee().getWorkPeriods()) {
@@ -97,6 +96,10 @@ public class DataInputController extends AbstractController {
   @FXML
   private void addToWorkPeriod(){
     String error = "";
+    int startHour;
+    int startMinute;
+    int endHour;
+    int endMinute;
     errorMessage.setText(error);
     if (monthChoiceBox.getValue()==null){
       error = "Arbeidsmåned er ikke valgt";
@@ -115,11 +118,12 @@ public class DataInputController extends AbstractController {
       errorMessage.setText((error));
       throw new IllegalArgumentException(error);
     }
-
-    int startHour = Integer.parseInt(shiftStartTimeInput.getText(0, 2));
-    int startMinute = Integer.parseInt(shiftStartTimeInput.getText(3, 5));
-    int endHour = Integer.parseInt(shiftEndTimeInput.getText(0, 2));
-    int endMinute = Integer.parseInt(shiftEndTimeInput.getText(3, 5));
+    else {
+    startHour = Integer.parseInt(shiftStartTimeInput.getText(0, 2));
+    startMinute = Integer.parseInt(shiftStartTimeInput.getText(3, 5));
+    endHour = Integer.parseInt(shiftEndTimeInput.getText(0, 2));
+    endMinute = Integer.parseInt(shiftEndTimeInput.getText(3, 5));
+    }
 
     try{
     Work newData=new Work(workStartDatePicker.getValue().atTime(startHour, startMinute),workEndDatePicker.getValue().atTime(endHour, endMinute));
@@ -142,14 +146,13 @@ public class DataInputController extends AbstractController {
   @FXML
   private void removeFromWorkPeriod() {
     try {
-    this.workPeriod.removeWork(myDataListView.getSelectionModel().getSelectedItem());
-    }
-    catch (IllegalArgumentException e) {
-      errorMessage.setText(e.getMessage());
+      this.workPeriod.removeWork(myDataListView.getSelectionModel().getSelectedItem());
+    } catch (IllegalArgumentException e) {
+    errorMessage.setText(e.getMessage());
     }
     updateListView();
-    removeDataBtn.setDisable(true);
     deletePopupPane.setVisible(false);
+    removeDataBtn.setDisable(true);
 
   }
 
@@ -158,13 +161,6 @@ public class DataInputController extends AbstractController {
 
   @FXML
   private void goToStats() throws IOException {
-    Employee employee = getLoggedInEmployee();
-    if (workPeriod != null) {
-      employee.addWorkPeriod(workPeriod);
-    }
-    //Todo: hvorfor gjør jeg deelen over
-    //setLoggedInEmployee(employee);
-
     changeScreen("myStats.fxml", viewStatsBtn);
   }
 

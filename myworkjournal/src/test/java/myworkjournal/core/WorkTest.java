@@ -1,5 +1,6 @@
 package myworkjournal.core;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -8,7 +9,12 @@ import java.time.LocalDateTime;
 
 public class WorkTest {
 		private Work work;
-		private TestData testData = new TestData();
+		private TestData testData;
+
+
+		@BeforeEach public void setUp() {
+			testData = new TestData();
+		}
 
 	
 	@Test

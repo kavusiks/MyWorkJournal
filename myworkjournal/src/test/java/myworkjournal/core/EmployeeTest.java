@@ -6,9 +6,9 @@ import org.junit.jupiter.api.DisplayName;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class EmployeeTest {
-	private TestData testData = new TestData();
-	private WorkPeriod nextMonthWorkPeriod = new WorkPeriod(testData.getValidNextMonth(), testData.getValidYear(), testData.getValidHourlyWage());
-	private double totalHours;
+	private TestData testData;
+	private WorkPeriod nextMonthWorkPeriod;
+	private double totalWorkHours;
 	private double totalSalary;
 	private int totalShifts;
 	private int totalWorkPeriods;
@@ -16,6 +16,9 @@ public class EmployeeTest {
 
 	@BeforeEach
 	public void setUp() {
+		testData = new TestData();
+		nextMonthWorkPeriod = new WorkPeriod(testData.getValidNextMonth(), testData.getValidYear(), testData.getValidHourlyWage());
+
 		//The employee for this test has two workperiods with four works together
 		nextMonthWorkPeriod.addWork(testData.getWorkNextMonth());
 		testData.getThisMonthWorkPeriod().addWork(testData.getWorkThisMonth());
@@ -25,8 +28,8 @@ public class EmployeeTest {
 		testData.getEmployee().addWorkPeriod(testData.getThisMonthWorkPeriod());
 		testData.getEmployee().addWorkPeriod(nextMonthWorkPeriod);
 
-		totalHours = testData.getWorkNextMonth().getShiftDurationInHours() + testData.getWorkThisMonth().getShiftDurationInHours() + testData.getWorkThisMonth2().getShiftDurationInHours() + testData.getWorkThisMonth3().getShiftDurationInHours();
-		totalSalary = totalHours * testData.getValidHourlyWage();
+		totalWorkHours = testData.getWorkNextMonth().getShiftDurationInHours() + testData.getWorkThisMonth().getShiftDurationInHours() + testData.getWorkThisMonth2().getShiftDurationInHours() + testData.getWorkThisMonth3().getShiftDurationInHours();
+		totalSalary = totalWorkHours * testData.getValidHourlyWage();
 		totalShifts = testData.getEmployee().getWorkPeriods().stream().mapToInt(workPeriod -> (workPeriod.getPeriodWorkHistory().size())).sum();
 		totalWorkPeriods = testData.getEmployee().getWorkPeriods().size();
 	}
@@ -65,12 +68,14 @@ public class EmployeeTest {
 		//DETTE ER KUN DET SOM VAR I STATSTEST FRA FØR
 		//testing getTotalSalary()
 		assertEquals(totalSalary, testData.getEmployee().getTotalSalary(), "The total salary wasn't as expected!");
+		//testing getTotalWorkHours()
+		assertEquals(totalWorkHours, testData.getEmployee().getTotalWorkHours(), "The total work hours wasn't as expected!");
 		//testing getBestPaidWorkPeriod()  The best paid month is thisMonthWorkPeriod, since it has more shifts than nextMonthWorkPeriod. And all of the shift has the same hourlyWage and shiftDuration.
 		assertEquals(testData.getThisMonthWorkPeriod(), testData.getEmployee().getBestPaidWorkPeriod(), "Wrong best paid workperiod returned.");
 		//testing getAverageShiftAmount()
 		assertEquals(totalShifts / totalWorkPeriods, testData.getEmployee().getAverageShiftAmount(), "Wrong amount of average shift returned.");
 		//testing getAverageWorkHours()
-		assertEquals(totalHours / totalWorkPeriods, testData.getEmployee().getAverageWorkHours(), "Wrong amount of average work hours returned.");
+		assertEquals(totalWorkHours / totalWorkPeriods, testData.getEmployee().getAverageWorkHours(), "Wrong amount of average work hours returned.");
 		//testing getAverageSalary()
 		assertEquals(totalSalary / totalWorkPeriods, testData.getEmployee().getAverageSalary(), "Wrong amount of average salary returned.");
 		//testing getAverageHourlyWage()  The average salary is the same as validHourlySalary, since all of the employee's workperiods has this as hourlyWage.

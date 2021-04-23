@@ -1,11 +1,37 @@
 Employee {
   name: ole
-  workPeriods: [ amount= 4
+  workPeriods: [ amount= 5
 WorkPeriod {
   month: februar
   year: 2021
   hourlyWage: 122
-  periodWorkHistory: [ amount=0
+  periodWorkHistory: [ amount=1
+  Work {
+    startTime: 2021-02-09T12:00
+      endTime: 2021-02-09T13:00
+  } /Work
+    ]
+} /WorkPeriod
+  ,
+WorkPeriod {
+  month: mars
+  year: 2021
+  hourlyWage: 324
+  periodWorkHistory: [ amount=3
+  Work {
+    startTime: 2021-03-08T13:00
+      endTime: 2021-03-08T14:00
+  } /Work
+  ,
+  Work {
+    startTime: 2021-03-09T12:00
+      endTime: 2021-03-09T15:00
+  } /Work
+  ,
+  Work {
+    startTime: 2021-03-16T14:00
+      endTime: 2021-03-16T15:05
+  } /Work
     ]
 } /WorkPeriod
   ,
@@ -13,7 +39,12 @@ WorkPeriod {
   month: april
   year: 2021
   hourlyWage: 200
-  periodWorkHistory: [ amount=4
+  periodWorkHistory: [ amount=5
+  Work {
+    startTime: 2021-04-15T12:00
+      endTime: 2021-04-15T19:00
+  } /Work
+  ,
   Work {
     startTime: 2021-04-20T23:43
       endTime: 2021-04-21T03:43
@@ -40,10 +71,15 @@ WorkPeriod {
   month: mai
   year: 2021
   hourlyWage: 200
-  periodWorkHistory: [ amount=3
+  periodWorkHistory: [ amount=4
   Work {
     startTime: 2021-05-11T10:00
       endTime: 2021-05-11T14:00
+  } /Work
+  ,
+  Work {
+    startTime: 2021-05-18T12:00
+      endTime: 2021-05-18T15:00
   } /Work
   ,
   Work {

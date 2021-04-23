@@ -18,7 +18,7 @@ public interface DataSaverInterface<T> {
    * @return the read object of T
    * @throws FileNotFoundException if the file is not found.
    */
-  T readFile() throws FileNotFoundException;
+  T readFile() throws FileNotFoundException, IllegalStateException;
 
   /**
    * Used to serialize and the write to file.

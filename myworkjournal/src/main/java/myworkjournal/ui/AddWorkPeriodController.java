@@ -43,9 +43,10 @@ public class AddWorkPeriodController extends AbstractController {
 
   }
 
-
-
-    @Override void sceneSwitchedUpdate() {
+  /**
+   * Used to update elements according to the scene with data from the logged in employee.
+   */
+  @Override void sceneSwitchedUpdate() {
     employee = getLoggedInEmployee();
     existingMonthListView.getItems().clear();
     for (WorkPeriod month: getLoggedInEmployee().getWorkPeriods()){
@@ -57,36 +58,42 @@ public class AddWorkPeriodController extends AbstractController {
     yearChoiceBox.getItems().setAll(yearsToAdd);
   }
 
-  //TODO: prøv å få over logikk i employwwklasse@
-  //TODO: vurder å ha en egen metode som sjekker om to workperiod er like, den streamen altså
 
   @FXML private void addMonth() throws IllegalArgumentException {
     String error = "";
+    int wage;
+    String startMonth;
+    int startYear;
+
     errorMessage.setText(error);
     if (monthChoiceBox.getValue() == null || yearChoiceBox.getValue() ==null){
       error = "Måned og år for periode må være valgt";
       errorMessage.setText(error);
       throw new IllegalArgumentException(error);
     }
-    String startMonth = monthChoiceBox.getValue();
-    //System.out.println(startMonth);
-    int startYear = yearChoiceBox.getValue();
+    else {
+    startMonth = monthChoiceBox.getValue();
+    startYear = yearChoiceBox.getValue();
+    }
 
+    //Checking that the hourlyWage input is an integer
     if(!wageInputField.getText().matches(("^[0-9]+$"))) {
       error = "Timeslønn må være et tall";
       errorMessage.setText(error);
       throw new IllegalArgumentException(error);
     }
-    int wage = Integer.parseInt(wageInputField.getText());
-    WorkPeriod newPeriod = new WorkPeriod(startMonth, startYear, wage);
-    if (employee.getWorkPeriods().stream().anyMatch(p -> p.getIdentifier().equals(newPeriod.getIdentifier()))) {
-      error = "Work month already exists";
-      errorMessage.setText(error);
-      throw new IllegalArgumentException(error);
+    else {
+      wage = Integer.parseInt(wageInputField.getText());
     }
-    employee.addWorkPeriod(newPeriod);
-    //setLoggedInEmployee(employee);
-    sceneSwitchedUpdate();
+
+    try {
+      WorkPeriod newPeriod = new WorkPeriod(startMonth, startYear, wage);
+      employee.addWorkPeriod(newPeriod);
+
+    } catch (IllegalArgumentException e) {
+      errorMessage.setText(e.getMessage());
+    }
+      sceneSwitchedUpdate();
   }
 
   @FXML

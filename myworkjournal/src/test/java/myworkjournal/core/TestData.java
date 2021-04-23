@@ -3,7 +3,7 @@ package myworkjournal.core;
 import java.time.LocalDateTime;
 
 public class TestData {
-  //Data that are protected are used in persistenceTests
+  //TODO: Data that are protected are used in persistenceTests
   private LocalDateTime validStartTime = LocalDateTime.now();
   private int shiftDurationHours = 5;
   private LocalDateTime validEndTime = LocalDateTime.now().plusHours(shiftDurationHours);
