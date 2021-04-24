@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.*?>
+<Pane xmlns:fx="http://javafx.com/fxml/1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+      minWidth="-Infinity"
+      prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: lightblue;"
+      xmlns="http://javafx.com/javafx/16" fx:controller="myworkjournal.ui.CreateProfileController">
+    <Pane prefHeight="83.0" prefWidth="600.0" style="-fx-background-color: lightgray;"/>
+    <Text layoutX="154.0" layoutY="54.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Min Arbeidsjournal"
+          textAlignment="CENTER" wrappingWidth="292.5077972412108">
+        <font>
+            <Font size="25.0"/>
+        </font>
+    </Text>
+    <Button fx:id="createProfileBtn" layoutX="117.0" layoutY="200.0" mnemonicParsing="false" onAction="#createProfile"
+            text="Lag bruker"/>
+    <TextField fx:id="profileNameInputField" layoutX="79.0" layoutY="136.0" promptText="Brukernavn"/>
+    <Button fx:id="savedUserLoginBtn" disable="true" layoutX="410.0" layoutY="200.0" mnemonicParsing="false"
+            onAction="#goToAddWorkPeriod" text="Logg inn"/>
+    <Text layoutX="7.0" layoutY="117.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Lag ny bruker"
+          textAlignment="CENTER" wrappingWidth="292.5077972412108">
+        <font>
+            <Font size="16.0"/>
+        </font>
+    </Text>
+    <Text layoutX="300.0" layoutY="116.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Forsett fra tidligere"
+          textAlignment="CENTER" wrappingWidth="292.5077972412108">
+        <font>
+            <Font size="16.0"/>
+        </font>
+    </Text>
+    <TextField fx:id="savedUserDisplayField" alignment="CENTER" editable="false" layoutX="372.0" layoutY="136.0"
+               text="Brukernavn..."/>
+    <Label fx:id="errorMessage1" layoutX="62.0" layoutY="169.0" prefHeight="17.0" prefWidth="238.0" textFill="#e80707">
+        <font>
+            <Font size="11.0"/>
+        </font>
+    </Label>
+    <Button fx:id="saveBtn" layoutX="18.0" layoutY="23.0" mnemonicParsing="false" onAction="#showPopup"
+            text="Lagre og avslutt"/>
+    <AnchorPane fx:id="popupPane" layoutX="61.0" layoutY="135.0" prefHeight="128.0" prefWidth="480.0"
+                style="-fx-background-color: #d3d3d3;" visible="false">
+        <BorderPane prefHeight="34.0" prefWidth="484.0" style="-fx-background-color: #aaaaaa;"/>
+        <Text layoutX="8.0" layoutY="22.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Lagre og avslutt"
+              wrappingWidth="141.0">
+            <font>
+                <Font name="System Bold" size="17.0"/>
+            </font>
+        </Text>
+        <Button fx:id="closePopupBtn" layoutX="445.0" mnemonicParsing="false" onAction="#closePopup" prefHeight="30.0"
+                prefWidth="30.0" style="-fx-background-color: #FF4449;" text="x"/>
+        <Text layoutX="8.0" layoutY="57.0" strokeType="OUTSIDE" strokeWidth="0.0"
+              text="All tidligere data vil bli overskrevet. Er du sikker på at du vil lagre og avslutte?">
+            <font>
+                <Font size="14.0"/>
+            </font>
+        </Text>
+        <Button fx:id="saveAndCloseAppBtn" disable="true" layoutX="97.0" layoutY="84.0" mnemonicParsing="false"
+                onAction="#saveDataAndClose" text="Lagre og avslutt"/>
+        <Button fx:id="closeAppBtn" layoutX="309.0" layoutY="84.0" mnemonicParsing="false" onAction="#closeApp"
+                text="Avslutt uten å lagre"/>
+    </AnchorPane>
+</Pane>

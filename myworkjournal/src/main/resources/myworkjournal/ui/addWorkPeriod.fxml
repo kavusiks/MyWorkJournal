@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<Pane xmlns:fx="http://javafx.com/fxml/1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+      minWidth="-Infinity"
+      prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: lightblue;"
+      xmlns="http://javafx.com/javafx/11.0.1" fx:controller="myworkjournal.ui.AddWorkPeriodController">
+    <ChoiceBox fx:id="monthChoiceBox" layoutX="332.0" layoutY="54.0" prefHeight="27.0" prefWidth="114.0"/>
+    <ChoiceBox fx:id="yearChoiceBox" disable="true" layoutX="492.0" layoutY="54.0" prefHeight="27.0" prefWidth="91.0"/>
+    <TextField fx:id="wageInputField" disable="true" layoutX="415.0" layoutY="98.0"/>
+    <Button fx:id="addMonthBtn" disable="true" layoutX="366.0" layoutY="146.0" mnemonicParsing="false"
+            onAction="#addMonth" style="-fx-background-color: #aaffaa #aaffaa;" text="Legg til måned"/>
+    <Button fx:id="removeMonthBtn" disable="true" layoutX="489.0" layoutY="146.0" mnemonicParsing="false"
+            onAction="#showDeletePopup" prefHeight="27.0" prefWidth="98.0"
+            style="-fx-background-color: #ff9999 #ff9999;" text="Slett"/>
+    <Button fx:id="goToDataInputBtn" layoutX="455.0" layoutY="346.0" mnemonicParsing="false" onAction="#goToDataInput"
+            text="Legg til jobbhistorikk"/>
+    <Text layoutX="42.0" layoutY="65.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Eksisterende måneder:"/>
+    <Text layoutX="280.0" layoutY="72.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Måned:"/>
+    <ListView fx:id="existingMonthListView" layoutX="36.0" layoutY="89.0" prefHeight="200.0" prefWidth="200.0"/>
+    <Text layoutX="275.0" layoutY="116.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Timeslønn for måned"/>
+    <Label fx:id="errorMessage" layoutX="8.0" layoutY="297.0" prefHeight="17.0" prefWidth="586.0"/>
+    <Text layoutX="467.0" layoutY="72.0" strokeType="OUTSIDE" strokeWidth="0.0" text="År:"/>
+    <Button fx:id="saveBtn" layoutX="18.0" layoutY="23.0" mnemonicParsing="false" onAction="#showPopup"
+            text="Lagre og avslutt"/>
+    <AnchorPane fx:id="popupPane" layoutX="61.0" layoutY="135.0" prefHeight="128.0" prefWidth="480.0"
+                style="-fx-background-color: #d3d3d3;" visible="false">
+        <BorderPane prefHeight="34.0" prefWidth="480.0" style="-fx-background-color: #aaaaaa;"/>
+        <Text layoutX="8.0" layoutY="22.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Lagre og avslutt"
+              wrappingWidth="141.0">
+            <font>
+                <Font name="System Bold" size="17.0"/>
+            </font>
+        </Text>
+        <Button fx:id="closePopupBtn" layoutX="445.0" mnemonicParsing="false" onAction="#closePopup" prefHeight="33.0"
+                prefWidth="35.0" style="-fx-background-color: #FF4449;" text="x"/>
+        <Text layoutX="8.0" layoutY="57.0" strokeType="OUTSIDE" strokeWidth="0.0"
+              text="All tidligere data vil bli overskrevet. Er du sikker på at du vil lagre og avslutte?">
+            <font>
+                <Font size="14.0"/>
+            </font>
+        </Text>
+        <Button fx:id="saveAndCloseAppBtn" layoutX="97.0" layoutY="84.0" mnemonicParsing="false"
+                onAction="#saveDataAndClose" text="Lagre og avslutt"/>
+        <Button fx:id="closeAppBtn" layoutX="309.0" layoutY="84.0" mnemonicParsing="false" onAction="#closeApp"
+                text="Avslutt uten å lagre"/>
+    </AnchorPane>
+    <AnchorPane fx:id="deletePopupPane" layoutX="71.0" layoutY="145.0" prefHeight="128.0" prefWidth="480.0"
+                style="-fx-background-color: #d3d3d3;" visible="false">
+        <BorderPane prefHeight="34.0" prefWidth="480.0" style="-fx-background-color: #aaaaaa;"/>
+        <Text layoutX="8.0" layoutY="22.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Slett"
+              wrappingWidth="141.0">
+            <font>
+                <Font name="System Bold" size="17.0"/>
+            </font>
+        </Text>
+        <Button fx:id="closeDeletePopupXBtn" layoutX="445.0" mnemonicParsing="false" onAction="#closeDeletePopup"
+                prefHeight="33.0" prefWidth="35.0" style="-fx-background-color: #FF4449;" text="x"/>
+        <Text layoutX="8.0" layoutY="57.0" strokeType="OUTSIDE" strokeWidth="0.0"
+              text="Denne handlingen er irreveribel. Er du sikker på at du vil slette?">
+            <font>
+                <Font size="14.0"/>
+            </font>
+        </Text>
+        <Button fx:id="deleteObjectBtn" layoutX="97.0" layoutY="84.0" mnemonicParsing="false"
+                onAction="#removeMonth" text="Slett"/>
+        <Button fx:id="closeDeletePopupBtn" layoutX="309.0" layoutY="84.0" mnemonicParsing="false"
+                onAction="#closeDeletePopup" text="Lukk"/>
+    </AnchorPane>
+</Pane>

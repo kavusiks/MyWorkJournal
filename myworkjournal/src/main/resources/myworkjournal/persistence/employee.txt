@@ -1,0 +1,43 @@
+Employee {
+  name: ole
+  workPeriods: [ amount= 2
+WorkPeriod {
+  month: april
+  year: 2021
+  hourlyWage: 200
+  periodWorkHistory: [ amount=3
+  Work {
+    startTime: 2021-04-22T15:30
+      endTime: 2021-04-22T19:30
+  } /Work
+  ,
+  Work {
+    startTime: 2021-04-24T05:30
+      endTime: 2021-04-24T10:30
+  } /Work
+  ,
+  Work {
+    startTime: 2021-04-24T12:30
+      endTime: 2021-04-24T18:30
+  } /Work
+    ]
+} /WorkPeriod
+  ,
+WorkPeriod {
+  month: mai
+  year: 2021
+  hourlyWage: 200
+  periodWorkHistory: [ amount=2
+  Work {
+    startTime: 2021-05-22T15:30
+      endTime: 2021-05-22T19:30
+  } /Work
+  ,
+  Work {
+    startTime: 2021-05-24T14:30
+      endTime: 2021-05-24T19:30
+  } /Work
+    ]
+} /WorkPeriod
+   ]
+} /Employee
