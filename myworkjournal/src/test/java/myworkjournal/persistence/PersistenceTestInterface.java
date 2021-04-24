@@ -2,6 +2,7 @@ package myworkjournal.persistence;
 
 
 
+import java.io.IOException;
 
 public interface PersistenceTestInterface {
 
@@ -9,7 +10,8 @@ public interface PersistenceTestInterface {
   /**
    * Method used to delete the savefile created while testing persistence.
    */
-  void cleanUp();
+  void cleanUp() throws IOException;
+
   void setUp();
 
   void testConstructor();

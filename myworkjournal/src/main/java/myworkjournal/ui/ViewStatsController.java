@@ -24,10 +24,7 @@ public class ViewStatsController extends AbstractController {
 
 
 
-
-
-  @FXML
-  private void goToDataInput() throws IOException {
+  @FXML private void goToDataInput() throws IOException {
     changeScreen("dataInput.fxml", goToDataInputBtn);
   }
 
@@ -37,7 +34,7 @@ public class ViewStatsController extends AbstractController {
     WorkPeriod highestPaisWorkPeriod = getLoggedInEmployee().getBestPaidWorkPeriod();
     bestWorkPeriodLabel.setText(highestPaisWorkPeriod.getIdentifier());
     bestWorkPeriodSalaryLabel.setText(Double.toString(highestPaisWorkPeriod.getMonthSalary()));
-    lonnLabel.setText(df.format(getLoggedInEmployee().getTotalSalary()) +"kr");
+    lonnLabel.setText(df.format(getLoggedInEmployee().getTotalSalary()) + "kr");
     timerLabel.setText(df.format(getLoggedInEmployee().getTotalWorkHours()));
     avgShiftsLabel.setText(df.format(getLoggedInEmployee().getAverageShiftAmount()));
     avgWorkHoursLabel.setText(df.format(getLoggedInEmployee().getAverageWorkHours()));

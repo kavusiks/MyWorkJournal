@@ -1,44 +1,35 @@
 package myworkjournal.ui;
 
-import java.io.IOException;
-import java.time.LocalDate;
-
+import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import myworkjournal.core.Work;
 import myworkjournal.core.WorkPeriod;
-import myworkjournal.core.Employee;
-import javafx.fxml.FXML;
+
+import java.io.IOException;
+import java.time.LocalDate;
 
 
 public class DataInputController extends AbstractController {
-  @FXML
-  DatePicker workStartDatePicker;
+  @FXML DatePicker workStartDatePicker;
 
-  @FXML
-  DatePicker workEndDatePicker;
+  @FXML DatePicker workEndDatePicker;
 
 
-  @FXML
-  TextField shiftStartTimeInput;
+  @FXML TextField shiftStartTimeInput;
 
-  @FXML
-  TextField shiftEndTimeInput;
+  @FXML TextField shiftEndTimeInput;
 
-  @FXML
-  Button addDataBtn;
+  @FXML Button addDataBtn;
 
 
-  @FXML
-  Button removeDataBtn;
+  @FXML Button removeDataBtn;
 
-  @FXML
-  Button viewStatsBtn;
+  @FXML Button viewStatsBtn;
   @FXML Label errorMessage;
 
   @FXML Button goToAddMonthBtn;
 
-  @FXML
-  ListView<Work> myDataListView;
+  @FXML ListView<Work> myDataListView;
 
   @FXML ChoiceBox<WorkPeriod> monthChoiceBox;
 
@@ -46,14 +37,12 @@ public class DataInputController extends AbstractController {
 
 
 
+  @FXML private void initialize() {
+    workStartDatePicker.setOnAction((event) -> {
+      LocalDate selectedDate = workStartDatePicker.getValue();
+      workEndDatePicker.setValue(selectedDate);
 
-  @FXML
-  private void initialize(){
-  workStartDatePicker.setOnAction((event) -> {
-    LocalDate selectedDate = workStartDatePicker.getValue();
-    workEndDatePicker.setValue(selectedDate);
-
-  });
+    });
 
     monthChoiceBox.setOnAction((event) -> {
       workPeriod = monthChoiceBox.getSelectionModel().getSelectedItem();
@@ -67,8 +56,8 @@ public class DataInputController extends AbstractController {
     });
 
     myDataListView.setOnMouseClicked((event) -> {
-      if(myDataListView.getSelectionModel().getSelectedItem() != null)
-      removeDataBtn.setDisable(false);
+      if (myDataListView.getSelectionModel().getSelectedItem() != null)
+        removeDataBtn.setDisable(false);
     });
 
   }
@@ -85,23 +74,21 @@ public class DataInputController extends AbstractController {
 
   }
 
-  @FXML
-  private void updateChoiceBox() {
+  @FXML private void updateChoiceBox() {
     monthChoiceBox.getItems().clear();
-    for (WorkPeriod workPeriod : getLoggedInEmployee().getWorkPeriods()){
+    for (WorkPeriod workPeriod : getLoggedInEmployee().getWorkPeriods()) {
       monthChoiceBox.getItems().add(workPeriod);
     }
   }
 
-  @FXML
-  private void addToWorkPeriod(){
+  @FXML private void addToWorkPeriod() {
     String error = "";
     int startHour;
     int startMinute;
     int endHour;
     int endMinute;
     errorMessage.setText(error);
-    if (monthChoiceBox.getValue()==null){
+    if (monthChoiceBox.getValue() == null) {
       error = "Arbeidsmåned er ikke valgt";
       errorMessage.setText(error);
       throw new IllegalArgumentException((error));
@@ -113,22 +100,23 @@ public class DataInputController extends AbstractController {
       throw new IllegalArgumentException(error);
     }
 
-    if ((!shiftStartTimeInput.getText().matches("^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$")) || (!shiftEndTimeInput.getText().matches("^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$"))) {
+    if ((!shiftStartTimeInput.getText().matches("^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$")) || (!shiftEndTimeInput.getText()
+        .matches("^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$"))) {
       error = "Både start- og sluttidspunkt må være i riktig format: (15:00)";
       errorMessage.setText((error));
       throw new IllegalArgumentException(error);
-    }
-    else {
-    startHour = Integer.parseInt(shiftStartTimeInput.getText(0, 2));
-    startMinute = Integer.parseInt(shiftStartTimeInput.getText(3, 5));
-    endHour = Integer.parseInt(shiftEndTimeInput.getText(0, 2));
-    endMinute = Integer.parseInt(shiftEndTimeInput.getText(3, 5));
+    } else {
+      startHour = Integer.parseInt(shiftStartTimeInput.getText(0, 2));
+      startMinute = Integer.parseInt(shiftStartTimeInput.getText(3, 5));
+      endHour = Integer.parseInt(shiftEndTimeInput.getText(0, 2));
+      endMinute = Integer.parseInt(shiftEndTimeInput.getText(3, 5));
     }
 
-    try{
-    Work newData=new Work(workStartDatePicker.getValue().atTime(startHour, startMinute),workEndDatePicker.getValue().atTime(endHour, endMinute));
-    workPeriod.addWork(newData);
-    } catch (IllegalArgumentException e){
+    try {
+      Work newData = new Work(workStartDatePicker.getValue().atTime(startHour, startMinute),
+          workEndDatePicker.getValue().atTime(endHour, endMinute));
+      workPeriod.addWork(newData);
+    } catch (IllegalArgumentException e) {
       errorMessage.setText(e.getMessage());
     }
     updateListView();
@@ -137,18 +125,17 @@ public class DataInputController extends AbstractController {
 
   private void updateListView() {
     myDataListView.getItems().clear();
-    for (Work work:workPeriod.getPeriodWorkHistory()) {
+    for (Work work : workPeriod.getPeriodWorkHistory()) {
       myDataListView.getItems().add(work);
     }
   }
 
 
-  @FXML
-  private void removeFromWorkPeriod() {
+  @FXML private void removeFromWorkPeriod() {
     try {
       this.workPeriod.removeWork(myDataListView.getSelectionModel().getSelectedItem());
     } catch (IllegalArgumentException e) {
-    errorMessage.setText(e.getMessage());
+      errorMessage.setText(e.getMessage());
     }
     updateListView();
     deletePopupPane.setVisible(false);
@@ -158,14 +145,11 @@ public class DataInputController extends AbstractController {
 
 
 
-
-  @FXML
-  private void goToStats() throws IOException {
+  @FXML private void goToStats() throws IOException {
     changeScreen("myStats.fxml", viewStatsBtn);
   }
 
-  @FXML
-  private void goToAddMonth() throws IOException {
+  @FXML private void goToAddMonth() throws IOException {
     changeScreen("addWorkPeriod.fxml", goToAddMonthBtn);
   }
 

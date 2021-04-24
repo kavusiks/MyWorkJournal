@@ -14,8 +14,18 @@ import java.util.Scanner;
 public class WorkPersistence extends AbstractPersistence implements DataSaverInterface<Work> {
 
 
-  public WorkPersistence (String filepath) {
+  public WorkPersistence(String filepath) {
     this.filepath = filepath;
+  }
+
+  public static void main(String[] args) throws FileNotFoundException {
+    Work work = new Work(LocalDateTime.now().minusHours(3), LocalDateTime.now().plusHours(3));
+    //WorkPersistence wp = new WorkPersistence("src/main/resources/myworkjournal/persistence/work.txt", work);
+    WorkPersistence wp1 = new WorkPersistence("src/main/resources/myworkjournal/persistence/work.txt");
+    wp1.writeFile(work);
+    wp1.readFile();
+    //System.out.println(wp1.getWork());
+
   }
 
   /**
@@ -52,22 +62,27 @@ public class WorkPersistence extends AbstractPersistence implements DataSaverInt
    * @return the deserialized object of T.
    * @throws IllegalStateException if the reading file isn't properly written.
    */
-  @Override public Work deserialize(Scanner inFile) throws IllegalStateException{
-    while (inFile.hasNext()) {
+  @Override public Work deserialize(Scanner inFile) throws IllegalStateException {
+    if (inFile.hasNext()) {
       LocalDateTime startTime = null;
       LocalDateTime endTime = null;
       boolean properFile = false;
       String nextLine = nextLineIfItHas(inFile);
-      if(nextLine.strip().equals("Work {")) {
+      if (nextLine.strip().equals("Work {")) {
         nextLine = nextLineIfItHas(inFile);
-        if (nextLine.contains("startTime")) startTime = LocalDateTime.parse(nextLine.replace("startTime:", "").strip());
+        if (nextLine.contains("startTime"))
+          startTime = LocalDateTime.parse(nextLine.replace("startTime:", "").strip());
         nextLine = nextLineIfItHas(inFile);
-        if (nextLine.contains("endTime")) endTime = LocalDateTime.parse(nextLine.replace("endTime:", "").strip());
+        if (nextLine.contains("endTime"))
+          endTime = LocalDateTime.parse(nextLine.replace("endTime:", "").strip());
         nextLine = nextLineIfItHas(inFile);
-        if(startTime!=null && endTime!= null && nextLine.contains("} /Work")) properFile=true;
+        if (startTime != null && endTime != null && nextLine.contains("} /Work"))
+          properFile = true;
       }
-      if(properFile) return new Work(startTime, endTime);
-      else throw new IllegalStateException("Save file doesn't contain proper work info");
+      if (properFile)
+        return new Work(startTime, endTime);
+      else
+        throw new IllegalStateException("Save file doesn't contain proper work info");
     }
     return null;
   }
@@ -81,20 +96,10 @@ public class WorkPersistence extends AbstractPersistence implements DataSaverInt
    * @param outFile the printWriter that will write the data to the it's file.
    */
   @Override public void serialize(PrintWriter outFile, Work workToSerialize) {
-    outFile.println(objectFieldIndentationString+"Work {");
+    outFile.println(objectFieldIndentationString + "Work {");
     outFile.println(valueFieldIndentationString + "startTime: " + workToSerialize.getStartTime());
     outFile.println(valueFieldIndentationString + "  endTime: " + workToSerialize.getEndTime());
     outFile.println(objectFieldIndentationString + "} /Work");
-
-  }
-
-  public static void main(String[] args) throws FileNotFoundException {
-    Work work = new Work(LocalDateTime.now().minusHours(3), LocalDateTime.now().plusHours(3));
-    //WorkPersistence wp = new WorkPersistence("src/main/resources/myworkjournal/persistence/work.txt", work);
-    WorkPersistence wp1 = new WorkPersistence("src/main/resources/myworkjournal/persistence/work.txt");
-    wp1.writeFile(work);
-    wp1.readFile();
-    //System.out.println(wp1.getWork());
 
   }
 }

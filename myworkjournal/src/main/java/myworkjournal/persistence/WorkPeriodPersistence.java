@@ -20,9 +20,26 @@ public class WorkPeriodPersistence extends AbstractPersistence implements DataSa
     this.filepath = filepath;
   }
 
+  public static void main(String[] args) throws FileNotFoundException {
+    Work work1 = new Work(LocalDateTime.now().minusHours(3), LocalDateTime.now().plusHours(3));
+    Work work2 = new Work(LocalDateTime.now().minusDays(2), LocalDateTime.now().minusDays(2).plusHours(4));
+    Work work3 =
+        new Work(LocalDateTime.now().minusDays(1).minusHours(1), LocalDateTime.now().minusDays(1).plusHours(5));
+    WorkPeriod workPeriod =
+        new WorkPeriod(WorkPeriod.months.get(LocalDate.now().getMonthValue() + 1), LocalDate.now().getYear(), 200);
+    workPeriod.addWork(work1);
+    workPeriod.addWork(work2);
+    workPeriod.addWork(work3);
+    WorkPeriodPersistence wp1 =
+        new WorkPeriodPersistence("src/main/resources/myworkjournal/persistence/workPeriod.txt");
+    wp1.writeFile(workPeriod);
+    wp1.readFile();
+
+  }
 
   /**
    * Used to read from file and then deserialize.
+   *
    * @return the read object of T
    * @throws FileNotFoundException if the file is not found.
    */
@@ -33,9 +50,9 @@ public class WorkPeriodPersistence extends AbstractPersistence implements DataSa
     return readWorkPeriod;
   }
 
-
   /**
    * Used to serialize and the write to file.
+   *
    * @throws FileNotFoundException if the file can't be written to.
    */
   @Override public void writeFile(WorkPeriod workPeriodToWrite) throws FileNotFoundException {
@@ -44,12 +61,12 @@ public class WorkPeriodPersistence extends AbstractPersistence implements DataSa
     outFile.close();
   }
 
-
   /**
    * Used to deserialize an object from a scanner that is reading from a file.
    * This method is used in readFile and sometimes by itself in other persistence classes.
    * This method receives data from the file by reading and collecting expected value line by line.
    * These read values are then used to recreate the saved file.
+   *
    * @param inFile the scanner that can read the file.
    * @return the deserialized object of T.
    * @throws IllegalStateException if the reading file isn't properly written.
@@ -97,8 +114,10 @@ public class WorkPeriodPersistence extends AbstractPersistence implements DataSa
         }
         //Calling nextLine() her to reach the object's endmark("}") at bottom of the file.
         nextLine = nextLineIfItHas(inFile);
-        if (nextLine.contains("} /WorkPeriod")) return workPeriod;
-        else throw new IllegalStateException("Save file doesn't contain proper workPeriod info");
+        if (nextLine.contains("} /WorkPeriod"))
+          return workPeriod;
+        else
+          throw new IllegalStateException("Save file doesn't contain proper workPeriod info");
       }
     }
     return null;
@@ -109,6 +128,7 @@ public class WorkPeriodPersistence extends AbstractPersistence implements DataSa
    * This method is used in writeFile and sometimes by itself in other persistence classes.
    * This method receives data from the object in the class and writes the values line by line
    * in a specific order.
+   *
    * @param outFile the printWriter that will write the data to the it's file.
    */
   @Override public void serialize(PrintWriter outFile, WorkPeriod workPeriodToSerialize) {
@@ -119,10 +139,12 @@ public class WorkPeriodPersistence extends AbstractPersistence implements DataSa
       outFile.println("  year: " + workPeriodToSerialize.getPeriodStartDate().getYear());
       outFile.println("  hourlyWage: " + workPeriodToSerialize.getHourlyWage());
       outFile.println("  periodWorkHistory: [ amount=" + workPeriodToSerialize.getPeriodWorkHistory().size());
-      boolean firstWorkSerialized= false;
+      boolean firstWorkSerialized = false;
       for (Work work : workPeriodToSerialize) {
-        if (firstWorkSerialized) outFile.println("  ,");
-        else firstWorkSerialized = true;
+        if (firstWorkSerialized)
+          outFile.println("  ,");
+        else
+          firstWorkSerialized = true;
         WorkPersistence workPersistence = new WorkPersistence(filepath);
         workPersistence.serialize(outFile, work);
       }
@@ -130,22 +152,6 @@ public class WorkPeriodPersistence extends AbstractPersistence implements DataSa
       outFile.println("} /WorkPeriod");
 
     }
-
-  }
-
-  public static void main(String[] args) throws FileNotFoundException {
-    Work work1 = new Work(LocalDateTime.now().minusHours(3), LocalDateTime.now().plusHours(3));
-    Work work2 = new Work(LocalDateTime.now().minusDays(2), LocalDateTime.now().minusDays(2).plusHours(4));
-    Work work3 = new Work(LocalDateTime.now().minusDays(1).minusHours(1), LocalDateTime.now().minusDays(1).plusHours(5));
-    WorkPeriod workPeriod = new WorkPeriod(WorkPeriod.months.get(LocalDate.now().getMonthValue()+1), LocalDate.now()
-        .getYear(), 200);
-    workPeriod.addWork(work1);
-    workPeriod.addWork(work2);
-    workPeriod.addWork(work3);
-    WorkPeriodPersistence wp1 =
-        new WorkPeriodPersistence("src/main/resources/myworkjournal/persistence/workPeriod.txt");
-    wp1.writeFile(workPeriod);
-    wp1.readFile();
 
   }
 }

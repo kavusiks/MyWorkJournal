@@ -13,12 +13,13 @@ public class AbstractPersistence {
 
   /**
    * Static method used to verify that the scanner has next(), before calling next to avoid error.
-
+   *
    * @param inFile the scanner we are reading
    * @return next line if it has, else null.
    */
   protected String nextLineIfItHas(Scanner inFile) {
-    if (inFile.hasNext()) return inFile.nextLine();
+    if (inFile.hasNext())
+      return inFile.nextLine();
     return null;
   }
 }

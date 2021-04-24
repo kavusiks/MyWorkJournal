@@ -12,9 +12,9 @@ public class TestData {
   private Work workThisMonth3 = new Work(validStartTime.minusDays(2), validEndTime.minusDays(2));
   private LocalDateTime validStartTimeNextMonth = validStartTime.plusMonths(1);
   private LocalDateTime validEndTimeNextMonth = validStartTimeNextMonth.plusHours(shiftDurationHours);
-  private Work workNextMonth = new Work(validStartTimeNextMonth,validEndTimeNextMonth);
+  private Work workNextMonth = new Work(validStartTimeNextMonth, validEndTimeNextMonth);
   private int validYear = validStartTime.getYear();
-  private  int validHourlyWage = 150;
+  private int validHourlyWage = 150;
   private String validThisMonth = WorkPeriod.months.get(LocalDateTime.now().getMonth().getValue() - 1);
   private String validNextMonth = WorkPeriod.months.get(LocalDateTime.now().getMonth().getValue());
   private WorkPeriod thisMonthWorkPeriod = new WorkPeriod(validThisMonth, validYear, validHourlyWage);

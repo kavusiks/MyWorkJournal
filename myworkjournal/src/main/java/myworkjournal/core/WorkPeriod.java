@@ -22,8 +22,6 @@ public class WorkPeriod implements Iterable<Work>, Comparable<WorkPeriod> {
 
   private List<Work> periodWorkHistory = new ArrayList<>();
 
-  //TODO: vurder behoved for at man kun kan lage for ifjor, i år og neste år. Hva om man skal legge til gammelt shit. Kanskje bare ha opptil i dag? Siden det er logg.
-
   /**
    * The constructor to create an instance of WorkPeriod. The month shall be written in english.
    * A WorkPeriod can only be created for a month in the last, this or next year.
@@ -34,14 +32,15 @@ public class WorkPeriod implements Iterable<Work>, Comparable<WorkPeriod> {
    * @throws IllegalArgumentException if month, year or hourlyWage are invalid.
    */
   public WorkPeriod(String month, int year, int hourlyWage) throws IllegalArgumentException {
-    if(month == null || hourlyWage == 0) throw new IllegalArgumentException("Month or hourlyWage can´t be null/0");
+    if (month == null || hourlyWage == 0)
+      throw new IllegalArgumentException("Month or hourlyWage can´t be null/0");
     String monthValue;
     if (months.contains(month.toLowerCase())) {
       monthValue = String.valueOf(months.indexOf(month.toLowerCase()) + 1);
     } else {
       throw new IllegalArgumentException(month + " is not written correctly or is not a valid month.");
     }
-    if (year < (LocalDateTime.now().getYear() - 1) || year > (LocalDateTime.now().getYear() + 1))
+    if (year < (LocalDateTime.now().getYear() - 5) || year > (LocalDateTime.now().getYear() + 1))
       throw new IllegalArgumentException("Year can only be last, this or next year");
     if (hourlyWage <= 0)
       throw new IllegalArgumentException("HourlySalary cannot be in minus");
@@ -56,6 +55,23 @@ public class WorkPeriod implements Iterable<Work>, Comparable<WorkPeriod> {
     this.hourlyWage = hourlyWage;
   }
 
+  public static void main(String[] args) {
+    Work work11 = new Work(LocalDateTime.now().minusHours(1), LocalDateTime.now());
+    Work work12 = new Work(LocalDateTime.now().minusHours(1), LocalDateTime.now());
+    Work work2 = new Work(LocalDateTime.now().minusHours(2), LocalDateTime.now().plusHours(1));
+    Work work3 = new Work(LocalDateTime.now().minusHours(3), LocalDateTime.now());
+    Work work4 = new Work(LocalDateTime.now().minusHours(3), LocalDateTime.now().plusHours(2));
+    WorkPeriod wp = new WorkPeriod(months.get(LocalDate.now().getMonthValue() - 1), LocalDate.now().getYear(), 200);
+    wp.addWork(work11);
+    //wp.addWork(work12);
+    //wp.addWork(work2);
+    //wp.addWork(work3);
+    //wp.addWork(work4);
+    //System.out.println(wp.checkIfSameWork(work11, work12));
+    System.out.println(wp.getPeriodWorkHistory().size());
+    wp.removeWork(work11);
+    System.out.println(wp.getPeriodWorkHistory().size());
+  }
 
   public String getIdentifier() {
     return identifier;
@@ -71,6 +87,10 @@ public class WorkPeriod implements Iterable<Work>, Comparable<WorkPeriod> {
 
   public List<Work> getPeriodWorkHistory() {
     return periodWorkHistory;
+  }
+
+  public void setPeriodWorkHistory(List<Work> periodWorkHistory) {
+    this.periodWorkHistory = periodWorkHistory;
   }
 
   /**
@@ -107,7 +127,6 @@ public class WorkPeriod implements Iterable<Work>, Comparable<WorkPeriod> {
     return startTimeIsOverlapping || endTimeIsOverlapping || coversExistingShift;
   }
 
-
   /**
    * The method user to add work to the WorkPeriod.
    *
@@ -116,9 +135,9 @@ public class WorkPeriod implements Iterable<Work>, Comparable<WorkPeriod> {
    *                                  or isn't during this WorkPeriod.
    */
   public void addWork(Work work) throws IllegalArgumentException {
-	  
-	if (work == null)
-	  throw new IllegalArgumentException("Can't add null-object");
+
+    if (work == null)
+      throw new IllegalArgumentException("Can't add null-object");
     if (checkWorkAlreadyAdded(work))
       throw new IllegalArgumentException("This work data already exists");
     if (checkIfAnyOverlappingWorksExists(work))
@@ -140,15 +159,9 @@ public class WorkPeriod implements Iterable<Work>, Comparable<WorkPeriod> {
     periodWorkHistory.remove(work);
   }
 
-  public void setPeriodWorkHistory(List<Work> periodWorkHistory) {
-    this.periodWorkHistory = periodWorkHistory;
-  }
-
-
   public int getHourlyWage() {
     return this.hourlyWage;
   }
-
 
   /**
    * Calculates the total hours of work during this WorkPeriod by sum up shift duration hours
@@ -195,24 +208,6 @@ public class WorkPeriod implements Iterable<Work>, Comparable<WorkPeriod> {
       return this.getPeriodStartDate().getYear() - o.getPeriodStartDate().getYear();
     else
       return this.getPeriodStartDate().getMonth().getValue() - o.getPeriodStartDate().getMonth().getValue();
-  }
-
-  public static void main(String[] args) {
-    Work work11 = new Work(LocalDateTime.now().minusHours(1), LocalDateTime.now());
-    Work work12 = new Work(LocalDateTime.now().minusHours(1), LocalDateTime.now());
-    Work work2 = new Work(LocalDateTime.now().minusHours(2), LocalDateTime.now().plusHours(1));
-    Work work3 = new Work(LocalDateTime.now().minusHours(3), LocalDateTime.now());
-    Work work4 = new Work(LocalDateTime.now().minusHours(3), LocalDateTime.now().plusHours(2));
-    WorkPeriod wp = new WorkPeriod(months.get(LocalDate.now().getMonthValue() - 1), LocalDate.now().getYear(), 200);
-    wp.addWork(work11);
-    //wp.addWork(work12);
-    //wp.addWork(work2);
-    //wp.addWork(work3);
-    //wp.addWork(work4);
-    //System.out.println(wp.checkIfSameWork(work11, work12));
-    System.out.println(wp.getPeriodWorkHistory().size());
-    wp.removeWork(work11);
-    System.out.println(wp.getPeriodWorkHistory().size());
   }
 }
 
