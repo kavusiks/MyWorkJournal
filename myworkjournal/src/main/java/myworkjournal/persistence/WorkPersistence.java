@@ -18,15 +18,6 @@ public class WorkPersistence extends AbstractPersistence implements DataSaverInt
     this.filepath = filepath;
   }
 
-  public static void main(String[] args) throws FileNotFoundException {
-    Work work = new Work(LocalDateTime.now().minusHours(3), LocalDateTime.now().plusHours(3));
-    //WorkPersistence wp = new WorkPersistence("src/main/resources/myworkjournal/persistence/work.txt", work);
-    WorkPersistence wp1 = new WorkPersistence("src/main/resources/myworkjournal/persistence/work.txt");
-    wp1.writeFile(work);
-    wp1.readFile();
-    //System.out.println(wp1.getWork());
-
-  }
 
   /**
    * Used to read from file and then deserialize.

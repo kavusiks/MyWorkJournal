@@ -6,8 +6,6 @@ import myworkjournal.core.WorkPeriod;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.PrintWriter;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Scanner;
 
 /**
@@ -20,22 +18,6 @@ public class WorkPeriodPersistence extends AbstractPersistence implements DataSa
     this.filepath = filepath;
   }
 
-  public static void main(String[] args) throws FileNotFoundException {
-    Work work1 = new Work(LocalDateTime.now().minusHours(3), LocalDateTime.now().plusHours(3));
-    Work work2 = new Work(LocalDateTime.now().minusDays(2), LocalDateTime.now().minusDays(2).plusHours(4));
-    Work work3 =
-        new Work(LocalDateTime.now().minusDays(1).minusHours(1), LocalDateTime.now().minusDays(1).plusHours(5));
-    WorkPeriod workPeriod =
-        new WorkPeriod(WorkPeriod.months.get(LocalDate.now().getMonthValue() + 1), LocalDate.now().getYear(), 200);
-    workPeriod.addWork(work1);
-    workPeriod.addWork(work2);
-    workPeriod.addWork(work3);
-    WorkPeriodPersistence wp1 =
-        new WorkPeriodPersistence("src/main/resources/myworkjournal/persistence/workPeriod.txt");
-    wp1.writeFile(workPeriod);
-    wp1.readFile();
-
-  }
 
   /**
    * Used to read from file and then deserialize.

@@ -55,23 +55,6 @@ public class WorkPeriod implements Iterable<Work>, Comparable<WorkPeriod> {
     this.hourlyWage = hourlyWage;
   }
 
-  public static void main(String[] args) {
-    Work work11 = new Work(LocalDateTime.now().minusHours(1), LocalDateTime.now());
-    Work work12 = new Work(LocalDateTime.now().minusHours(1), LocalDateTime.now());
-    Work work2 = new Work(LocalDateTime.now().minusHours(2), LocalDateTime.now().plusHours(1));
-    Work work3 = new Work(LocalDateTime.now().minusHours(3), LocalDateTime.now());
-    Work work4 = new Work(LocalDateTime.now().minusHours(3), LocalDateTime.now().plusHours(2));
-    WorkPeriod wp = new WorkPeriod(months.get(LocalDate.now().getMonthValue() - 1), LocalDate.now().getYear(), 200);
-    wp.addWork(work11);
-    //wp.addWork(work12);
-    //wp.addWork(work2);
-    //wp.addWork(work3);
-    //wp.addWork(work4);
-    //System.out.println(wp.checkIfSameWork(work11, work12));
-    System.out.println(wp.getPeriodWorkHistory().size());
-    wp.removeWork(work11);
-    System.out.println(wp.getPeriodWorkHistory().size());
-  }
 
   public String getIdentifier() {
     return identifier;

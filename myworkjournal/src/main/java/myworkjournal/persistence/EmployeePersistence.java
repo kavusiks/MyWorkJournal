@@ -1,14 +1,11 @@
 package myworkjournal.persistence;
 
 import myworkjournal.core.Employee;
-import myworkjournal.core.Work;
 import myworkjournal.core.WorkPeriod;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.PrintWriter;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Scanner;
 
 public class EmployeePersistence extends AbstractPersistence implements DataSaverInterface<Employee> {
@@ -17,30 +14,6 @@ public class EmployeePersistence extends AbstractPersistence implements DataSave
     this.filepath = filepath;
   }
 
-  public static void main(String[] args) throws FileNotFoundException {
-    Work work1 = new Work(LocalDateTime.now().minusHours(3), LocalDateTime.now().plusHours(3));
-    Work work2 = new Work(LocalDateTime.now().minusDays(2), LocalDateTime.now().minusDays(2).plusHours(4));
-    Work work3 = new Work(LocalDateTime.now().minusHours(10), LocalDateTime.now().minusHours(5));
-    Employee e = new Employee("ole");
-    Work work11 =
-        new Work(LocalDateTime.now().minusHours(1).plusMonths(1), LocalDateTime.now().plusHours(4).plusMonths(1));
-    Work work22 = new Work(LocalDateTime.now().minusDays(2).plusMonths(1),
-        LocalDateTime.now().minusDays(2).plusHours(4).plusMonths(1));
-    WorkPeriod workPeriod1 =
-        new WorkPeriod(WorkPeriod.months.get(LocalDate.now().getMonthValue() - 1), LocalDate.now().getYear(), 200);
-    workPeriod1.addWork(work1);
-    workPeriod1.addWork(work2);
-    workPeriod1.addWork(work3);
-    WorkPeriod workPeriod11 =
-        new WorkPeriod(WorkPeriod.months.get(LocalDate.now().getMonthValue()), LocalDate.now().getYear(), 200);
-    workPeriod11.addWork(work11);
-    workPeriod11.addWork(work22);
-    e.addWorkPeriod(workPeriod1);
-    e.addWorkPeriod(workPeriod11);
-    EmployeePersistence ep2 = new EmployeePersistence("src/main/resources/myworkjournal/persistence/employee.txt");
-    ep2.writeFile(e);
-    ep2.readFile();
-  }
 
   /**
    * Used to read from file and then deserialize.
