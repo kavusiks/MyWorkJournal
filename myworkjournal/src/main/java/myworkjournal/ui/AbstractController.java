@@ -11,6 +11,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import myworkjournal.persistence.DataSaverInterface;
 import myworkjournal.persistence.EmployeePersistence;
 
 
@@ -71,7 +72,7 @@ public abstract class AbstractController {
 		if (loggedInEmployee == null) {
 			throw new IllegalArgumentException("Employee to save is not defined");
 		}
-		EmployeePersistence employeeSaver = new EmployeePersistence("src/main/resources/myworkjournal/persistence/employee.txt");
+		DataSaverInterface employeeSaver = new EmployeePersistence("src/main/resources/myworkjournal/persistence/employee.txt");
 		employeeSaver.writeFile(loggedInEmployee);
 		System.exit(0);
 	}

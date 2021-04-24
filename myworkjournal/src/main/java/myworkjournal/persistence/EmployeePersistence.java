@@ -107,12 +107,8 @@ public class EmployeePersistence extends AbstractPersistence implements DataSave
     outFile.println("  workPeriods: [ amount= " + employeeToSerialize.getWorkPeriods().size());
     boolean firstWorkPeriodSerialized= false;
     for (WorkPeriod workPeriod : employeeToSerialize) {
-      if (firstWorkPeriodSerialized) {
-        outFile.println("  ,");
-      }
-      else {
-        firstWorkPeriodSerialized = true;
-      }
+      if (firstWorkPeriodSerialized) outFile.println("  ,");
+      else firstWorkPeriodSerialized = true;
       WorkPeriodPersistence workPeriodPersistence = new WorkPeriodPersistence(filepath);
       workPeriodPersistence.serialize(outFile, workPeriod);
     }

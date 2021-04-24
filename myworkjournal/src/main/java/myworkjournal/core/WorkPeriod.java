@@ -168,8 +168,6 @@ public class WorkPeriod implements Iterable<Work>, Comparable<WorkPeriod> {
     return this.hourlyWage * getTotalHours();
   }
 
-  //TODO: sjekk om dette trengs, og evt nevn hvorfor dette brukes og hvor.
-
   /**
    * Iterator used to iterate over the all works directly from the WorkPeriod.
    *

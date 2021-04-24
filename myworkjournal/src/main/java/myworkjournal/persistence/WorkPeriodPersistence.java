@@ -121,12 +121,8 @@ public class WorkPeriodPersistence extends AbstractPersistence implements DataSa
       outFile.println("  periodWorkHistory: [ amount=" + workPeriodToSerialize.getPeriodWorkHistory().size());
       boolean firstWorkSerialized= false;
       for (Work work : workPeriodToSerialize) {
-        if (firstWorkSerialized) {
-          outFile.println("  ,");
-        }
-        else {
-          firstWorkSerialized = true;
-        }
+        if (firstWorkSerialized) outFile.println("  ,");
+        else firstWorkSerialized = true;
         WorkPersistence workPersistence = new WorkPersistence(filepath);
         workPersistence.serialize(outFile, work);
       }

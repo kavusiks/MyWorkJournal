@@ -43,16 +43,9 @@ public abstract class AbstractPersistenceTest {
     assertEquals(expected.getMonthSalary(),actual.getMonthSalary(), errorText);
     assertEquals(expected.getHourlyWage(),actual.getHourlyWage(), errorText);
     assertEquals(expected.getPeriodWorkHistory().size(), actual.getPeriodWorkHistory().size());
-    //TODO: også sjekk inneholdet i lista
-    /*
     if(actual.getPeriodWorkHistory().size() > 0) {
-      actual.getPeriodWorkHistory().stream()
-          .map(workActual -> assertSameWork(workActual, expected.getPeriodWorkHistory().stream().
-              anyMatch(workExpected -> ((workExpected.getStartTime().equals(workActual.getStartTime())) && workExpected.getStartTime().equals(workActual.getEndTime()))), errorText + "Because the workPeriods didn't contain the same works"));
-    }*/
-    if(actual.getPeriodWorkHistory().size() > 0) {
-      for (Work workActual : actual.getPeriodWorkHistory()) {
-        for (Work workExpected: expected.getPeriodWorkHistory()) {
+      for (Work workActual : actual) {
+        for (Work workExpected: expected) {
           if (workExpected.getStartTime().equals(workActual.getStartTime()) && workExpected.getEndTime().equals(workActual.getEndTime())) {
             assertSameWork(workExpected, workActual, errorText + "Because the workPeriods didn't contain the same works.");
           }
@@ -64,10 +57,9 @@ public abstract class AbstractPersistenceTest {
   protected void assertSameEmployee(Employee expected, Employee actual, String errorText) {
     assertEquals(expected.getName(),actual.getName(), errorText);
     assertEquals(expected.getWorkPeriods().size(),actual.getWorkPeriods().size(), errorText);
-    //TODO: også sjekk inneholdet i lista
     if(actual.getWorkPeriods().size() > 0) {
-      for (WorkPeriod workPeriodActual : actual.getWorkPeriods()) {
-        for (WorkPeriod workPeriodExpected: expected.getWorkPeriods()) {
+      for (WorkPeriod workPeriodActual : actual) {
+        for (WorkPeriod workPeriodExpected: expected) {
           if (workPeriodExpected.getIdentifier().equals(workPeriodActual.getIdentifier())) {
             assertSameWorkPeriod(workPeriodExpected, workPeriodActual, errorText + "Because the Employees didn't contain the same workPeriods.");
           }

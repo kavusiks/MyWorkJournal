@@ -8,6 +8,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import myworkjournal.persistence.DataSaverInterface;
 import myworkjournal.persistence.EmployeePersistence;
 
 
@@ -57,7 +58,7 @@ public class CreateProfileController extends AbstractController{
 
     @Override void sceneSwitchedUpdate() {
       try {
-        EmployeePersistence employeePersistence = new EmployeePersistence("src/main/resources/myworkjournal/persistence/employee.txt");
+        DataSaverInterface<Employee> employeePersistence = new EmployeePersistence("src/main/resources/myworkjournal/persistence/employee.txt");
         Employee employee = employeePersistence.readFile();
         setLoggedInEmployee(employee);
         savedUserDisplayField.setText(employee.getName());

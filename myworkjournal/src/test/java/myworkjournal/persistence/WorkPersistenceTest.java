@@ -70,7 +70,6 @@ public class WorkPersistenceTest extends AbstractPersistenceTest implements Pers
 		workPersistence = new WorkPersistence(invalidPath);
 		assertThrows(FileNotFoundException.class, () -> {
 			readWork = workPersistence.readFile();
-
 		}, "FileNotFoundExceptions was not thrown");
 		assertNull(readWork, "No workPeriod should be read, when there are no valid files.");
 
