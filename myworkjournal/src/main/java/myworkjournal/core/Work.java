@@ -51,7 +51,6 @@ public class Work implements Comparable<Work> {
   public double getShiftDurationInHours() {
     DecimalFormat df = new DecimalFormat("###.##");
     df.setDecimalFormatSymbols(DecimalFormatSymbols.getInstance(Locale.ENGLISH));
-    double test = (double) Duration.between(getStartTime(), getEndTime()).toMinutes() / 60.00;
     return Double.valueOf(df.format((double) Duration.between(getStartTime(), getEndTime()).toMinutes() / 60.00));
   }
 
