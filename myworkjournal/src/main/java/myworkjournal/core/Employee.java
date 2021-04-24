@@ -51,11 +51,6 @@ public class Employee implements Iterable<WorkPeriod> {
      */
     public void addWorkPeriod(WorkPeriod workPeriod) throws IllegalArgumentException{
         if(workPeriods.stream().anyMatch(p -> p.getIdentifier().equals(workPeriod.getIdentifier()))) {
-            /*
-            WorkPeriod existingWorkPeriod = workPeriods.stream().filter(existingWP -> existingWP.getIdentifier().equals(workPeriod.getIdentifier())).findAny().orElseThrow();
-            workPeriods.remove(existingWorkPeriod);
-            workPeriods.add(mergeTwoWorkPeriods(existingWorkPeriod, workPeriod));
-            */
             throw new IllegalArgumentException("Work month already exists");
         }
         else if (workPeriod == null) {
@@ -79,25 +74,6 @@ public class Employee implements Iterable<WorkPeriod> {
         workPeriods.remove(workPeriod);
     }
 
-    /**
-     * Method used to mergeTwoWorkPeriods by merging their PeriodWorkHistory.
-     * This method is used when adding an already existing WorkPeriod to an Employee.
-     //* @param workPeriod1 WorkPeriod to merge
-     //* @param workPeriod2 WorkPeriod to merge
-     * @return the merged WorkPeriod
-     */
-    /*
-    private WorkPeriod mergeTwoWorkPeriods(WorkPeriod workPeriod1, WorkPeriod workPeriod2) {
-        List<Work> workHistory1 = workPeriod1.getPeriodWorkHistory();
-        List<Work> workHistory2 = workPeriod2.getPeriodWorkHistory();
-        for (Work work : workHistory1) {
-            if (!workHistory2.contains(work)) {
-                workHistory2.add(work);
-            }
-        }
-        workPeriod2.setPeriodWorkHistory(workHistory2);
-        return workPeriod2;
-    }*/
 
     public String getName(){
         return this.name;

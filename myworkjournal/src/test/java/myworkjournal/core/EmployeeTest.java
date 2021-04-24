@@ -41,7 +41,7 @@ public class EmployeeTest {
 		assertEquals("Ola", employee.getName());
 		assertTrue(employee.getWorkPeriods().isEmpty());
 
-		// Check if it throws exception when number is in name
+		// Check if it throws exception when invalid characters is in name
 		assertThrows(IllegalArgumentException.class, () -> {
 	        Employee employee1 = new Employee("1234Ola");
 	    });
@@ -83,7 +83,7 @@ public class EmployeeTest {
 	}
 		
 	@Test
-	@DisplayName("testAddWorkPeriod() og testMergeTwoWorkPeriods().")
+	@DisplayName("testAddWorkPeriod()")
 	public void testAddWorkPeriod() {
 		Employee employee = new Employee("Ola");
 				

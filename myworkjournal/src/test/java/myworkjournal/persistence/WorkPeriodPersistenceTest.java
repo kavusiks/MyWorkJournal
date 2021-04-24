@@ -47,11 +47,10 @@ public class WorkPeriodPersistenceTest extends AbstractPersistenceTest implement
 	@Test
 	@Override public void testWriteAndReadFile() {
 
-		//Testing readFile() froom invalid filepath
+		//Testing readFile() from invalid filepath
 		workPeriodPersistence = new WorkPeriodPersistence(invalidPath);
 		assertThrows(FileNotFoundException.class, () -> {
 			readWorkPeriod =workPeriodPersistence.readFile();
-
 		},"FileNotFoundExceptions was not thrown" );
 		assertNull(readWorkPeriod, "No work should be read, when there are no valid files.");
 
