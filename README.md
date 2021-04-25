@@ -1,6 +1,6 @@
 # TDT4100-Prosjekt, MyWorkJournal
 
-MyWorkJournal er et arbeidsføringsprogram som bruker Java, JavaFX og JUnit5.
+MyWorkJournal er et arbeidsføringsprogram som bruker Java, JavaFX og JUnit5. Med dette programmet kan en individuell bruker loggføre sine jobbvakter og få en oppsummering arbeidet sitt.
 
 ...
 
