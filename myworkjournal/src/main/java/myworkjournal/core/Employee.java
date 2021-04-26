@@ -10,7 +10,7 @@ import java.util.List;
  */
 public class Employee implements Iterable<WorkPeriod> {
 
-  private String name;
+  private final String name;
   private List<WorkPeriod> workPeriods = new ArrayList<>();
 
 
@@ -47,12 +47,12 @@ public class Employee implements Iterable<WorkPeriod> {
 
 
   /**
-   * Method used to add new workPeriod. If the workPeriod already exists,
-   * their periodWorkHistory will be merged. The workPeriod will be sorted
+   * Method used to add new workPeriod. The workPeriod will be sorted
    * at the end to make sure that they are in the corrected order after
    * this newly added change.
    *
    * @param workPeriod the workPeriod we want to add.
+   * @throws IllegalArgumentException if the workPeriod already exists or is null.
    */
   public void addWorkPeriod(WorkPeriod workPeriod) throws IllegalArgumentException {
     if (workPeriods.stream().anyMatch(p -> p.getIdentifier().equals(workPeriod.getIdentifier()))) {
@@ -70,7 +70,7 @@ public class Employee implements Iterable<WorkPeriod> {
    * Method used to remove an existing WorkPeriod from the Employee's workPeriods.
    *
    * @param workPeriod the WorkPeriod we want to remove.
-   * @throws IllegalArgumentException if the Employee doesn't have the WorkPeriod we want to remove.
+   * @throws IllegalArgumentException if the Employee doesn't have the WorkPeriod we want to remove or is null.
    */
   public void removeWorkPeriod(WorkPeriod workPeriod) throws IllegalArgumentException {
     if (workPeriod == null)

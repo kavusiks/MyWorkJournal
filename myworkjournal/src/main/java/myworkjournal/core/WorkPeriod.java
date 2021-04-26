@@ -15,10 +15,10 @@ public class WorkPeriod implements Iterable<Work>, Comparable<WorkPeriod> {
       .asList("januar", "februar", "mars", "april", "mai", "juni", "juli", "august", "september", "oktober", "november",
           "desember"));
 
-  private String identifier;
-  private LocalDate periodStartDate;
-  private LocalDate periodEndDate;
-  private int hourlyWage;
+  private final String identifier;
+  private final LocalDate periodStartDate;
+  private final LocalDate periodEndDate;
+  private final int hourlyWage;
 
   private List<Work> periodWorkHistory = new ArrayList<>();
 

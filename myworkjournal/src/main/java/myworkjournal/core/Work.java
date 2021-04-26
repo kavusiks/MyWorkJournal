@@ -13,8 +13,8 @@ import static java.time.temporal.ChronoUnit.MINUTES;
  * This class represents a shift. A shift is made up by a startTime and a endTime. This is used to calculate the shift's duration.
  */
 public class Work implements Comparable<Work> {
-  private LocalDateTime startTime;
-  private LocalDateTime endTime;
+  private final LocalDateTime startTime;
+  private final LocalDateTime endTime;
 
 
   /**
@@ -51,7 +51,7 @@ public class Work implements Comparable<Work> {
   public double getShiftDurationInHours() {
     DecimalFormat df = new DecimalFormat("###.##");
     df.setDecimalFormatSymbols(DecimalFormatSymbols.getInstance(Locale.ENGLISH));
-    return Double.valueOf(df.format((double) Duration.between(getStartTime(), getEndTime()).toMinutes() / 60.00));
+    return Double.parseDouble(df.format((double) Duration.between(getStartTime(), getEndTime()).toMinutes() / 60.00));
   }
 
   @Override public String toString() {
@@ -79,5 +79,6 @@ public class Work implements Comparable<Work> {
       return this.getStartTime().getHour() - o.getStartTime().getHour();
     return this.getStartTime().getMinute() - o.getStartTime().getMinute();
   }
+
 
 }

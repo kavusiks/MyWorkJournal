@@ -7,8 +7,8 @@ public class AbstractPersistence {
   protected String filepath;
 
   //Used as indentation when writing the textfile with save to make it more readable
-  protected String valueFieldIndentationString = "    ";
-  protected String objectFieldIndentationString = "  ";
+  protected final String valueFieldIndentationString = "    ";
+  protected final String objectFieldIndentationString = "  ";
 
 
   /**

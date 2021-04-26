@@ -59,7 +59,7 @@
         <Button fx:id="closeDeletePopupXBtn" layoutX="445.0" mnemonicParsing="false" onAction="#closeDeletePopup"
                 prefHeight="33.0" prefWidth="35.0" style="-fx-background-color: #FF4449;" text="x"/>
         <Text layoutX="8.0" layoutY="57.0" strokeType="OUTSIDE" strokeWidth="0.0"
-              text="Denne handlingen er irreveribel. Er du sikker på at du vil slette?">
+              text="Denne handlingen er irreversibel. Er du sikker på at du vil slette?">
             <font>
                 <Font size="14.0"/>
             </font>
